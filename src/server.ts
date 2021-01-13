@@ -51,7 +51,7 @@ export class Server {
           )
         });
 
-        socket.broadcast.emit("new-user", {
+        socket.broadcast.emit("update-user-list", {
           users: [socket.id]
         });
       }
