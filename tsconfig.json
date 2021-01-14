@@ -10,6 +10,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
-    "baseUrl": "."    
-  }
+    "baseUrl": "."
+  },
+  "files": ["public/scripts/RTCConnection.ts"]
 }
