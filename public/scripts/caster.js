@@ -1,4 +1,4 @@
-import {RTCConnection} from "./RTCConnection";
+var RTCConnection = require("./RtcConnection.js").default;
 
 let currentCall = {isActive: false, peer: undefined};
 

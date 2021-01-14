@@ -1,4 +1,4 @@
-export class RTCConnection{
+export default class RTCConnection {
 
     private socket = undefined;
     private avParams = undefined;
@@ -7,7 +7,7 @@ export class RTCConnection{
     public peerConnection =
         new RTCPeerConnection({'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]});
 
-    public constructor(socket, peerSocket, avParams) {
+    constructor(socket, peerSocket, avParams) {
         this.socket = socket;
         this.avParams = avParams;
         this.peerSocket = peerSocket;
@@ -66,4 +66,3 @@ export class RTCConnection{
         await this.call();
     }
 }
-
