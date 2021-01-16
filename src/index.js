@@ -4,6 +4,28 @@ const https = require('https');
 const socket = require('socket.io')
 const path = require('path');
 const fs = require("fs");
+
+const observerServer = require('rtcmulticonnection-server');
+const playerServer = require('rtcmulticonnection-server');
+
+const RTCMCS_Config = {
+    "socketURL": "/",
+        "dirPath": "",
+        "homePage": "/demos/index.html",
+        "socketMessageEvent": "RTCMultiConnection-Message",
+        "socketCustomEvent": "RTCMultiConnection-Custom-Message",
+        "port": "9001",
+        "enableLogs": "true",
+        "autoRebootServerOnFailure": "false",
+        "isUseHTTPs": "true",
+        "sslKey": "./key.pem",
+        "sslCert": "./cert.pem",
+        "sslCabundle": "",
+        "enableAdmin": "false",
+        "adminUserName": "username",
+        "adminPassword": "password"
+}
+
 port = 443;
 
 const options = {
@@ -44,28 +66,28 @@ function handleRoutes(){
 
 function informAboutElders(socket){
     if (casterSocket1 !== undefined) {
-        socket.emit('caster1-con');
+        socket.emit('caster1-con', {socket: socket.id});
     }
     if (casterSocket2 !== undefined) {
-        socket.emit('caster2-con');
+        socket.emit('caster2-con', {socket: socket.id});
     }
     if(observerSocket !== undefined){
-        socket.emit("observer-con");
+        socket.emit("observer-con", {socket: socket.id});
     }
     if(broadcasterSocket !== undefined){
-        socket.emit("broadcaster-con");
+        socket.emit("broadcaster-con", {socket: socket.id});
     }
     if (player1Socket !== undefined) {
-        socket.emit('player1-con');
+        socket.emit('player1-con', {socket: socket.id});
     }
     if (player2Socket !== undefined) {
-        socket.emit('player2-con');
+        socket.emit('player2-con', {socket: socket.id});
     }
     if (player3Socket !== undefined) {
-        socket.emit('player3-con');
+        socket.emit('player3-con', {socket: socket.id});
     }
     if (player4Socket !== undefined) {
-        socket.emit('player4-con');
+        socket.emit('player4-con', {socket: socket.id});
     }
 }
 
@@ -87,25 +109,25 @@ function handlePlayerRoutes(socket){
         if (player1Socket === undefined) {
             console.log("Registered New Player 1!");
             player1Socket = socket;
-            socket.broadcast.emit('player1-con');
+            socket.broadcast.emit('player1-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else if (player2Socket === undefined) {
             console.log("Registered New Player 2!");
             player2Socket = socket;
-            socket.broadcast.emit('player2-con');
+            socket.broadcast.emit('player2-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else if (player3Socket === undefined) {
             console.log("Registered New Player 3!");
             player3Socket = socket;
-            socket.broadcast.emit('player3-con');
+            socket.broadcast.emit('player3-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else if (player4Socket === undefined) {
             console.log("Registered New Player 4!");
             player4Socket = socket;
-            socket.broadcast.emit('player4-con');
+            socket.broadcast.emit('player4-con', {socket: socket.id});
             informAboutElders(socket);
         } else {
             console.log("Rejected New Player!");
@@ -136,7 +158,6 @@ function handlePlayerDC(socket){
         socket.broadcast.emit('player4-dc');
         player4Socket = undefined;
     }
-
 }
 
 
@@ -157,8 +178,10 @@ function handleObserverRoutes(socket){
         else{
             console.log("Registered New Observer!");
             observerSocket = socket;
-            socket.broadcast.emit('observer-con');
+            socket.broadcast.emit('observer-con', {socket: socket.id});
             informAboutElders(socket);
+            observerServer.addSocket(socket, {config: {RTCMCS_Config}, logs:'logs.json'});
+            console.log(observerServer);
         }
     });
 }
@@ -183,13 +206,13 @@ function handleCasterRoutes(socket){
         if (casterSocket1 === undefined) {
             console.log("Registered New Caster 1!");
             casterSocket1 = socket;
-            socket.broadcast.emit('caster1-con');
+            socket.broadcast.emit('caster1-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else if (casterSocket2 === undefined) {
             console.log("Registered New Caster 2!");
             casterSocket2 = socket;
-            socket.broadcast.emit('caster2-con');
+            socket.broadcast.emit('caster2-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else {
@@ -229,7 +252,8 @@ function handleBroadcasterRoutes(socket){
         else{
             console.log("Registered New Broadcaster!");
             broadcasterSocket = socket;
-            socket.broadcast.emit('broadcaster-con');
+            console.log("socket.id is", socket.id);
+            socket.broadcast.emit('broadcaster-con', {socket: socket.id});
             informAboutElders(socket);
         }
     });
