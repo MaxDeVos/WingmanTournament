@@ -133,6 +133,7 @@ function toggleVid() {
     }
 }
 
+
 socket.on('connect', () => {
     console.log("Connected!");
     socket.emit("observer-con", function(data) {
@@ -159,5 +160,5 @@ function createUserListener(name){
     });
 }
 
-createUserListener('caster-1');
-createUserListener('caster-2');
+createUserListener('caster1');
+createUserListener('caster2');

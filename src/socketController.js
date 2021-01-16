@@ -3,6 +3,15 @@ peers = {}
 
 
 module.exports = (io) => {
+
+    /* TODO
+    Put this shit in index.js and pass the type of connection (player/observer/etc.) with the socket
+    and then filter it accordingly so that the correct people get the correct data.  May be inefficient since
+    it requires more peers, but if we halt video sockets(I don't even know what I mean by that and I wrote it)
+    it might be better.
+
+    I don't know.  Go the fuck to sleep.
+     */
     io.on('connect', (socket) => {
         console.log('a client is connected')
 

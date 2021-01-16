@@ -161,6 +161,6 @@ function createUserListener(name){
 
 createUserListener('observer');
 createUserListener('broadcaster');
-createUserListener('caster-1');
-createUserListener('caster-2');
+createUserListener('caster1');
+createUserListener('caster2');
 
