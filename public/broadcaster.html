@@ -16,6 +16,14 @@
 <h2 style="text-align: center;color:black">Player #2 Status: <span id="player2-status" style="color:red">Disconnected</span></h2>
 <h2 style="text-align: center;color:black">Player #3 Status: <span id="player3-status" style="color:red">Disconnected</span></h2>
 <h2 style="text-align: center;color:black">Player #4 Status: <span id="player4-status" style="color:red">Disconnected</span></h2>
+<div id="videos" class="container">
+    <video id="localVideo" class="vid" autoplay muted></video>
+</div>
+<br />
+<div style="display:block">
+    <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
+    <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
+</div>
 </body>
 <script src="scripts/broadcaster.js"></script>
 </html>

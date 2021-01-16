@@ -16,28 +16,7 @@ const configuration = {
     ]
 }
 
-let constraints = {
-    audio: true,
-    video: {
-        width: {
-            max: 1920
-        },
-        height: {
-            max: 1080
-        }
-    }
-}
-
-// enabling the camera at startup
-navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-    console.log('Received local stream');
-
-    localVideo.srcObject = stream;
-    localStream = stream;
-
-    init()
-
-}).catch(e => alert(`getusermedia error ${e.name}`))
+init()
 
 function init() {
     socket = io()
@@ -45,8 +24,7 @@ function init() {
     socket.on('initReceive', socket_id => {
         console.log('INIT RECEIVE ' + socket_id)
         addPeer(socket_id, false)
-
-        socket.emit('initSend', socket_id)
+        socket.emit('initSend', {socket: socket_id, type: "observer"})
     })
 
     socket.on('initSend', socket_id => {
@@ -93,7 +71,8 @@ function addPeer(socket_id, am_initiator) {
     peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
         stream: localStream,
-        config: configuration
+        config: configuration, offerOptions: {offerToReceiveAudio: true,
+            offerToReceiveVideo: false}
     })
 
     peers[socket_id].on('signal', data => {
@@ -110,27 +89,7 @@ function addPeer(socket_id, am_initiator) {
         newVid.playsinline = false
         newVid.autoplay = true
         newVid.className = "vid"
-        videos.appendChild(newVid)
     })
-}
-
-/**
- * Enable/disable microphone
- */
-function toggleMute() {
-    for (let index in localStream.getAudioTracks()) {
-        localStream.getAudioTracks()[index].enabled = !localStream.getAudioTracks()[index].enabled
-        muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
-    }
-}
-/**
- * Enable/disable video
- */
-function toggleVid() {
-    for (let index in localStream.getVideoTracks()) {
-        localStream.getVideoTracks()[index].enabled = !localStream.getVideoTracks()[index].enabled
-        vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
-    }
 }
 
 

@@ -4,6 +4,7 @@ const https = require('https');
 const socket = require('socket.io')
 const path = require('path');
 const fs = require("fs");
+peers = {}
 
 port = 443;
 
@@ -18,8 +19,10 @@ var io = socket(server);
 app.use(express.static(path.join(__dirname, "../public")));
 
 function handleRoutes(){
-    io.on('connection', socket => {
 
+    configureSocketForRTC();
+
+    io.on('connection', socket => {
         handlePlayerRoutes(socket);
         handleObserverRoutes(socket);
         handleCasterRoutes(socket);
@@ -87,24 +90,28 @@ function handlePlayerRoutes(socket){
         console.log("Player Attempting To Connect");
         if (player1Socket === undefined) {
             console.log("Registered New Player 1!");
+            socket.type = 'player';
             player1Socket = socket;
             socket.broadcast.emit('player1-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else if (player2Socket === undefined) {
             console.log("Registered New Player 2!");
+            socket.type = 'player';
             player2Socket = socket;
             socket.broadcast.emit('player2-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else if (player3Socket === undefined) {
             console.log("Registered New Player 3!");
+            socket.type = 'player';
             player3Socket = socket;
             socket.broadcast.emit('player3-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else if (player4Socket === undefined) {
             console.log("Registered New Player 4!");
+            socket.type = 'player';
             player4Socket = socket;
             socket.broadcast.emit('player4-con', {socket: socket.id});
             informAboutElders(socket);
@@ -149,15 +156,17 @@ app.get('/observer', (req, res) => {
 function handleObserverRoutes(socket){
 
     socket.on('observer-con', () => {
-        console.log("Observer Attempting To Connect");
+        console.log("Observer " + socket.id + " Attempting To Connect");
         if(observerSocket !== undefined){
             console.log("Rejected New Observer!");
             socket.emit('observer-invalid');
         }
         else{
             console.log("Registered New Observer!");
+            socket.type = 'observer';
             observerSocket = socket;
-            socket.broadcast.emit('observer-con', {socket: socket.id});
+            handleCasterCall(socket);
+            socket.broadcast.emit('caster2-con', {socket: socket.id});
             informAboutElders(socket);
         }
     });
@@ -179,16 +188,20 @@ app.get('/caster', (req, res) => {
 function handleCasterRoutes(socket){
 
     socket.on('caster-con', () => {
-        console.log("Caster Attempting To Connect");
+        console.log("Caster " + socket.id + " Attempting To Connect");
         if (casterSocket1 === undefined) {
             console.log("Registered New Caster 1!");
+            socket.type = 'caster';
             casterSocket1 = socket;
+            handleCasterCall(socket);
             socket.broadcast.emit('caster1-con', {socket: socket.id});
             informAboutElders(socket);
 
         } else if (casterSocket2 === undefined) {
             console.log("Registered New Caster 2!");
+            socket.type = 'caster';
             casterSocket2 = socket;
+            handleCasterCall(socket);
             socket.broadcast.emit('caster2-con', {socket: socket.id});
             informAboutElders(socket);
 
@@ -197,6 +210,10 @@ function handleCasterRoutes(socket){
             socket.emit('caster-invalid');
         }
     });
+}
+
+// Caster sends data to the Observer and Broadcaster.
+function handleCasterCall(socket){
 }
 
 function handleCasterDC(socket){
@@ -228,6 +245,7 @@ function handleBroadcasterRoutes(socket){
         }
         else{
             console.log("Registered New Broadcaster!");
+            socket.type = 'broadcaster';
             broadcasterSocket = socket;
             console.log("socket.id is", socket.id);
             socket.broadcast.emit('broadcaster-con', {socket: socket.id});
@@ -243,7 +261,7 @@ function handleBroadcasterDC(socket){
 }
 
 require('./routes')(app)
-require('./socketController')(io)
+// require('./socketController')(io)
 
 const publicip = '134.129.53.252'
 server.listen(port, () => {
@@ -257,3 +275,88 @@ server.listen(port, () => {
     console.log(`Caster: https://${publicip}/caster.html`);
     console.log(`Broadcaster: https://${publicip}/broadcaster.html`);
 })
+
+function configureSocketForRTC(){
+
+    io.on('connection', (socket) => {
+        const type = determineRefererType(socket.handshake.headers.referer);
+
+        console.log("Handling RTC for new " + type);
+
+        socket.type = type;
+
+        peers[socket.id] = socket
+
+        for(let id in peers) {
+            if(determinePeerCompatibility(socket,peers[id])) {
+                peers[id].emit('initReceive', socket.id)
+            }
+        }
+        console.log('configuring socket')
+
+        /**
+         * relay a peerconnection signal to a specific socket
+         */
+        socket.on('signal', data => {
+            // console.log('sending signal from ' + socket.id + ' to ', data)
+            if(!peers[data.socket_id])return
+            peers[data.socket_id].emit('signal', {
+                socket_id: socket.id,
+                signal: data.signal
+            })
+        })
+
+        /**
+         * remove the disconnected peer connection from all other connected clients
+         */
+        socket.on('disconnect', () => {
+            console.log('socket disconnected ' + socket.id)
+            socket.broadcast.emit('removePeer', socket.id)
+            delete peers[socket.id]
+        })
+
+        /**
+         * Send message to client to initiate a connection
+         * The sender has already setup a peer connection receiver
+         */
+        socket.on('initSend', init_socket_id => {
+            console.log("initSend from: ", socket.id, " to: ", init_socket_id.socket);
+            peers[init_socket_id.socket].emit('initSend', socket.id)
+            console.log("Recieved initSend from a " + init_socket_id.type)
+        })
+    })
+}
+
+function determineRefererType(referer) {
+    referer = String(referer);
+    if (referer.includes("observer")) {
+        return "observer";
+    } else if (referer.includes("broadcaster")) {
+        return "broadcaster";
+    } else if (referer.includes("player")) {
+        return "player";
+    } else if(referer.includes("caster")){
+        return "caster";
+    }
+    throw Error("Unknown Referer Type: " + referer);
+}
+
+function determinePeerCompatibility(local, remote){
+    let r = undefined;
+    if(local === remote){
+        r = false;
+    }
+    else {
+        if (local.type === "observer") {
+            r = (remote.type === "caster");
+        } else if (local.type === "caster") {
+            r = (remote.type !== "player");
+        } else if (local.type === "broadcaster") {
+            r = (remote.type !== "observer");
+        } else if (local.type === "player") {
+            r = (remote.type === "broadcaster");
+        }
+    }
+    console.log("Compatibility between " + local.type + " and " + remote.type + ": " + r);
+    return r;
+}
