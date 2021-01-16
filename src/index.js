@@ -5,32 +5,11 @@ const socket = require('socket.io')
 const path = require('path');
 const fs = require("fs");
 
-const observerServer = require('rtcmulticonnection-server');
-const playerServer = require('rtcmulticonnection-server');
-
-const RTCMCS_Config = {
-    "socketURL": "/",
-        "dirPath": "",
-        "homePage": "/demos/index.html",
-        "socketMessageEvent": "RTCMultiConnection-Message",
-        "socketCustomEvent": "RTCMultiConnection-Custom-Message",
-        "port": "9001",
-        "enableLogs": "true",
-        "autoRebootServerOnFailure": "false",
-        "isUseHTTPs": "true",
-        "sslKey": "./key.pem",
-        "sslCert": "./cert.pem",
-        "sslCabundle": "",
-        "enableAdmin": "false",
-        "adminUserName": "username",
-        "adminPassword": "password"
-}
-
 port = 443;
 
 const options = {
     key: fs.readFileSync('key.pem'),
-        cert: fs.readFileSync('cert.pem'),
+    cert: fs.readFileSync('cert.pem'),
 }
 
 var server = https.createServer(options, app);
@@ -180,8 +159,6 @@ function handleObserverRoutes(socket){
             observerSocket = socket;
             socket.broadcast.emit('observer-con', {socket: socket.id});
             informAboutElders(socket);
-            observerServer.addSocket(socket, {config: {RTCMCS_Config}, logs:'logs.json'});
-            console.log(observerServer);
         }
     });
 }
@@ -264,6 +241,9 @@ function handleBroadcasterDC(socket){
     socket.broadcast.emit('broadcaster-dc');
     broadcasterSocket = undefined;
 }
+
+require('./routes')(app)
+require('./socketController')(io)
 
 const publicip = '134.129.53.252'
 server.listen(port, () => {

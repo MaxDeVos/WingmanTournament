@@ -4,11 +4,20 @@
     <meta charset="UTF-8">
     <title>Observer</title>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/simple-peer/simplepeer.min.js"></script>
 </head>
 <body>
 <h1 style="text-align:center">Observer</h1>
 <h2 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h2>
 <h2 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h2>
+<div id="videos" class="container">
+    <video id="localVideo" class="vid" autoplay muted></video>
+</div>
+<br />
+<div style="display:block">
+    <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
+    <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
+</div>
 </body>
 <script src="scripts/observer.js"></script>
 </html>
