@@ -38,19 +38,23 @@ const configuration = {
 
 /////////////////////////////////////////////////////////
 
+if(!noInput) {
 // enabling the camera at startup
-navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-    console.log('Received local stream');
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+        console.log('Received local stream');
 
-    localVideo.srcObject = stream;
-    localStream = stream;
+        localVideo.srcObject = stream;
+        localStream = stream;
+        init();
 
+    }).catch(e => alert(`getusermedia error ${e.name}`))
+    /**
+     * initialize the socket connections
+     */
+}
+else{
     init();
-
-}).catch(e => alert(`getusermedia error ${e.name}`))
-/**
- * initialize the socket connections
- */
+}
 
 
 
