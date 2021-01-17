@@ -7,7 +7,7 @@
     <script src="/simple-peer/simplepeer.min.js"></script>
 </head>
 <body>
-<h1 style="text-align:center">Caster</h1>
+<h1 style="text-align:center"><span id="UUID"></span>Caster</h1>
 <h2 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h2>
 <h2 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h2>
 <h2 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h2>
@@ -20,6 +20,10 @@
     <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
 </div>
 </body>
+<script>
+    let offerOptions = {offerToReceiveAudio: true,
+        offerToReceiveVideo: false};
+</script>
 <script src="scripts/commonRTC.js"></script>
 <script src="scripts/caster.js"></script>
 </html>

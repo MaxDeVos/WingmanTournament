@@ -1,4 +1,5 @@
 /**
+ * Status: Needs Teammate Pairing and Audio Isolation
  * Audio In: Teammate
  * Video In: None
  * Audio Out: Yes
@@ -15,13 +16,13 @@ socket.on('connect', () => {
     });
 });
 
-socket.on('player-data', (data) => {
-    players = data.players;
-    number = data.number;
-    console.log("Loaded Player Data!");
-    console.log(players);
-    createPlayerList();
-});
+// socket.on('player-data', (data) => {
+//     players = data.players;
+//     number = data.number;
+//     console.log("Loaded Player Data!");
+//     console.log(players);
+//     createPlayerList();
+// });
 
 socket.on('player-invalid', () => {
     document.open();
@@ -29,32 +30,32 @@ socket.on('player-invalid', () => {
     document.close();
     socket.disconnect();
 });
-
-function createPlayerList(){
-    let form = document.getElementById('form');
-    let selection = document.getElementById('player-select');
-    for(let i in players){
-        let option = document.createElement('option')
-        option.value = i;
-        option.innerHTML = i;
-        selection.add(option);
-    }
-    form.appendChild(selection);
-    document.getElementById("player-selection").appendChild(form);
-}
-
-function handlePlayerChange(value){
-    console.log("New Player Selected: ", );
-    socket.emit("player-selected", {player: findPlayer(value), number: number});
-}
-
-function findPlayer(name){
-    for(let i in players){
-        if(i.valueOf() === name){
-            return players[i];
-        }
-    }
-}
+//
+// function createPlayerList(){
+//     let form = document.getElementById('form');
+//     let selection = document.getElementById('player-select');
+//     for(let i in players){
+//         let option = document.createElement('option')
+//         option.value = i;
+//         option.innerHTML = i;
+//         selection.add(option);
+//     }
+//     form.appendChild(selection);
+//     document.getElementById("player-selection").appendChild(form);
+// }
+//
+// function handlePlayerChange(value){
+//     console.log("New Player Selected: ", );
+//     socket.emit("player-selected", {player: findPlayer(value), number: number});
+// }
+//
+// function findPlayer(name){
+//     for(let i in players){
+//         if(i.valueOf() === name){
+//             return players[i];
+//         }
+//     }
+// }
 
 // ======================= User Listeners ==============================
 
@@ -74,6 +75,10 @@ createUserListener('observer');
 createUserListener('broadcaster');
 createUserListener('caster1');
 createUserListener('caster2');
+createUserListener('player1');
+createUserListener('player2');
+createUserListener('player3');
+createUserListener('player4');
 
 // ======================== RTC Bullshit Starts Here ============================
 
@@ -88,4 +93,5 @@ let constraints = {
     video: true
 }
 startCamera(constraints);
+
 init();

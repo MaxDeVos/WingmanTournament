@@ -1,4 +1,5 @@
 /**
+ * Status: Complete
  * Audio In: Caster, Broadcaster
  * Video In: None
  * Audio Out: Yes
@@ -24,6 +25,7 @@ socket.on('caster-invalid', () => {
 
 function createUserListener(name){
     socket.on(`${name}-con`, () => {
+        document.getElementById("UUID").innerText = socket.id;
         document.getElementById(`${name}-status`).style = "color:green";
         document.getElementById(`${name}-status`).innerHTML = "Connected";
     });

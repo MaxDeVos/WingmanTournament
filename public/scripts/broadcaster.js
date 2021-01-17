@@ -1,4 +1,5 @@
 /**
+ * Status: Needs CSGO Integration
  * Audio In: Caster
  * Video In: Player
  * Audio Out: Yes -> Caster

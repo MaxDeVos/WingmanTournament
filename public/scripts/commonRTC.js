@@ -64,8 +64,7 @@ function addPeer(socket_id, am_initiator) {
     peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
         stream: localStream,
-        config: configuration, offerOptions: {offerToReceiveAudio: true,
-            offerToReceiveVideo: false}
+        config: configuration
     })
 
     peers[socket_id].on('signal', data => {
@@ -82,6 +81,9 @@ function addPeer(socket_id, am_initiator) {
         newVid.playsinline = false
         newVid.autoplay = true
         newVid.className = "vid"
+        newVid.onclick = () => openPictureMode(newVid)
+        newVid.ontouchstart = (e) => openPictureMode(newVid)
+        videos.appendChild(newVid)
     })
 }
 
@@ -105,10 +107,6 @@ function toggleVid() {
         vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
     }
 }
-
-
-
-
 
 
 function startCamera(constraints){
