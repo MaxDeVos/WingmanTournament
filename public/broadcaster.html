@@ -12,10 +12,6 @@
 <h2 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h2>
 <h2 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h2>
 <h2 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h2>
-<h2 style="text-align: center;color:black">Player #1 Status: <span id="player1-status" style="color:red">Disconnected</span></h2>
-<h2 style="text-align: center;color:black">Player #2 Status: <span id="player2-status" style="color:red">Disconnected</span></h2>
-<h2 style="text-align: center;color:black">Player #3 Status: <span id="player3-status" style="color:red">Disconnected</span></h2>
-<h2 style="text-align: center;color:black">Player #4 Status: <span id="player4-status" style="color:red">Disconnected</span></h2>
 <div id="videos" class="container">
     <video id="localVideo" class="vid" autoplay muted></video>
 </div>
@@ -25,5 +21,6 @@
     <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
 </div>
 </body>
+<script src="scripts/commonRTC.js"></script>
 <script src="scripts/broadcaster.js"></script>
 </html>
