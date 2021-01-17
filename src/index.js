@@ -21,15 +21,13 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 function handleRoutes(){
 
-
+    configureSocketForRTC();
 
     io.on('connection', socket => {
-        console.log(socket.id);
         handlePlayerRoutes(socket);
         handleObserverRoutes(socket);
         handleCasterRoutes(socket);
         handleBroadcasterRoutes(socket);
-        configureSocketForRTC(socket);
 
         socket.on('disconnect', function() {
             if(socket === observerSocket){
@@ -247,7 +245,6 @@ function handleCasterDC(socket){
     }
 }
 
-
 // Broadcaster
 let broadcasterSocket = undefined;
 app.get('/broadcaster', (req, res) => {
@@ -293,22 +290,19 @@ server.listen(port, () => {
     console.log(`Broadcaster: https://${publicip}/broadcaster.html`);
 })
 
-function configureSocketForRTC(socket){
+function configureSocketForRTC(){
 
+    io.on('connection', socket => {
+        console.log('a client is connected')
         const type = determineRefererType(socket.handshake.headers.referer);
 
-        console.log(socket.id);
-
-        // console.log("Handling RTC for new " + type);
-
+        peers[socket.id] = socket;
         socket.type = type;
 
-        peers[socket.id] = socket
-
-        for(let id in peers) {
-            console.log("peer: ", id);
-            if(determinePeerCompatibility(socket,peers[id])) {
-                peers[id].emit('initReceive', socket.id)
+        for (let id in peers) {
+            // console.log("peer: ", id);
+            if (determinePeerCompatibility(socket, peers[id])) {
+                peers[id].emit('initReceive', socket.id);
             }
         }
 
@@ -316,7 +310,7 @@ function configureSocketForRTC(socket){
          * relay a peerconnection signal to a specific socket
          */
         socket.on('signal', data => {
-            if(!peers[data.socket_id])return
+            if (!peers[data.socket_id]) return
             peers[data.socket_id].emit('signal', {
                 socket_id: socket.id,
                 signal: data.signal
@@ -336,10 +330,12 @@ function configureSocketForRTC(socket){
          * Send message to client to initiate a connection
          * The sender has already setup a peer connection receiver
          */
-        socket.on('initSend', data => {
-            console.log("INITSEND from: " + socket.id + " to: " + data.socket);
-            peers[data.socket].emit('initSend', {socket: socket.id, type: data.type});
+
+        socket.on('initSend', incoming => {
+            console.log(incoming);
+            peers[incoming.socket_id].emit('initSend', socket.id);
         })
+    })
 }
 
 function determineRefererType(referer) {
@@ -372,7 +368,7 @@ function determinePeerCompatibility(local, remote){
         } else if (local.type === "player") {
             r = (remote.type === "broadcaster" || remote.type === "player");
         }
-        console.log("Compatibility between " + local.type + " and " + remote.type + ": " + r);
+        // console.log("Compatibility between " + local.type + " and " + remote.type + ": " + r);
     }
 
     return r;

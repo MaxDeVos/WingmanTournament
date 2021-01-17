@@ -16,6 +16,11 @@
 <script>
     let offerOptions = {offerToReceiveAudio: true,
         offerToReceiveVideo: false};
+    let constraints = {
+        audio: true,
+        video: false
+    }
+    let noInput = true;
 </script>
 <script src="scripts/commonRTC.js"></script>
 <script src="scripts/observer.js"></script>

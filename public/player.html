@@ -33,8 +33,15 @@
 </div>
 </body>
 <script>
-    let offerOptions = {offerToReceiveAudio: true,
-        offerToReceiveVideo: false};
+    let constraints = {
+        audio: true,
+        video: true
+    }
+    let offerOptions = {
+        offerToReceiveAudio: true,
+        offerToReceiveVideo: false
+    }
+    let noInput = false;
 </script>
 <script src="scripts/commonRTC.js"></script>
 <script src="scripts/player.js"></script>

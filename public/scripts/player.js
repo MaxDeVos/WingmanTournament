@@ -6,12 +6,13 @@
  * Video Out: Yes
  */
 
+let sock = io();
 let players;
 let number;
 
-socket.on('connect', () => {
+sock.on('connect', () => {
     console.log("Connected!");
-    socket.emit("player-con", function(data) {
+    sock.emit("player-con", function(data) {
         console.log(data);
     });
 });
@@ -24,11 +25,11 @@ socket.on('connect', () => {
 //     createPlayerList();
 // });
 
-socket.on('player-invalid', () => {
+sock.on('player-invalid', () => {
     document.open();
     document.write('<h1 style="text-align: center;color:red">4 Players Already Connected</h1>');
     document.close();
-    socket.disconnect();
+    sock.disconnect();
 });
 //
 // function createPlayerList(){
@@ -60,12 +61,12 @@ socket.on('player-invalid', () => {
 // ======================= User Listeners ==============================
 
 function createUserListener(name){
-    socket.on(`${name}-con`, () => {
+    sock.on(`${name}-con`, () => {
         document.getElementById(`${name}-status`).style = "color:green";
         document.getElementById(`${name}-status`).innerHTML = "Connected";
     });
 
-    socket.on(`${name}-dc`, () => {
+    sock.on(`${name}-dc`, () => {
         document.getElementById(`${name}-status`).style = "color:red";
         document.getElementById(`${name}-status`).innerHTML = "Disconnected";
     });
@@ -82,16 +83,11 @@ createUserListener('player4');
 
 // ======================== RTC Bullshit Starts Here ============================
 
+init();
+
 socket.on('initReceive', socket_id => {
     console.log('INIT RECEIVE ' + socket_id)
     addPeer(socket_id, false)
-    socket.emit('initSend', {socket: socket_id,type: "player"})
+    socket.emit('initSend', {socket_id: socket_id,type: "player"})
 })
 
-let constraints = {
-    audio: true,
-    video: true
-}
-startCamera(constraints);
-
-init();

@@ -1,8 +1,21 @@
-let socket = io();
+/**
+ * Socket.io socket
+ */
+let socket;
+/**
+ * The stream object used to send media
+ */
 let localStream = null;
+/**
+ * All peer connections
+ */
 let peers = {}
-let peerTypes = {}
 
+//////////// CONFIGURATION //////////////////
+
+/**
+ * RTCPeerConnection configuration
+ */
 const configuration = {
     "iceServers": [{
         "urls": "stun:stun.l.google.com:19302"
@@ -17,12 +30,42 @@ const configuration = {
     ]
 }
 
+/**
+ * UserMedia constraints
+ */
+
+
+/////////////////////////////////////////////////////////
+
+// enabling the camera at startup
+navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+    console.log('Received local stream');
+
+    localVideo.srcObject = stream;
+    localStream = stream;
+
+    init();
+
+}).catch(e => alert(`getusermedia error ${e.name}`))
+/**
+ * initialize the socket connections
+ */
+
+
 function init() {
 
-    socket.on('initSend', data => {
-        console.log('INIT SEND ' + data.socket)
-        peerTypes[data.socket] = data.type;
-        addPeer(data.socket, true)
+    socket = io();
+
+    // socket.on('initReceive', socket_id => {
+    //     console.log('INIT RECEIVE ' + socket_id)
+    //     addPeer(socket_id, false)
+    //
+    //     socket.emit('initSend', socket_id)
+    // })
+
+    socket.on('initSend', socket_id => {
+        console.log('INIT SEND ' + socket_id)
+        addPeer(socket_id, true)
     })
 
     socket.on('removePeer', socket_id => {
@@ -42,6 +85,11 @@ function init() {
     })
 }
 
+/**
+ * Remove a peer with given socket_id.
+ * Removes the video element and deletes the connection
+ * @param {String} socket_id
+ */
 function removePeer(socket_id) {
 
     let videoEl = document.getElementById(socket_id)
@@ -60,11 +108,19 @@ function removePeer(socket_id) {
     delete peers[socket_id]
 }
 
+/**
+ * Creates a new peer connection and sets the event listeners
+ * @param {String} socket_id
+ *                 ID of the peer
+ * @param {Boolean} am_initiator
+ *                  Set to true if the peer initiates the connection process.
+ *                  Set to false if the peer receives the connection.
+ */
 function addPeer(socket_id, am_initiator) {
     peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
         stream: localStream,
-        config: configuration
+        config: configuration,
     })
 
     peers[socket_id].on('signal', data => {
@@ -74,6 +130,7 @@ function addPeer(socket_id, am_initiator) {
         })
     })
 
+    let videos = document.getElementById('videos');
     peers[socket_id].on('stream', stream => {
         let newVid = document.createElement('video')
         newVid.srcObject = stream
@@ -81,12 +138,9 @@ function addPeer(socket_id, am_initiator) {
         newVid.playsinline = false
         newVid.autoplay = true
         newVid.className = "vid"
-        newVid.onclick = () => openPictureMode(newVid)
-        newVid.ontouchstart = (e) => openPictureMode(newVid)
         videos.appendChild(newVid)
     })
 }
-
 
 /**
  * Enable/disable microphone
@@ -97,7 +151,6 @@ function toggleMute() {
         muteButton.innerText = localStream.getAudioTracks()[index].enabled ? "Unmuted" : "Muted"
     }
 }
-
 /**
  * Enable/disable video
  */
@@ -107,17 +160,3 @@ function toggleVid() {
         vidButton.innerText = localStream.getVideoTracks()[index].enabled ? "Video Enabled" : "Video Disabled"
     }
 }
-
-
-function startCamera(constraints){
-    // enabling the camera at startup
-    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-        console.log('Received local stream');
-
-        localVideo.srcObject = stream;
-        localStream = stream;
-
-    }).catch(e => alert(`getusermedia error ${e.name}`))
-
-}
-

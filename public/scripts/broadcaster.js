@@ -6,34 +6,35 @@
  * Video Out: No
  */
 
+let sock = io();
 let broadcasters;
 let number;
 
-socket.on('connect', () => {
+sock.on('connect', () => {
     console.log("Connected!");
-    socket.emit("broadcaster-con", function(data) {
+    sock.emit("broadcaster-con", function(data) {
         console.log(data);
     });
 });
 
 
-socket.on('broadcaster-invalid', () => {
+sock.on('broadcaster-invalid', () => {
     document.open();
     document.write('<h1 style="text-align: center;color:red">Broadcaster Already Connected</h1>');
     document.close();
-    socket.disconnect();
+    sock.disconnect();
 });
 
 // ======================= User Listeners ==============================
 
 function createUserListener(name){
-    socket.on(`${name}-con`, (data) => {
+    sock.on(`${name}-con`, (data) => {
         console.log(`${name}-con`)
         document.getElementById(`${name}-status`).style = "color:green";
         document.getElementById(`${name}-status`).innerHTML = "Connected";
     });
 
-    socket.on(`${name}-dc`, (data) => {
+    sock.on(`${name}-dc`, (data) => {
         console.log(`${name}-dc`)
         document.getElementById(`${name}-status`).style = "color:red";
         document.getElementById(`${name}-status`).innerHTML = "Disconnected";
@@ -47,15 +48,10 @@ createUserListener('caster2');
 
 // ======================== RTC Bullshit Starts Here ============================
 
+init();
+
 socket.on('initReceive', socket_id => {
     console.log('INIT RECEIVE ' + socket_id)
     addPeer(socket_id, false)
-    socket.emit('initSend', {socket: socket_id,type: "broadcaster"})
+    socket.emit('initSend', {socket_id: socket_id,type: "broadcaster"})
 })
-
-let constraints = {
-    audio: true,
-    video: false
-}
-startCamera(constraints);
-init();
