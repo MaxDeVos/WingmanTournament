@@ -6,52 +6,51 @@
  * Video Out: No
  */
 
-let sock = io();
-let broadcasters;
-let number;
+//====================== User Listeners ============================
 
-sock.on('connect', () => {
-    console.log("Connected!");
-    sock.emit("broadcaster-con", function(data) {
-        console.log(data);
-    });
-});
-
-
-sock.on('broadcaster-invalid', () => {
-    document.open();
-    document.write('<h1 style="text-align: center;color:red">Broadcaster Already Connected</h1>');
-    document.close();
-    sock.disconnect();
-});
-
-// ======================= User Listeners ==============================
-
-function createUserListener(name){
-    sock.on(`${name}-con`, (data) => {
-        console.log(`${name}-con`)
+function createUserListener(name, socket){
+    socket.on(`${name}-con`, () => {
+        document.getElementById("UUID").innerText = socket.id;
         document.getElementById(`${name}-status`).style = "color:green";
         document.getElementById(`${name}-status`).innerHTML = "Connected";
     });
 
-    sock.on(`${name}-dc`, (data) => {
-        console.log(`${name}-dc`)
+    socket.on(`${name}-dc`, () => {
         document.getElementById(`${name}-status`).style = "color:red";
         document.getElementById(`${name}-status`).innerHTML = "Disconnected";
     });
 }
 
-createUserListener('observer');
-createUserListener('broadcaster');
-createUserListener('caster1');
-createUserListener('caster2');
-
 // ======================== RTC Bullshit Starts Here ============================
 
-init();
+function configUser(socket){
+    socket.on('connect', () => {
+        console.log("Connected!");
+        socket.emit("broadcaster-con", function(data) {
+            console.log(data);
+        });
+    });
 
-socket.on('initReceive', socket_id => {
-    console.log('INIT RECEIVE ' + socket_id)
-    addPeer(socket_id, false)
-    socket.emit('initSend', {socket_id: socket_id,type: "broadcaster"})
-})
+    socket.on('broadcaster-invalid', () => {
+        document.open();
+        document.write('<h1 style="text-align: center;color:red">Caster Already Connected</h1>');
+        document.close();
+        socket.disconnect();
+    });
+
+    socket.on('initReceive', socket_id => {
+        console.log('INIT RECEIVE ' + socket_id)
+        addPeer(socket_id, false)
+
+        socket.emit('initSend', {socket_id: socket_id, type: "broadcaster"})
+    })
+
+    createUserListener('observer', socket);
+    createUserListener('broadcaster', socket);
+    createUserListener('caster1', socket);
+    createUserListener('caster2', socket);
+    createUserListener('player1', socket);
+    createUserListener('player2', socket);
+    createUserListener('player3', socket);
+    createUserListener('player4', socket);
+}

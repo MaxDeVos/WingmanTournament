@@ -2,6 +2,7 @@
  * Socket.io socket
  */
 let socket;
+
 /**
  * The stream object used to send media
  */
@@ -52,16 +53,10 @@ navigator.mediaDevices.getUserMedia(constraints).then(stream => {
  */
 
 
+
 function init() {
 
     socket = io();
-
-    // socket.on('initReceive', socket_id => {
-    //     console.log('INIT RECEIVE ' + socket_id)
-    //     addPeer(socket_id, false)
-    //
-    //     socket.emit('initSend', socket_id)
-    // })
 
     socket.on('initSend', socket_id => {
         console.log('INIT SEND ' + socket_id)
@@ -83,6 +78,9 @@ function init() {
     socket.on('signal', data => {
         peers[data.socket_id].signal(data.signal)
     })
+
+    configUser(socket);
+
 }
 
 /**

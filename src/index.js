@@ -72,6 +72,8 @@ function informAboutElders(socket){
     if (player4.socket !== undefined) {
         socket.emit('player4-con', {socket: socket.id});
     }
+
+
 }
 
 handleRoutes();
@@ -290,27 +292,29 @@ server.listen(port, () => {
     console.log(`Broadcaster: https://${publicip}/broadcaster.html`);
 })
 
-function configureSocketForRTC(){
+function configureSocketForRTC(socket){
 
-    io.on('connection', socket => {
+    io.on('connect', socket => {
+
         console.log('a client is connected')
-        const type = determineRefererType(socket.handshake.headers.referer);
 
-        peers[socket.id] = socket;
-        socket.type = type;
+        // Initiate the connection process as soon as the client connects
 
-        for (let id in peers) {
-            // console.log("peer: ", id);
-            if (determinePeerCompatibility(socket, peers[id])) {
-                peers[id].emit('initReceive', socket.id);
-            }
+        peers[socket.id] = socket
+
+        // Asking all other clients to setup the peer connection receiver
+        for(let id in peers) {
+            if(id === socket.id) continue
+            console.log('sending init receive to ' + socket.id)
+            peers[id].emit('initReceive', socket.id)
         }
 
         /**
          * relay a peerconnection signal to a specific socket
          */
         socket.on('signal', data => {
-            if (!peers[data.socket_id]) return
+            // console.log('sending signal from ' + socket.id + ' to ', data)
+            if(!peers[data.socket_id])return
             peers[data.socket_id].emit('signal', {
                 socket_id: socket.id,
                 signal: data.signal
@@ -321,7 +325,7 @@ function configureSocketForRTC(){
          * remove the disconnected peer connection from all other connected clients
          */
         socket.on('disconnect', () => {
-            console.log(socket.id + " disconnected!");
+            console.log('socket disconnected ' + socket.id)
             socket.broadcast.emit('removePeer', socket.id)
             delete peers[socket.id]
         })
@@ -330,10 +334,9 @@ function configureSocketForRTC(){
          * Send message to client to initiate a connection
          * The sender has already setup a peer connection receiver
          */
-
-        socket.on('initSend', incoming => {
-            console.log(incoming);
-            peers[incoming.socket_id].emit('initSend', socket.id);
+        socket.on('initSend', clientData => {
+            console.log('INIT SEND by ' + socket.id + ' for ' + clientData.socket_id +':'+clientData.type);
+            peers[clientData.socket_id].emit('initSend', socket.id)
         })
     })
 }
