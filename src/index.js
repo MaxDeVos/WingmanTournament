@@ -30,16 +30,16 @@ function handleRoutes(){
         handleBroadcasterRoutes(socket);
 
         socket.on('disconnect', function() {
-            if(socket === observerSocket){
+            if(socket.id === observerSocket){
                 handleObserverDC(socket);
             }
-            else if(socket === casterSocket1 || socket === casterSocket2){
+            else if(socket.id === casterSocket1 || socket.id === casterSocket2){
                 handleCasterDC(socket);
             }
-            else if(socket === broadcasterSocket){
+            else if(socket.id === broadcasterSocket){
                 handleBroadcasterDC(socket);
             }
-            else if(doesPlayerHaveSocket(socket)){
+            else if(doesPlayerHaveSocket(socket.id)){
                 handlePlayerDC(socket);
             }
         });
@@ -57,7 +57,7 @@ function doesPlayerHaveSocket(socket){
 
 function isPlayerTaken(p){
     for(let i in player){
-        if(player[i].player !== undefined && player[i].player.steamID64 === p.steamID64){
+        if (player[i].player !== undefined && player[i].player.steamID64 === p.steamID64) {
             return true;
         }
     }
@@ -78,13 +78,10 @@ function informAboutElders(socket){
         socket.emit("broadcaster-con", {socket: socket.id});
     }
     for(let i in player){
-        if (player[i].socket !== undefined) {
-            socket.emit(`player${i}-con`, {socket: socket.id});
+        if(player[i].socket !== undefined){
+            socket.emit(`player${i}-con`,{socket: socket.id});
         }
     }
-
-
-
 }
 
 handleRoutes();
@@ -107,10 +104,10 @@ function handlePlayerRoutes(socket){
             if (player[i].socket === undefined) {
                 console.log("Registered New Player " + i);
                 socket.type = 'player';
-                player[i].socket = socket;
-                socket.emit('player-data', {players: players, number: i});
-                socket.broadcast.emit(`player${i}-con`, {socket: socket.id});
+                player[i].socket = socket.id;
                 informAboutElders(socket);
+                socket.emit('player-data', {players: players, number: i, activePlayers: player});
+                socket.broadcast.emit(`player${i}-con`, {socket: socket.id});
                 return;
             }
         }
@@ -122,28 +119,46 @@ function handlePlayerRoutes(socket){
     socket.on("player-selected", selectedPlayer => {
 
         // If that name is not taken, confirm it and broadcast the event.
-        if(isPlayerTaken(selectedPlayer.player)){
-            console.log(`Player${selectedPlayer.number} Player Change Rejected!`);
-            socket.emit("player-selected-reject");
+        if(selectedPlayer.player === undefined){
+            console.log(`Player ${selectedPlayer.number} is undefined!`);
+            player[selectedPlayer.number].player = {name: undefined, team: undefined, steamID64: undefined};
+
         }
         else{
-            console.log(`Player${selectedPlayer.number} Player Change Confirmed!`);
-            player[selectedPlayer.number].player = selectedPlayer.player;
-            socket.emit("player-selected-confirm", player[selectedPlayer.number].player);
-            console.log(player[selectedPlayer.number].player);
-        }
 
+            if(isPlayerTaken(selectedPlayer.player)){
+                console.log(`Player${selectedPlayer.number} Player Change Rejected!`);
+                socket.emit("player-selected-reject");
+                player[selectedPlayer.number].player = {name: undefined, team: undefined, steamID64: undefined};
+                for(let i in peers){
+                    if(selectedPlayer.socket !== i){
+                        console.log(`sending updated player cache to ${i}`);
+                        peers[i].emit("player-changed-name", {socket_id: socket.id, players: player});
+                    }
+                }
+            }
+            else{
+                console.log(`Player${selectedPlayer.number} Player Change Confirmed!`);
+                player[selectedPlayer.number].player = selectedPlayer.player;
+                socket.emit("player-selected-confirm", player[selectedPlayer.number].player);
+                for(let i in peers){
+                    console.log(`sending updated player cache to ${i}`);
+                    peers[i].emit("player-changed-name", {socket_id: socket.id, players: player});
+                }
+            }
+
+        }
     });
 }
 
 function handlePlayerDC(socket){
 
     for(let i in player){
-        if(player[i].socket === socket){
+        if(player[i].socket === socket.id){
             console.log(`Player${i} Disconnected`);
             socket.broadcast.emit(`player${i}-dc`);
             player[i].socket = undefined;
-            player[i].player = undefined;
+            player[i].player = {name: undefined, team: undefined, steamID64: undefined};
         }
     }
     return false;
@@ -167,9 +182,9 @@ function handleObserverRoutes(socket){
         else{
             console.log("Registered New Observer!");
             socket.type = 'observer';
-            observerSocket = socket;
-            socket.broadcast.emit('observer-con', {socket: socket.id});
+            observerSocket = socket.id;
             informAboutElders(socket);
+            socket.broadcast.emit('observer-con', {socket: socket.id});
         }
     });
 }
@@ -194,16 +209,16 @@ function handleCasterRoutes(socket){
         if (casterSocket1 === undefined) {
             console.log("Registered New Caster 1!");
             socket.type = 'caster';
-            casterSocket1 = socket;
-            socket.broadcast.emit('caster1-con', {socket: socket.id});
+            casterSocket1 = socket.id;
             informAboutElders(socket);
+            socket.broadcast.emit('caster1-con', {socket: socket.id});
 
         } else if (casterSocket2 === undefined) {
             console.log("Registered New Caster 2!");
             socket.type = 'caster';
-            casterSocket2 = socket;
-            socket.broadcast.emit('caster2-con', {socket: socket.id});
+            casterSocket2 = socket.id;
             informAboutElders(socket);
+            socket.broadcast.emit('caster2-con', {socket: socket.id});
 
         } else {
             console.log("Rejected New Caster!");
@@ -213,12 +228,12 @@ function handleCasterRoutes(socket){
 }
 
 function handleCasterDC(socket){
-    if(socket === casterSocket1){
+    if(socket.id === casterSocket1){
         console.log("Caster1 Disconnected");
         socket.broadcast.emit('caster1-dc');
         casterSocket1 = undefined;
     }
-    else if(socket === casterSocket2){
+    else if(socket.id === casterSocket2){
         console.log("Caster2 Disconnected");
         socket.broadcast.emit('caster2-dc');
         casterSocket2 = undefined;
@@ -241,9 +256,9 @@ function handleBroadcasterRoutes(socket){
         else{
             console.log("Registered New Broadcaster!");
             socket.type = 'broadcaster';
-            broadcasterSocket = socket;
-            socket.broadcast.emit('broadcaster-con', {socket: socket.id});
+            broadcasterSocket = socket.id;
             informAboutElders(socket);
+            socket.broadcast.emit('broadcaster-con', {socket: socket.id});
         }
     });
 }
@@ -255,7 +270,6 @@ function handleBroadcasterDC(socket){
 }
 
 require('./routes')(app)
-// require('./socketController')(io)
 
 const publicip = '134.129.53.252'
 server.listen(port, () => {
@@ -269,6 +283,18 @@ server.listen(port, () => {
     console.log(`Caster: https://${publicip}/caster.html`);
     console.log(`Broadcaster: https://${publicip}/broadcaster.html`);
 })
+
+function packagePlayerData(id){
+    let out = {};
+    for(let i in player){
+        if(player[i].socket !== undefined){
+            if(player[i].socket === socket && player[i].socket !== id){
+                out[player[i].socket] = player[i];
+            }
+        }
+    }
+    return out;
+}
 
 function configureSocketForRTC(){
 
@@ -284,8 +310,11 @@ function configureSocketForRTC(){
         // Asking all other clients to setup the peer connection receiver
         for(let id in peers) {
             if(determinePeerCompatibility(socket, peers[id])){
+                if(socket.type === "player"){
+                    console.log(player);
+                }
                 // console.log('sending init receive to ' + socket.id)
-                peers[id].emit('initReceive', {socket_id: socket.id, type: socket.type})
+                peers[id].emit('initReceive', {socket_id: socket.id, type: socket.type, players: player})
             }
         }
 
@@ -305,7 +334,7 @@ function configureSocketForRTC(){
          * remove the disconnected peer connection from all other connected clients
          */
         socket.on('disconnect', () => {
-            console.log('socket disconnected ' + socket.id)
+            // console.log('socket disconnected ' + socket.id)
             socket.broadcast.emit('removePeer', socket.id)
             delete peers[socket.id]
         })
@@ -316,7 +345,7 @@ function configureSocketForRTC(){
          */
         socket.on('initSend', clientData => {
             // console.log('INIT SEND by ' + socket.id + ' for ' + clientData.socket_id +':'+clientData.type);
-            peers[clientData.socket_id].emit('initSend', socket.id)
+            peers[clientData.socket_id].emit('initSend', {socket: socket.id, type: clientData.type})
         })
     })
 }

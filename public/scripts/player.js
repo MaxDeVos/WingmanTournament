@@ -10,14 +10,18 @@ let player;
 let players;
 let number;
 let nameAppendLatch = true;
+let activePlayers = {};
+let teammate;
 
 function initPlayerHandler(socket){
 
     socket.on('player-data', (data) => {
+        for(let p in peers){
+        }
         players = data.players;
         number = data.number;
         console.log("Loaded Player Data!");
-        console.log(players);
+        console.log(data.activePlayers);
         if(nameAppendLatch){
             createPlayerList();
             nameAppendLatch = false;
@@ -25,7 +29,7 @@ function initPlayerHandler(socket){
         else{
             // Code to automatically reselect player on server restart
             let currentSelection = document.getElementById('player-select');
-            if(currentSelection.options[currentSelection.selectedIndex] !== "none"){
+            if(currentSelection.options[currentSelection.selectedIndex].value !== "none"){
                 handlePlayerChange(currentSelection.value);
             }
         }
@@ -35,19 +39,27 @@ function initPlayerHandler(socket){
         player = data;
         console.log("Successfully Selected Player: " + data);
         handlePlayerSelection(data);
+        lookForTeammates();
     });
 
     socket.on('player-selected-reject', () => {
-        let player = {}
-        player.name = "None";
-        player.team = "None";
-        player.steamID64 = "None";
-        console.log("Failed to Selected Player");
-        alert("Player Already Selected!  Please Select Another Player!")
-        handlePlayerSelection(player);
+        document.getElementById('player-select').value="Please Select Your Name";
+        setEmptyPlayer(true);
+        teammate = {name: "none", team: "none", steamID64: "none", socket: "none"};
+        setTeammate()
     });
+}
 
-
+function setEmptyPlayer(showAlert){
+    let player = {}
+    player.name = "None";
+    player.team = "None";
+    player.steamID64 = "None";
+    console.log("Failed to Selected Player");
+    if(showAlert){
+        alert("Player Already Selected!  Please Select Another Player!")
+    }
+    handlePlayerSelection(player);
 }
 
 function createPlayerList(){
@@ -56,7 +68,7 @@ function createPlayerList(){
 
     let defaultOption = document.createElement('option')
     defaultOption.value = "none";
-    defaultOption.innerHTML = "Please Choose A Name";
+    defaultOption.innerHTML = "Please Select Your Name";
     selection.add(defaultOption);
 
     for(let i in players){
@@ -72,6 +84,12 @@ function createPlayerList(){
 function handlePlayerChange(value){
     console.log("Attempting to select player: ", value);
     socket.emit("player-selected", {player: findPlayer(value), number: number});
+    let currentSelection = document.getElementById('player-select');
+    if(currentSelection.options[currentSelection.selectedIndex].value === "none"){
+        setEmptyPlayer(false);
+        teammate = {name: "none", team: "none", steamID64: "none", socket: "none"};
+        setTeammate()
+    }
 }
 
 function handlePlayerSelection(player){
@@ -93,7 +111,6 @@ function findPlayer(name){
 
 function createUserListener(name, socket){
     socket.on(`${name}-con`, () => {
-        document.getElementById("UUID").innerText = socket.id;
         document.getElementById(`${name}-status`).style = "color:green";
         document.getElementById(`${name}-status`).innerHTML = "Connected";
     });
@@ -123,10 +140,44 @@ function configUser(socket){
 
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
+        console.log(remoteData.players);
+        if(remoteData.type === "player"){
+            activePlayers[remoteData.socket_id] = "empty";
+        }
         addPeer(remoteData.socket_id, false)
-
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "player"})
     })
+
+    socket.on('player-changed-name', remoteData => {
+        console.log("PLAYER CHANGED NAME!!!")
+        console.log(remoteData.players);
+        parseNewPlayerCache(remoteData.players);
+        // console.log("remote data = ", remoteData);
+        if(player !== undefined){
+            console.log("Local Player = ", player)
+            lookForTeammates();
+        }
+        else{
+            console.log("Failed to look for teammate because no team is selected")
+        }
+        for(let i in peers){
+            console.log(teammate.socket, i);
+            if(i === teammate.socket){
+                console.log("UNMUTING TEAMMATE", activePlayers[i].socket);
+                unmutePeer(activePlayers[i].socket);
+            }
+            else{
+                console.log("MUTING NON-TEAMMATE", activePlayers[i].socket);
+                mutePeer(activePlayers[i].socket);
+            }
+        }
+    })
+
+    for(let i = 1; i<=4; i++){
+        socket.on(`player${i}-con`, incomingData =>{
+            console.log(i, " = ",incomingData);
+        })
+    }
 
     createUserListener('observer', socket);
     createUserListener('broadcaster', socket);
@@ -134,4 +185,31 @@ function configUser(socket){
     createUserListener('caster2', socket);
 
     initPlayerHandler(socket);
+}
+
+function lookForTeammates(){
+    console.log("activePlayers = ", activePlayers)
+    for(let p in activePlayers){
+        if(activePlayers[p].team === player.team && activePlayers[p].name !== player.name){
+            teammate = activePlayers[p];
+            teammate.socket = p;
+            console.log("FOUND TEAMMATE!  NAME = ", activePlayers[p].name);
+            setTeammate();
+            return;
+        }
+    }
+    teammate = {name: "none", team: "none", steamID64: "none", socket: "none"};
+    setTeammate()
+}
+
+function setTeammate(){
+    document.getElementById("teammateName").innerText = teammate.name;
+    document.getElementById("teammateTeam").innerText = teammate.team;
+    document.getElementById("teammateSteamID").innerText = teammate.steamID64;
+}
+
+function parseNewPlayerCache(playerData){
+    for(let i = 1; i<=4; i++){
+        activePlayers[playerData[i].socket] = playerData[i].player;
+    }
 }

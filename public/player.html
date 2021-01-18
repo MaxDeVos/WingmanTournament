@@ -9,7 +9,6 @@
 <body>
 <h1 style="text-align:center">Player</h1>
 <h3 style="text-align:center">Status: <span id="status" style="color:red">Loading Camera Before Connecting To Peers</span></h3>
-<h3 style="text-align: center">UUID: <span id="UUID"></span></h3>
 <div id="player-selection">
     <form id="form">
         <select id="player-select" onchange="handlePlayerChange(this.value)"></select>
@@ -24,6 +23,12 @@
     <p class="playerData">Name: <span id="playerName"></span></p>
     <p class="playerData">Team: <span id="playerTeam"></span></p>
     <p class="playerData">Steam ID: <span id="playerSteamID"></span></p>
+</div>
+<div id="teammateDataContainer" style="text-align: center;border:1px solid black;width:30%;">
+    <h4 id="teammateDataTitle">Teammate Info</h4>
+    <p class="playerData">Name: <span id="teammateName"></span></p>
+    <p class="playerData">Team: <span id="teammateTeam"></span></p>
+    <p class="playerData">Steam ID: <span id="teammateSteamID"></span></p>
 </div>
 <div id="videos" class="container">
     <video id="localVideo" class="vid" autoplay muted></video>
@@ -45,6 +50,7 @@
     }
     let noInput = false;
     let noVideoInput = true;
+    let isPlayer = true;
 </script>
 <script src="scripts/player.js"></script>
 <script src="scripts/commonRTC.js"></script>

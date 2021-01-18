@@ -2,7 +2,7 @@
  * Socket.io socket
  */
 let socket;
-
+let videos = {};
 /**
  * The stream object used to send media
  */
@@ -70,9 +70,16 @@ function init() {
 
     tellUserConnected();
 
-    socket.on('initSend', socket_id => {
-        console.log('INIT SEND ' + socket_id)
-        addPeer(socket_id, true)
+    socket.on('initSend', incoming => {
+        console.log('INIT SEND FROM TYPE' + incoming.type);
+        try{
+            if(incoming.type === "player"){
+                activePlayers[incoming.socket_id] = "empty";
+            }
+        }catch(e){
+
+        }
+        addPeer(incoming.socket, true)
     })
 
     socket.on('removePeer', socket_id => {
@@ -118,6 +125,34 @@ function removePeer(socket_id) {
     delete peers[socket_id]
 }
 
+function mutePeer(socket_id) {
+    let videoEl = videos[socket_id];
+    console.log(videoEl)
+    if (videoEl) {
+
+        videoEl.muted = true;
+        const tracks = videoEl.srcObject.getTracks();
+
+        tracks.forEach(function (track) {
+            track.muted = true;
+        })
+    }
+}
+
+function unmutePeer(socket_id) {
+    let videoEl = videos[socket_id];
+    console.log(videoEl)
+    if (videoEl) {
+
+        videoEl.muted = false;
+        const tracks = videoEl.srcObject.getTracks();
+
+        tracks.forEach(function (track) {
+            track.muted = false;
+        })
+    }
+}
+
 /**
  * Creates a new peer connection and sets the event listeners
  * @param {String} socket_id
@@ -126,6 +161,7 @@ function removePeer(socket_id) {
  *                  Set to true if the peer initiates the connection process.
  *                  Set to false if the peer receives the connection.
  */
+
 function addPeer(socket_id, am_initiator) {
     peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
@@ -140,7 +176,7 @@ function addPeer(socket_id, am_initiator) {
         })
     })
 
-    let videos = document.getElementById('videos');
+    let videosDiv = document.getElementById('videos');
     peers[socket_id].on('stream', stream => {
         let newVid = document.createElement('video')
         newVid.srcObject = stream
@@ -148,8 +184,12 @@ function addPeer(socket_id, am_initiator) {
         newVid.playsinline = false
         newVid.autoplay = true
         newVid.className = "vid"
+        if(isPlayer){
+            newVid.muted = true
+        }
+        videos[socket_id] = newVid
         if(!noVideoInput){
-            videos.appendChild(newVid)
+            videosDiv.appendChild(newVid)
         }
     })
 }
