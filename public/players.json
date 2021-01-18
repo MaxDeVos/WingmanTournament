@@ -1,65 +1,81 @@
 {
   "Max": {
+    "name": "Max",
     "steamID64": "76561198291283116",
     "team": "The Yardents"
   },
   "Gavin": {
+    "name": "Gavin",
     "steamID64": "76561198104671626",
     "team": "The Yardents"
   },
   "Owen": {
+    "name": "Owen",
     "steamID64": "76561198049068045",
     "team": "Knife Fight Up Top"
   },
   "Sam": {
+    "name": "Sam",
     "steamID64": "76561198161667713",
     "team": "Knife Fight Up Top"
   },
   "Isaac": {
+    "name": "Isaac",
     "steamID64": "76561198095390268",
     "team": "Below Average Gaming"
   },
   "Tanner": {
+    "name": "Tanner",
     "steamID64": "76561198378241338",
     "team": "Below Average Gaming"
   },
   "Madisen": {
+    "name": "Madisen",
     "steamID64": "76561198398963636",
     "team": "Fish Terrorists"
   },
   "Eli": {
+    "name": "Eli",
     "steamID64": "76561198070844774",
     "team": "Fish Terrorists"
   },
   "Ricky": {
+    "name": "Ricky",
     "steamID64": "76561198070844774",
     "team": "Bimbois"
   },
   "Colton": {
+    "name": "Colton",
     "steamID64": "76561198142491811",
     "team": "Bimbois"
   },
   "Ashton": {
+    "name": "Ashton",
     "steamID64": "76561198330492295",
     "team": "The Football Team"
   },
   "Peter": {
+    "name": "Peter",
     "steamID64": "76561198969346528",
     "team": "The Football Team"
   },
   "Thomas": {
+    "name": "Thomas",
     "steamID64": "76561198049549411",
     "team": "The Amazing James"
   },
   "Liam": {
+    "name": "Liam",
     "steamID64": "76561198295367309",
     "team": "The Amazing James"
   },
   "Tim": {
+    "name": "Tim",
     "steamID64": "76561198094330605",
     "team": "The Power Bottoms"
   },
   "Joe": {
+    "name": "Joe",
     "steamID64": "76561198201559519",
     "team": "The Power Bottoms"
   }

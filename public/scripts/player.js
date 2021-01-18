@@ -9,6 +9,7 @@
 let player;
 let players;
 let number;
+let nameAppendLatch = true;
 
 function initPlayerHandler(socket){
 
@@ -17,14 +18,35 @@ function initPlayerHandler(socket){
         number = data.number;
         console.log("Loaded Player Data!");
         console.log(players);
-        createPlayerList();
+        if(nameAppendLatch){
+            createPlayerList();
+            nameAppendLatch = false;
+        }
+        else{
+            // Code to automatically reselect player on server restart
+            let currentSelection = document.getElementById('player-select');
+            if(currentSelection.options[currentSelection.selectedIndex] !== "none"){
+                handlePlayerChange(currentSelection.value);
+            }
+        }
     });
 
     socket.on('player-selected-confirm', (data) => {
         player = data;
         console.log("Successfully Selected Player: " + data);
-        handleSuccessfulPlayerSelection(data);
+        handlePlayerSelection(data);
     });
+
+    socket.on('player-selected-reject', () => {
+        let player = {}
+        player.name = "None";
+        player.team = "None";
+        player.steamID64 = "None";
+        console.log("Failed to Selected Player");
+        alert("Player Already Selected!  Please Select Another Player!")
+        handlePlayerSelection(player);
+    });
+
 
 }
 
@@ -52,10 +74,10 @@ function handlePlayerChange(value){
     socket.emit("player-selected", {player: findPlayer(value), number: number});
 }
 
-function handleSuccessfulPlayerSelection(player){
-    document.getElementById("playerName").innerText = player;
+function handlePlayerSelection(player){
+    document.getElementById("playerName").innerText = player.name;
     document.getElementById("playerTeam").innerText = player.team;
-    document.getElementById("playerTeam").innerText = player.steamID64;
+    document.getElementById("playerSteamID").innerText = player.steamID64;
 }
 
 
