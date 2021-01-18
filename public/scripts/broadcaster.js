@@ -38,12 +38,13 @@ function configUser(socket){
         socket.disconnect();
     });
 
-    socket.on('initReceive', socket_id => {
-        console.log('INIT RECEIVE ' + socket_id)
-        addPeer(socket_id, false)
+    socket.on('initReceive', remoteData => {
+        console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
+        addPeer(remoteData.socket_id, false)
 
-        socket.emit('initSend', {socket_id: socket_id, type: "broadcaster"})
+        socket.emit('initSend', {socket_id: remoteData.socket_id, type: "broadcaster"})
     })
+
 
     createUserListener('observer', socket);
     createUserListener('broadcaster', socket);

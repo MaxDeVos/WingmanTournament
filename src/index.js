@@ -5,6 +5,7 @@ const socket = require('socket.io')
 const path = require('path');
 const fs = require("fs");
 const players = require('../public/players.json')
+let activePlayers = {};
 peers = {}
 
 port = 443;
@@ -292,21 +293,23 @@ server.listen(port, () => {
     console.log(`Broadcaster: https://${publicip}/broadcaster.html`);
 })
 
-function configureSocketForRTC(socket){
+function configureSocketForRTC(){
 
     io.on('connect', socket => {
 
         console.log('a client is connected')
 
         // Initiate the connection process as soon as the client connects
+        socket.type = determineRefererType(socket.handshake.headers.referer);
 
-        peers[socket.id] = socket
+        peers[socket.id] = socket;
 
         // Asking all other clients to setup the peer connection receiver
         for(let id in peers) {
-            if(id === socket.id) continue
-            console.log('sending init receive to ' + socket.id)
-            peers[id].emit('initReceive', socket.id)
+            if(determinePeerCompatibility(socket, peers[id])){
+                console.log('sending init receive to ' + socket.id)
+                peers[id].emit('initReceive', {socket_id: socket.id, type: socket.type})
+            }
         }
 
         /**

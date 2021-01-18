@@ -6,40 +6,46 @@
  * Video Out: Yes
  */
 
-// socket.on('player-data', (data) => {
-//     players = data.players;
-//     number = data.number;
-//     console.log("Loaded Player Data!");
-//     console.log(players);
-//     createPlayerList();
-// });
+let players;
+let number;
 
-//
-// function createPlayerList(){
-//     let form = document.getElementById('form');
-//     let selection = document.getElementById('player-select');
-//     for(let i in players){
-//         let option = document.createElement('option')
-//         option.value = i;
-//         option.innerHTML = i;
-//         selection.add(option);
-//     }
-//     form.appendChild(selection);
-//     document.getElementById("player-selection").appendChild(form);
-// }
-//
-// function handlePlayerChange(value){
-//     console.log("New Player Selected: ", );
-//     socket.emit("player-selected", {player: findPlayer(value), number: number});
-// }
-//
-// function findPlayer(name){
-//     for(let i in players){
-//         if(i.valueOf() === name){
-//             return players[i];
-//         }
-//     }
-// }
+function initPlayerHandler(socket){
+
+    socket.on('player-data', (data) => {
+        players = data.players;
+        number = data.number;
+        console.log("Loaded Player Data!");
+        console.log(players);
+        createPlayerList();
+    });
+
+}
+
+function createPlayerList(){
+    let form = document.getElementById('form');
+    let selection = document.getElementById('player-select');
+    for(let i in players){
+        let option = document.createElement('option')
+        option.value = i;
+        option.innerHTML = i;
+        selection.add(option);
+    }
+    form.appendChild(selection);
+    document.getElementById("player-selection").appendChild(form);
+}
+
+function handlePlayerChange(value){
+    console.log("New Player Selected: ", );
+    socket.emit("player-selected", {player: findPlayer(value), number: number});
+}
+
+function findPlayer(name){
+    for(let i in players){
+        if(i.valueOf() === name){
+            return players[i];
+        }
+    }
+}
 
 //====================== User Listeners ============================
 
@@ -73,15 +79,17 @@ function configUser(socket){
         socket.disconnect();
     });
 
-    socket.on('initReceive', socket_id => {
-        console.log('INIT RECEIVE ' + socket_id)
-        addPeer(socket_id, false)
+    socket.on('initReceive', remoteData => {
+        console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
+        addPeer(remoteData.socket_id, false)
 
-        socket.emit('initSend', {socket_id: socket_id, type: "player"})
+        socket.emit('initSend', {socket_id: remoteData.socket_id, type: "player"})
     })
 
     createUserListener('observer', socket);
     createUserListener('broadcaster', socket);
     createUserListener('caster1', socket);
     createUserListener('caster2', socket);
+
+    initPlayerHandler(socket);
 }
