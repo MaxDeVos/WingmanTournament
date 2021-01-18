@@ -6,6 +6,7 @@
  * Video Out: Yes
  */
 
+let player;
 let players;
 let number;
 
@@ -19,11 +20,23 @@ function initPlayerHandler(socket){
         createPlayerList();
     });
 
+    socket.on('player-selected-confirm', (data) => {
+        player = data;
+        console.log("Successfully Selected Player: " + data);
+        handleSuccessfulPlayerSelection(data);
+    });
+
 }
 
 function createPlayerList(){
     let form = document.getElementById('form');
     let selection = document.getElementById('player-select');
+
+    let defaultOption = document.createElement('option')
+    defaultOption.value = "none";
+    defaultOption.innerHTML = "Please Choose A Name";
+    selection.add(defaultOption);
+
     for(let i in players){
         let option = document.createElement('option')
         option.value = i;
@@ -35,9 +48,16 @@ function createPlayerList(){
 }
 
 function handlePlayerChange(value){
-    console.log("New Player Selected: ", );
+    console.log("Attempting to select player: ", value);
     socket.emit("player-selected", {player: findPlayer(value), number: number});
 }
+
+function handleSuccessfulPlayerSelection(player){
+    document.getElementById("playerName").innerText = player;
+    document.getElementById("playerTeam").innerText = player.team;
+    document.getElementById("playerTeam").innerText = player.steamID64;
+}
+
 
 function findPlayer(name){
     for(let i in players){

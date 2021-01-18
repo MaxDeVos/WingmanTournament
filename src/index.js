@@ -128,22 +128,31 @@ function handlePlayerRoutes(socket){
             socket.emit('player-invalid');
         }
     });
+    // A player has selected a name.
     socket.on("player-selected", player => {
-        if(player.number === 1){
-            player1.player = player.player;
-            socket.broadcast.emit("player-selected", {socket: player1.socket.id, player: player1.player});
+
+        // If that name is not taken, confirm it and broadcast the event.
+        if(activePlayers[player.steamID64] === undefined) {
+
+            activePlayers[player.steamID64] = player;
+            socket.emit("player-selected-confirm", player);
+            if (player.number === 1) {
+                player1.player = player.player;
+                socket.broadcast.emit("player-selected", {socket: player1.socket.id, player: player1.player});
+            } else if (player.number === 2) {
+                player2.player = player.player;
+                socket.broadcast.emit("player-selected", {socket: player2.socket.id, player: player2.player});
+            } else if (player.number === 3) {
+                player3.player = player.player;
+                socket.broadcast.emit("player-selected", {socket: player3.socket.id, player: player3.player});
+            } else if (player.number === 4) {
+                player4.player = player.player;
+                socket.broadcast.emit("player-selected", {socket: player4.socket.id, player: player4.player});
+            }
         }
-        else if(player.number === 2){
-            player2.player = player.player;
-            socket.broadcast.emit("player-selected", {socket: player2.socket.id, player: player2.player});
-        }
-        else if(player.number === 3){
-            player3.player = player.player;
-            socket.broadcast.emit("player-selected", {socket: player3.socket.id, player: player3.player});
-        }
-        else if(player.number === 4){
-            player4.player = player.player;
-            socket.broadcast.emit("player-selected", {socket: player4.socket.id, player: player4.player});
+        // If that name is taken, reject it.
+        else{
+            socket.emit("player-selected-reject");
         }
     });
 }
