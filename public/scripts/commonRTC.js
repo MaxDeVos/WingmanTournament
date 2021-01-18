@@ -56,11 +56,19 @@ else{
     init();
 }
 
+/** Update the UI to tell the user they have connected */
+function tellUserConnected(){
+    let status = document.getElementById("status");
+    status.innerHTML = "Connected!"
+    status.style = "color:green";
+}
 
 
 function init() {
 
     socket = io();
+
+    tellUserConnected();
 
     socket.on('initSend', socket_id => {
         console.log('INIT SEND ' + socket_id)
@@ -122,7 +130,7 @@ function addPeer(socket_id, am_initiator) {
     peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
         stream: localStream,
-        config: configuration,
+        config: configuration, offerOptions: offerOptions
     })
 
     peers[socket_id].on('signal', data => {
@@ -140,7 +148,9 @@ function addPeer(socket_id, am_initiator) {
         newVid.playsinline = false
         newVid.autoplay = true
         newVid.className = "vid"
-        videos.appendChild(newVid)
+        if(!noVideoInput){
+            videos.appendChild(newVid)
+        }
     })
 }
 

@@ -34,7 +34,7 @@ function configUser(socket){
 
     socket.on('caster-invalid', () => {
         document.open();
-        document.write('<h1 style="text-align: center;color:red">Caster Already Connected</h1>');
+        document.write('<h1 style="text-align: center;color:red">2 Casters Already Connected</h1>');
         document.close();
         socket.disconnect();
     });

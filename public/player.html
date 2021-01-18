@@ -8,16 +8,17 @@
 </head>
 <body>
 <h1 style="text-align:center">Player</h1>
+<h3 style="text-align:center">Status: <span id="status" style="color:red">Loading Camera Before Connecting To Peers</span></h3>
 <h3 style="text-align: center">UUID: <span id="UUID"></span></h3>
 <div id="player-selection">
     <form id="form">
         <select id="player-select" onchange="handlePlayerChange(this.value)"></select>
     </form>
 </div>
-<h2 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h2>
-<h2 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h2>
-<h2 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h2>
-<h2 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h2>
+<h4 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h4>
+<h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
+<h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
+<h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
 <div id="videos" class="container">
     <video id="localVideo" class="vid" autoplay muted></video>
 </div>
@@ -37,6 +38,7 @@
         offerToReceiveVideo: false
     }
     let noInput = false;
+    let noVideoInput = true;
 </script>
 <script src="scripts/player.js"></script>
 <script src="scripts/commonRTC.js"></script>

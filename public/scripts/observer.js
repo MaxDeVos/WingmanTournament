@@ -33,7 +33,7 @@ function configUser(socket){
 
     socket.on('observer-invalid', () => {
         document.open();
-        document.write('<h1 style="text-align: center;color:red">Caster Already Connected</h1>');
+        document.write('<h1 style="text-align: center;color:red">Observer Already Connected</h1>');
         document.close();
         socket.disconnect();
     });
