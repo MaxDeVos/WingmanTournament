@@ -8,6 +8,8 @@ const rawPlayerDatabase = require('../public/playerDatabase.json')
 
 let playerDatabase = {};
 
+const http = require("http")
+
 processPlayerData();
 
 peers = {};
@@ -81,9 +83,21 @@ function doesPlayerHaveSocketID(socket){
     return false;
 }
 
+//TODO PLAYERS SELECTING NONE CRASHES SERVER
 function getPlayerBySocketID(socket){
     for(let i in activePlayers){
         if(activePlayers[i].socketId === socket){
+            console.log("Found Player!", activePlayers[i].name);
+            return activePlayers[i];
+        }
+    }
+    console.log("Player Not Found")
+    return generateEmptyPlayer();
+}
+
+function getPlayerBySteamID(steamID){
+    for(let i in activePlayers){
+        if(activePlayers[i].steamID64 === steamID){
             console.log("Found Player!", activePlayers[i].name);
             return activePlayers[i];
         }
@@ -433,3 +447,33 @@ function processPlayerData(){
         i++;
     }
 }
+
+let lastPlayer = "";
+let GSIServer = http.createServer((req, res) => {
+    if (req.method != "POST") {
+        res.writeHead(405)
+        return res.end("Only POST requests are allowed")
+    }
+    let body = ""
+
+    req.on("data", data => {
+        body += data
+    })
+
+    req.on("end", () => {
+        res.end("")
+
+        let game = JSON.parse(body)
+        let currentPlayer = game.player.steamid;
+        if(currentPlayer != lastPlayer && currentPlayer != undefined){
+            console.log("Now Observing: ", currentPlayer);
+            if(peers[broadcasterSocket] !== undefined){
+                peers[broadcasterSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
+            }
+            lastPlayer = currentPlayer;
+        }
+
+    })
+});
+
+GSIServer.listen(3000, "localhost")

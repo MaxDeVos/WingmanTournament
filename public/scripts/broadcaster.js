@@ -6,11 +6,12 @@
  * Video Out: No
  */
 
+let lastObservedPlayer = "";
+
 //====================== User Listeners ============================
 
 function createUserListener(name, socket){
     socket.on(`${name}-con`, () => {
-        document.getElementById("UUID").innerText = socket.id;
         document.getElementById(`${name}-status`).style = "color:green";
         document.getElementById(`${name}-status`).innerHTML = "Connected";
     });
@@ -45,13 +46,31 @@ function configUser(socket){
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "broadcaster"})
     })
 
+    socket.on('new-observed-player', playerSocket => {
+        try{
+            for(let i in peers){
+                document.getElementById(i).style.position = "absolute";
+                if(i === playerSocket){
+                    document.getElementById(i).style.visibility = "visible";
+                }
+                else{
+                    document.getElementById(i).style.visibility = "hidden";
+                }
+            }
+        }catch (e){
+            console.log("Error Handling Player Camera Switch: ", playerSocket);
+            console.log(e);
+        }
+    })
 
-    createUserListener('observer', socket);
-    createUserListener('broadcaster', socket);
-    createUserListener('caster1', socket);
-    createUserListener('caster2', socket);
-    createUserListener('player1', socket);
-    createUserListener('player2', socket);
-    createUserListener('player3', socket);
-    createUserListener('player4', socket);
+
+
+    // createUserListener('observer', socket);
+    // createUserListener('broadcaster', socket);
+    // createUserListener('caster1', socket);
+    // createUserListener('caster2', socket);
+    // createUserListener('player1', socket);
+    // createUserListener('player2', socket);
+    // createUserListener('player3', socket);
+    // createUserListener('player4', socket);
 }
