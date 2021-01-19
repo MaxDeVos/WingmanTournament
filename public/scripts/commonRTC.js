@@ -79,6 +79,13 @@ function init() {
         }catch(e){
 
         }
+        /* TODO I'm 99.9% this is undefined
+         Despite the fact that this is receiving an empty socket, it seems to work.
+         This is the most comically delicate piece of code I've ever come across and I
+         am terrified to touch it at all. I have it written as 15 question marks in the
+         documentation, and I intend to keep it that way.
+         */
+        console.log("incoming.socket = ", incoming.socket);
         addPeer(incoming.socket, true)
     })
 

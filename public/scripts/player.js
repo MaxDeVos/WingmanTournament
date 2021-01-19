@@ -6,22 +6,56 @@
  * Video Out: Yes
  */
 
-let player;
-let players;
+
+let playerDatabase = {};
 let number;
 let nameAppendLatch = true;
 let activePlayers = {};
-let teammate;
+
+let Player = class{
+    constructor(socketID, name, team, steamID64) {
+        this.socketId = socketID;
+        this.name = name;
+        this.team = team;
+        this.steamID64 = steamID64;
+    };
+
+    updatePlayerNS(name, team, steamID64){
+        this.name = name;
+        this.team = team;
+        this.steamID64 = steamID64;
+    }
+
+    updatePlayerWS(name, team, steamID64, socketID){
+        this.name = name;
+        this.team = team;
+        this.steamID64 = steamID64;
+        this.socketId = socketID;
+    }
+
+    setSocketID(socketID){
+        this.socketId = socketID;
+    }
+
+    getSocketID(){
+        return this.socketId;
+    }
+}
+let player = generateEmptyPlayer();
+let teammate = generateEmptyPlayer();
+
+function generateEmptyPlayer(){
+    return new Player("none", "none", "none", "none");
+}
+
 
 function initPlayerHandler(socket){
 
     socket.on('player-data', (data) => {
-        for(let p in peers){
-        }
-        players = data.players;
+        player.setSocketID(socket.id)
+        playerDatabase = data.playerDatabase;
         number = data.number;
         console.log("Loaded Player Data!");
-        console.log(data.activePlayers);
         if(nameAppendLatch){
             createPlayerList();
             nameAppendLatch = false;
@@ -38,8 +72,9 @@ function initPlayerHandler(socket){
     socket.on('player-selected-confirm', (data) => {
         player = data;
         console.log("Successfully Selected Player: " + data);
-        handlePlayerSelection(data);
+        updateShownPlayerData(data);
         lookForTeammates();
+        socket.emit("player-changed-name-complete", player);
     });
 
     socket.on('player-selected-reject', () => {
@@ -48,37 +83,39 @@ function initPlayerHandler(socket){
         teammate = {name: "none", team: "none", steamID64: "none", socket: "none"};
         setTeammate()
     });
+
+    socket.on('player-changed-name', updatedActivePlayers => {
+        console.log("PLAYER CHANGED NAME!!!")
+        console.log(updatedActivePlayers);
+        parseNewPlayerCache(updatedActivePlayers);
+        // console.log("remote data = ", remoteData);
+        if(player !== undefined){
+            console.log("Local Player = ", player)
+            lookForTeammates();
+        }
+        else{
+            console.log("Failed to look for teammate because no team is selected")
+        }
+        for(let i in peers){
+            console.log(teammate.socketId, i);
+            if(i === teammate.socketId){
+                console.log("UNMUTING TEAMMATE", activePlayers[i].socket);
+                unmutePeer(activePlayers[i].socket);
+            }
+            else{
+                console.log("MUTING NON-TEAMMATE", activePlayers[i].socket);
+                mutePeer(activePlayers[i].socket);
+            }
+        }
+    })
 }
 
 function setEmptyPlayer(showAlert){
-    let player = {}
-    player.name = "None";
-    player.team = "None";
-    player.steamID64 = "None";
-    console.log("Failed to Selected Player");
+    player.updatePlayerNS("none", "none", "none");
     if(showAlert){
         alert("Player Already Selected!  Please Select Another Player!")
     }
-    handlePlayerSelection(player);
-}
-
-function createPlayerList(){
-    let form = document.getElementById('form');
-    let selection = document.getElementById('player-select');
-
-    let defaultOption = document.createElement('option')
-    defaultOption.value = "none";
-    defaultOption.innerHTML = "Please Select Your Name";
-    selection.add(defaultOption);
-
-    for(let i in players){
-        let option = document.createElement('option')
-        option.value = i;
-        option.innerHTML = i;
-        selection.add(option);
-    }
-    form.appendChild(selection);
-    document.getElementById("player-selection").appendChild(form);
+    updateShownPlayerData(player);
 }
 
 function handlePlayerChange(value){
@@ -87,22 +124,24 @@ function handlePlayerChange(value){
     let currentSelection = document.getElementById('player-select');
     if(currentSelection.options[currentSelection.selectedIndex].value === "none"){
         setEmptyPlayer(false);
-        teammate = {name: "none", team: "none", steamID64: "none", socket: "none"};
+        teammate = generateEmptyPlayer();
         setTeammate()
     }
 }
 
-function handlePlayerSelection(player){
+function updateShownPlayerData(player){
     document.getElementById("playerName").innerText = player.name;
     document.getElementById("playerTeam").innerText = player.team;
     document.getElementById("playerSteamID").innerText = player.steamID64;
 }
 
 
+
 function findPlayer(name){
-    for(let i in players){
+    for(let i in playerDatabase){
         if(i.valueOf() === name){
-            return players[i];
+            let tempPlayer = playerDatabase[i];
+            return new Player(socket.id, tempPlayer.name, tempPlayer.team, tempPlayer.steamID64);
         }
     }
 }
@@ -124,6 +163,9 @@ function createUserListener(name, socket){
 // ======================== RTC Bullshit Starts Here ============================
 
 function configUser(socket){
+
+
+
     socket.on('connect', () => {
         console.log("Connected!");
         socket.emit("player-con", function(data) {
@@ -147,37 +189,6 @@ function configUser(socket){
         addPeer(remoteData.socket_id, false)
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "player"})
     })
-
-    socket.on('player-changed-name', remoteData => {
-        console.log("PLAYER CHANGED NAME!!!")
-        console.log(remoteData.players);
-        parseNewPlayerCache(remoteData.players);
-        // console.log("remote data = ", remoteData);
-        if(player !== undefined){
-            console.log("Local Player = ", player)
-            lookForTeammates();
-        }
-        else{
-            console.log("Failed to look for teammate because no team is selected")
-        }
-        for(let i in peers){
-            console.log(teammate.socket, i);
-            if(i === teammate.socket){
-                console.log("UNMUTING TEAMMATE", activePlayers[i].socket);
-                unmutePeer(activePlayers[i].socket);
-            }
-            else{
-                console.log("MUTING NON-TEAMMATE", activePlayers[i].socket);
-                mutePeer(activePlayers[i].socket);
-            }
-        }
-    })
-
-    for(let i = 1; i<=4; i++){
-        socket.on(`player${i}-con`, incomingData =>{
-            console.log(i, " = ",incomingData);
-        })
-    }
 
     createUserListener('observer', socket);
     createUserListener('broadcaster', socket);
@@ -210,6 +221,25 @@ function setTeammate(){
 
 function parseNewPlayerCache(playerData){
     for(let i = 1; i<=4; i++){
-        activePlayers[playerData[i].socket] = playerData[i].player;
+        activePlayers[playerData[i].socketId] = playerData[i];
     }
+}
+
+function createPlayerList(){
+    let form = document.getElementById('form');
+    let selection = document.getElementById('player-select');
+
+    let defaultOption = document.createElement('option')
+    defaultOption.value = "none";
+    defaultOption.innerHTML = "Please Select Your Name";
+    selection.add(defaultOption);
+
+    for(let i in playerDatabase){
+        let option = document.createElement('option')
+        option.value = i;
+        option.innerHTML = i;
+        selection.add(option);
+    }
+    form.appendChild(selection);
+    document.getElementById("player-selection").appendChild(form);
 }
