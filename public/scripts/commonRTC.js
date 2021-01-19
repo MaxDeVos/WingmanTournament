@@ -72,21 +72,16 @@ function init() {
 
     socket.on('initSend', incoming => {
         console.log('INIT SEND FROM TYPE' + incoming.type);
-        try{
-            if(incoming.type === "player"){
-                activePlayers[incoming.socket_id] = "empty";
-            }
-        }catch(e){
-
-        }
-        /* TODO I'm 99.9% this is undefined
-         Despite the fact that this is receiving an empty socket, it seems to work.
+        /* TODO I HAVE NO IDEA WHY THIS WORKS
+         Despite the fact that this by all means SHOULD be receiving an undefined socket, it seems to work.
          This is the most comically delicate piece of code I've ever come across and I
          am terrified to touch it at all. I have it written as 15 question marks in the
          documentation, and I intend to keep it that way.
          */
         console.log("incoming.socket = ", incoming.socket);
+        // console.log("INITSEND INCOMING PEER = ", peers[incoming.socket]);
         addPeer(incoming.socket, true)
+
     })
 
     socket.on('removePeer', socket_id => {
@@ -170,6 +165,7 @@ function unmutePeer(socket_id) {
  */
 
 function addPeer(socket_id, am_initiator) {
+
     peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
         stream: localStream,
@@ -191,9 +187,6 @@ function addPeer(socket_id, am_initiator) {
         newVid.playsinline = false
         newVid.autoplay = true
         newVid.className = "vid"
-        if(isPlayer){
-            newVid.muted = true
-        }
         videos[socket_id] = newVid
         if(!noVideoInput){
             videosDiv.appendChild(newVid)

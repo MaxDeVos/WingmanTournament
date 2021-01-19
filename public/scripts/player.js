@@ -10,7 +10,7 @@
 let playerDatabase = {};
 let number;
 let nameAppendLatch = true;
-let activePlayers = {};
+let broadcasterPeer;
 
 let Player = class{
     constructor(socketID, name, team, steamID64) {
@@ -19,28 +19,14 @@ let Player = class{
         this.team = team;
         this.steamID64 = steamID64;
     };
-
-    updatePlayerNS(name, team, steamID64){
-        this.name = name;
-        this.team = team;
-        this.steamID64 = steamID64;
-    }
-
-    updatePlayerWS(name, team, steamID64, socketID){
-        this.name = name;
-        this.team = team;
-        this.steamID64 = steamID64;
-        this.socketId = socketID;
-    }
-
-    setSocketID(socketID){
-        this.socketId = socketID;
-    }
-
-    getSocketID(){
-        return this.socketId;
-    }
 }
+
+function updatePlayerNS(player, name, team, steamID64){
+    player.name = name;
+    player.team = team;
+    player.steamID64 = steamID64;
+}
+
 let player = generateEmptyPlayer();
 let teammate = generateEmptyPlayer();
 
@@ -52,7 +38,7 @@ function generateEmptyPlayer(){
 function initPlayerHandler(socket){
 
     socket.on('player-data', (data) => {
-        player.setSocketID(socket.id)
+        player.socketId = socket.id;
         playerDatabase = data.playerDatabase;
         number = data.number;
         console.log("Loaded Player Data!");
@@ -73,7 +59,6 @@ function initPlayerHandler(socket){
         player = data;
         console.log("Successfully Selected Player: " + data);
         updateShownPlayerData(data);
-        lookForTeammates();
         socket.emit("player-changed-name-complete", player);
     });
 
@@ -84,34 +69,20 @@ function initPlayerHandler(socket){
         setTeammate()
     });
 
-    socket.on('player-changed-name', updatedActivePlayers => {
+    socket.on('player-changed-name', teammate => {
         console.log("PLAYER CHANGED NAME!!!")
-        console.log(updatedActivePlayers);
-        parseNewPlayerCache(updatedActivePlayers);
-        // console.log("remote data = ", remoteData);
-        if(player !== undefined){
-            console.log("Local Player = ", player)
-            lookForTeammates();
-        }
-        else{
-            console.log("Failed to look for teammate because no team is selected")
-        }
-        for(let i in peers){
-            console.log(teammate.socketId, i);
-            if(i === teammate.socketId){
-                console.log("UNMUTING TEAMMATE", activePlayers[i].socket);
-                unmutePeer(activePlayers[i].socket);
-            }
-            else{
-                console.log("MUTING NON-TEAMMATE", activePlayers[i].socket);
-                mutePeer(activePlayers[i].socket);
+        console.log(teammate);
+        setTeammate(teammate);
+        for(let peer in peers){
+            if(peer !== teammate.socketId){
+                removePeer(peer);
             }
         }
     })
 }
 
 function setEmptyPlayer(showAlert){
-    player.updatePlayerNS("none", "none", "none");
+    updatePlayerNS(player, "none", "none", "none");
     if(showAlert){
         alert("Player Already Selected!  Please Select Another Player!")
     }
@@ -134,8 +105,6 @@ function updateShownPlayerData(player){
     document.getElementById("playerTeam").innerText = player.team;
     document.getElementById("playerSteamID").innerText = player.steamID64;
 }
-
-
 
 function findPlayer(name){
     for(let i in playerDatabase){
@@ -182,10 +151,10 @@ function configUser(socket){
 
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
-        console.log(remoteData.players);
-        if(remoteData.type === "player"){
-            activePlayers[remoteData.socket_id] = "empty";
+        if(remoteData.type === "broadcaster"){
+            broadcasterPeer = remoteData.socket_id;
         }
+        console.log("INITSEND INCOMING PEER = ", peers[remoteData.socket]);
         addPeer(remoteData.socket_id, false)
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "player"})
     })
@@ -198,32 +167,16 @@ function configUser(socket){
     initPlayerHandler(socket);
 }
 
-function lookForTeammates(){
-    console.log("activePlayers = ", activePlayers)
-    for(let p in activePlayers){
-        if(activePlayers[p].team === player.team && activePlayers[p].name !== player.name){
-            teammate = activePlayers[p];
-            teammate.socket = p;
-            console.log("FOUND TEAMMATE!  NAME = ", activePlayers[p].name);
-            setTeammate();
-            return;
-        }
-    }
-    teammate = {name: "none", team: "none", steamID64: "none", socket: "none"};
-    setTeammate()
-}
-
-function setTeammate(){
+function setTeammate(t){
+    teammate = t;
     document.getElementById("teammateName").innerText = teammate.name;
     document.getElementById("teammateTeam").innerText = teammate.team;
     document.getElementById("teammateSteamID").innerText = teammate.steamID64;
-}
-
-function parseNewPlayerCache(playerData){
-    for(let i = 1; i<=4; i++){
-        activePlayers[playerData[i].socketId] = playerData[i];
+    for(let p in peers){
+        console.log(peers[p]);
     }
 }
+
 
 function createPlayerList(){
     let form = document.getElementById('form');

@@ -4,9 +4,13 @@ const https = require('https');
 const socket = require('socket.io')
 const path = require('path');
 const fs = require("fs");
-const playerDatabase = require('../public/playerDatabase.json')
-peers = {}
+const rawPlayerDatabase = require('../public/playerDatabase.json')
 
+let playerDatabase = {};
+
+processPlayerData();
+
+peers = {};
 port = 443;
 
 const options = {
@@ -27,19 +31,12 @@ let Player = class{
         this.team = team;
         this.steamID64 = steamID64;
     };
+}
 
-    updatePlayerNS(name, team, steamID64){
-        this.name = name;
-        this.team = team;
-        this.steamID64 = steamID64;
-    }
-
-    updatePlayerWS(name, team, steamID64, socketID){
-        this.name = name;
-        this.team = team;
-        this.steamID64 = steamID64;
-        this.socketId = socketID;
-    }
+function updatePlayerNS(player, name, team, steamID64){
+    player.name = name;
+    player.team = team;
+    player.steamID64 = steamID64;
 }
 
 function generateEmptyPlayer(){
@@ -82,6 +79,17 @@ function doesPlayerHaveSocketID(socket){
         }
     }
     return false;
+}
+
+function getPlayerBySocketID(socket){
+    for(let i in activePlayers){
+        if(activePlayers[i].socketId === socket){
+            console.log("Found Player!", activePlayers[i].name);
+            return activePlayers[i];
+        }
+    }
+    console.log("Player Not Found")
+    return generateEmptyPlayer();
 }
 
 function isPlayerTaken(p){
@@ -154,7 +162,7 @@ function handlePlayerRoutes(socket){
             if(isPlayerTaken(incomingData.player)){
                 console.log(`Player${incomingData.number} Player Change Rejected!`);
                 socket.emit("player-selected-reject");
-                activePlayers[incomingData.number].updatePlayerNS("none", "none", "none");
+                updatePlayerNS(activePlayers[incomingData.number], "none", "none", "none");
                 for(let i in peers){
                     if(incomingData.player.socketId !== i){
                         console.log(`sending updated player cache to ${i}`);
@@ -167,8 +175,8 @@ function handlePlayerRoutes(socket){
                 activePlayers[incomingData.number] = incomingData.player;
                 socket.emit("player-selected-confirm", activePlayers[incomingData.number]);
                 for(let i in peers){
-                    console.log(`sending updated player cache to ${i}`);
-                    peers[i].emit("player-changed-name", activePlayers);
+                    console.log(`sending updated teammate to ${i}`);
+                    peers[i].emit("player-changed-name", determineTeammate(getPlayerBySocketID(i)));
                 }
             }
 
@@ -186,6 +194,24 @@ function handlePlayerDC(socket){
         }
     }
     return false;
+}
+
+function determineTeammate(player){
+    for(let p in activePlayers){
+        if(player.steamID64 !== activePlayers[p].steamID64){
+            if(activePlayers[p].team === player.team){
+                console.log("Teammate Found for ", player.name, ": ", activePlayers[p].name);
+                let peerSocket = peers[activePlayers[p].socketId];
+                console.log("Sending ", {socket_id: activePlayers[p].socketId, type: peerSocket.type});
+                if(player.name === "Max"){
+                    peerSocket.emit('initReceive', {socket_id: player.socketId, type: peerSocket.type});
+                }
+                return activePlayers[p];
+            }
+        }
+    }
+    console.log("No Teammate Found for ", player.name);
+    return generateEmptyPlayer();
 }
 
 // Observer
@@ -317,14 +343,6 @@ function configureSocketForRTC(socket){
     // Asking all other clients to setup the peer connection receiver
     for(let id in peers) {
         if(determinePeerCompatibility(socket, peers[id])){
-            // If the socket is a player, wait for the data about the player to spool up RTC.
-            if(socket.type === "player"){
-                // socket.on("player-changed-name")
-            }
-            // If the socket isn't a player, spool up RTC immediately.
-            else{
-            }
-            // console.log(activePlayers);
             peers[id].emit('initReceive', {socket_id: socket.id, type: socket.type})
         }
     }
@@ -393,10 +411,25 @@ function determinePeerCompatibility(local, remote){
         } else if (local.type === "broadcaster") {
             r = (remote.type !== "observer");
         } else if (local.type === "player") {
-            r = (remote.type === "broadcaster" || remote.type === "player");
+            r = (remote.type === "broadcaster");
         }
         // console.log("Compatibility between " + local.type + " and " + remote.type + ": " + r);
     }
 
     return r;
+}
+
+function processPlayerData(){
+    let i = 0;
+    for(let player in rawPlayerDatabase){
+        let entry = rawPlayerDatabase[player];
+        if(i % 2 == 0){
+            entry.sender = true;
+        }
+        else{
+            entry.sender = false;
+        }
+        playerDatabase[player] = entry;
+        i++;
+    }
 }
