@@ -76,6 +76,9 @@ handleRoutes();
 
 function doesPlayerHaveSocketID(socket){
     for(let i in activePlayers){
+        if(activePlayers[i] === undefined){
+            return false;
+        }
         if(activePlayers[i].socketId === socket){
             return true;
         }
