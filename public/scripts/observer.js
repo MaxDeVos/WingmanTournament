@@ -40,7 +40,7 @@ function configUser(socket){
 
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
-        addPeer(remoteData.socket_id, false)
+        addPeer(remoteData.socket_id, false, false)
 
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "observer"})
     })

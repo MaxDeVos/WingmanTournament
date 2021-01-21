@@ -79,9 +79,28 @@ function init() {
          documentation, and I intend to keep it that way.
          */
         console.log("incoming.socket = ", incoming.socket);
-        // console.log("INITSEND INCOMING PEER = ", peers[incoming.socket]);
-        addPeer(incoming.socket, true)
-
+        if(isPlayer){
+            if(incoming.type === "player"){
+                // console.log("INITSEND INCOMING PEER = ", peers[incoming.socket]);
+                addPeer(incoming.socket, true, false);
+            }
+            else{
+                addPeer(incoming.socket, true, true);
+                if(incoming.type === "broadcaster"){
+                    broadcasterPeer = incoming.socket;
+                }
+            }
+        } else if(isBroadcaster){
+            if(incoming.type === "player"){
+                addPeer(incoming.socket, true, true);
+            }
+            else{
+                addPeer(incoming.socket, true, false);
+            }
+        }
+        else {
+            addPeer(incoming.socket, true, false);
+        }
     })
 
     socket.on('removePeer', socket_id => {
@@ -164,7 +183,7 @@ function unmutePeer(socket_id) {
  *                  Set to false if the peer receives the connection.
  */
 
-function addPeer(socket_id, am_initiator) {
+function addPeer(socket_id, am_initiator, muted) {
 
     peers[socket_id] = new SimplePeer({
         initiator: am_initiator,
@@ -184,8 +203,12 @@ function addPeer(socket_id, am_initiator) {
         let newVid = document.createElement('video')
         newVid.srcObject = stream
         newVid.id = socket_id
+        newVid.style = "position:absolute;left:0;";
         newVid.playsinline = false
         newVid.autoplay = true
+        if(muted){
+            newVid.muted = true;
+        }
         newVid.className = "vid"
         videos[socket_id] = newVid
         if(!noVideoInput){

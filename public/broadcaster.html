@@ -20,7 +20,7 @@
 <!--<h4 style="text-align: center;color:black">Player #4 Status: <span id="player4-status" style="color:red">Disconnected</span></h4>-->
 
 <div id="videos" class="container">
-    <video style="visibility: hidden;width:0" id="localVideo" class="vid" autoplay muted></video>
+    <video style="visibility: hidden;width:0;float:right" id="localVideo" class="vid" autoplay muted></video>
 </div>
 <br />
 <div style="display:block">
@@ -40,6 +40,7 @@
     let noInput = false;
     let noVideoInput = false;
     let isPlayer = false;
+    let isBroadcaster = true;
 </script>
 <script src="scripts/broadcaster.js"></script>
 <script src="scripts/commonRTC.js"></script>

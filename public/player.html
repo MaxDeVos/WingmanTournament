@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-<h1 style="text-align:center">Player</h1>
+<h1 style="text-align:center">Welcome Gamer!</h1>
 <h3 style="text-align:center">Status: <span id="status" style="font-size:20px;">Loading Camera Before Connecting To Peers</span></h3>
 <div id="player-selection">
     <form id="form">
@@ -36,7 +36,7 @@
 </div>
 </div>
 <div id="videos" class="container">
-    <video id="localVideo" class="vid" autoplay muted></video>
+    <video id="localVideo" class="vid localVideo" autoplay muted></video>
     <br />
     <div style="display:block; width:100%;text-align: center">
         <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
@@ -55,6 +55,8 @@
     }
     let noInput = false;
     let noVideoInput = true;
+    let isPlayer = true;
+    let isBroadcaster = false;
 </script>
 <script src="scripts/player.js"></script>
 <script src="scripts/commonRTC.js"></script>

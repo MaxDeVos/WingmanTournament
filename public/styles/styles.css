@@ -114,7 +114,7 @@ label > input {
     float:right;
     width:48%;
 }
-#localVideo{
+.localVideo{
     width:100%;
     border:solid red 5px;
 }

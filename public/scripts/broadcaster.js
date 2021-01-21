@@ -41,8 +41,12 @@ function configUser(socket){
 
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
-        addPeer(remoteData.socket_id, false)
-
+        if(remoteData.type === "player"){
+            addPeer(remoteData.socket_id, false, true);
+        }
+        else{
+            addPeer(remoteData.socket_id, false, false);
+        }
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "broadcaster"})
     })
 

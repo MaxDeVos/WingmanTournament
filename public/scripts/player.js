@@ -74,7 +74,7 @@ function initPlayerHandler(socket){
         console.log(teammate);
         setTeammate(teammate);
         for(let peer in peers){
-            if(peer !== teammate.socketId){
+            if(peer !== teammate.socketId && peer !== broadcasterPeer){
                 removePeer(peer);
             }
         }
@@ -155,7 +155,12 @@ function configUser(socket){
             broadcasterPeer = remoteData.socket_id;
         }
         console.log("INITSEND INCOMING PEER = ", peers[remoteData.socket]);
-        addPeer(remoteData.socket_id, false)
+        if(remoteData.type !== "player"){
+            addPeer(remoteData.socket_id, false, true);
+        }
+        else{
+            addPeer(remoteData.socket_id, false, false);
+        }
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "player"})
     })
 
@@ -172,11 +177,16 @@ function setTeammate(t){
     document.getElementById("teammateName").innerText = teammate.name;
     document.getElementById("teammateTeam").innerText = teammate.team;
     document.getElementById("teammateSteamID").innerText = teammate.steamID64;
-    for(let p in peers){
-        console.log(peers[p]);
-    }
 }
 
+function muteNonTeammates(){
+    for(let p in peers){
+        if(p !== undefined && p !== teammate.socket){
+            console.log(`Muting ${p}`);
+            mutePeer(p);
+        }
+    }
+}
 
 function createPlayerList(){
     let form = document.getElementById('form');

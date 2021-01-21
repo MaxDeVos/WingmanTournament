@@ -7,8 +7,10 @@ const fs = require("fs");
 const rawPlayerDatabase = require('../public/playerDatabase.json')
 
 let playerDatabase = {};
+let port;
 
 const http = require("http")
+const Player = require('./Player');
 
 processPlayerData();
 
@@ -20,30 +22,10 @@ const options = {
     cert: fs.readFileSync('cert.pem'),
 }
 
-var server = https.createServer(options, app);
-var io = socket(server);
+const server = https.createServer(options, app);
+const io = socket(server);
 
 app.use(express.static(path.join(__dirname, "../public")));
-
-
-let Player = class{
-    constructor(socketID, name, team, steamID64) {
-        this.socketId = socketID;
-        this.name = name;
-        this.team = team;
-        this.steamID64 = steamID64;
-    };
-}
-
-function updatePlayerNS(player, name, team, steamID64){
-    player.name = name;
-    player.team = team;
-    player.steamID64 = steamID64;
-}
-
-function generateEmptyPlayer(){
-    return new Player("none", "none", "none", "none");
-}
 
 function handleRoutes(){
 
@@ -52,11 +34,11 @@ function handleRoutes(){
         handleObserverRoutes(socket);
         handleCasterRoutes(socket);
         handleBroadcasterRoutes(socket);
+        handleOBSRoutes(socket);
         configureSocketForRTC(socket);
 
 
         socket.on('disconnect', function() {
-            console.log("disconnecting!");
             if(socket.id === observerSocket){
                 handleObserverDC(socket);
             }
@@ -66,6 +48,9 @@ function handleRoutes(){
             else if(socket.id === broadcasterSocket){
                 handleBroadcasterDC(socket);
             }
+            else if(socket.id === obsSocket){
+                handleOBSDC(socket);
+            }
             else if(doesPlayerHaveSocketID(socket.id)){
                 handlePlayerDC(socket);
             }
@@ -73,50 +58,6 @@ function handleRoutes(){
     });
 }
 handleRoutes();
-
-function doesPlayerHaveSocketID(socket){
-    for(let i in activePlayers){
-        if(activePlayers[i] === undefined){
-            return false;
-        }
-        if(activePlayers[i].socketId === socket){
-            return true;
-        }
-    }
-    return false;
-}
-
-//TODO PLAYERS SELECTING NONE CRASHES SERVER
-function getPlayerBySocketID(socket){
-    for(let i in activePlayers){
-        if(activePlayers[i].socketId === socket){
-            console.log("Found Player!", activePlayers[i].name);
-            return activePlayers[i];
-        }
-    }
-    console.log("Player Not Found")
-    return generateEmptyPlayer();
-}
-
-function getPlayerBySteamID(steamID){
-    for(let i in activePlayers){
-        if(activePlayers[i].steamID64 === steamID){
-            console.log("Found Player!", activePlayers[i].name);
-            return activePlayers[i];
-        }
-    }
-    console.log("Player Not Found")
-    return generateEmptyPlayer();
-}
-
-function isPlayerTaken(p){
-    for(let i in activePlayers){
-        if (activePlayers[i] !== undefined && activePlayers[i].steamID64 === p.steamID64) {
-            return true;
-        }
-    }
-    return false;
-}
 
 function informAboutElders(socket){
     if (casterSocket1 !== undefined) {
@@ -131,6 +72,9 @@ function informAboutElders(socket){
     if(broadcasterSocket !== undefined){
         socket.emit("broadcaster-con", {socket: socket.id});
     }
+    if(obsSocket !== undefined){
+        socket.emit("obs-con", {socket: socket.id});
+    }
     for(let i in activePlayers){
         if(activePlayers[i].socket !== undefined){
             socket.emit(`player${i}-con`,{socket: socket.id});
@@ -144,10 +88,10 @@ app.get('/player', (req, res) => {
 
 // Player
 let activePlayers = {};
-activePlayers[1] = generateEmptyPlayer();
-activePlayers[2] = generateEmptyPlayer();
-activePlayers[3] = generateEmptyPlayer();
-activePlayers[4] = generateEmptyPlayer();
+activePlayers[1] = Player.generateEmptyPlayer();
+activePlayers[2] = Player.generateEmptyPlayer();
+activePlayers[3] = Player.generateEmptyPlayer();
+activePlayers[4] = Player.generateEmptyPlayer();
 
 function handlePlayerRoutes(socket){
     socket.on('player-con', () => {
@@ -179,7 +123,7 @@ function handlePlayerRoutes(socket){
             if(isPlayerTaken(incomingData.player)){
                 console.log(`Player${incomingData.number} Player Change Rejected!`);
                 socket.emit("player-selected-reject");
-                updatePlayerNS(activePlayers[incomingData.number], "none", "none", "none");
+                Player.updatePlayerNS(activePlayers[incomingData.number], "none", "none", "none");
                 for(let i in peers){
                     if(incomingData.player.socketId !== i){
                         console.log(`sending updated player cache to ${i}`);
@@ -205,31 +149,19 @@ function handlePlayerDC(socket){
 
     for(let i in activePlayers){
         if(activePlayers[i].socketId === socket.id){
-            console.log(`Player${i} Disconnected`);
+            if(activePlayers[i].name !== undefined){
+                console.log(`${activePlayers[i].name} (Player${i}) Disconnected`);
+            }
+            else{
+                console.log(`Unnamed Player${i} Disconnected`);
+            }
             socket.broadcast.emit(`player${i}-dc`);
-            activePlayers[i] = generateEmptyPlayer();
+            activePlayers[i] = Player.generateEmptyPlayer();
         }
     }
     return false;
 }
 
-function determineTeammate(player){
-    for(let p in activePlayers){
-        if(player.steamID64 !== activePlayers[p].steamID64){
-            if(activePlayers[p].team === player.team){
-                console.log("Teammate Found for ", player.name, ": ", activePlayers[p].name);
-                let peerSocket = peers[activePlayers[p].socketId];
-                console.log("Sending ", {socket_id: activePlayers[p].socketId, type: peerSocket.type});
-                if(player.name === "Max"){
-                    peerSocket.emit('initReceive', {socket_id: player.socketId, type: peerSocket.type});
-                }
-                return activePlayers[p];
-            }
-        }
-    }
-    console.log("No Teammate Found for ", player.name);
-    return generateEmptyPlayer();
-}
 
 // Observer
 let observerSocket = undefined;
@@ -335,25 +267,56 @@ function handleBroadcasterDC(socket){
     broadcasterSocket = undefined;
 }
 
+// OBS
+let obsSocket = undefined;
+app.get('/obs', (req, res) => {
+    res.redirect('obs.html');
+})
+
+function handleOBSRoutes(socket){
+    socket.on('obs-con', () => {
+        console.log("OBS Attempting To Connect");
+        if(obsSocket !== undefined){
+            console.log("Rejected New OBS!");
+            socket.emit('obs-invalid');
+        }
+        else{
+            console.log("Registered New OBS!");
+            socket.type = 'obs';
+            obsSocket = socket.id;
+            informAboutElders(socket);
+            socket.broadcast.emit('obs-con', {socket: socket.id});
+        }
+    });
+}
+
+function handleOBSDC(socket){
+    console.log("OBS Disconnected");
+    socket.broadcast.emit('obs-dc');
+    obsSocket = undefined;
+}
+
 require('./routes')(app)
 
-const publicip = '134.129.53.252'
+const publicIP = '134.129.53.252'
 server.listen(port, () => {
     console.log(`Player: https://localhost/player.html`);
     console.log(`Observer: https://localhost/observer.html`);
     console.log(`Caster: https://localhost/caster.html`);
     console.log(`Broadcaster: https://localhost/broadcaster.html`);
     console.log('========== Public IPs ============');
-    console.log(`Player: https://${publicip}/player.html`);
-    console.log(`Observer: https://${publicip}/observer.html`);
-    console.log(`Caster: https://${publicip}/caster.html`);
-    console.log(`Broadcaster: https://${publicip}/broadcaster.html`);
+    console.log(`Player: https://${publicIP}/player.html`);
+    console.log(`Observer: https://${publicIP}/observer.html`);
+    console.log(`Caster: https://${publicIP}/caster.html`);
+    console.log(`Broadcaster: https://${publicIP}/broadcaster.html`);
 })
+
+// RTC Socket Configuration
 
 function configureSocketForRTC(socket){
 
     // Initiate the connection process as soon as the client connects
-    socket.type = determineRefererType(socket.handshake.headers.referer);
+    socket.type = determineRefererType(socket.handshake.headers["referer"]);
 
     peers[socket.id] = socket;
 
@@ -370,7 +333,7 @@ function configureSocketForRTC(socket){
 function addRTCListeners(socket){
 
     /**
-     * relay a peerconnection signal to a specific socket
+     * relay a peer connection signal to a specific socket
      */
     socket.on('signal', data => {
         // console.log('sending signal from ' + socket.id + ' to ', data)
@@ -410,9 +373,13 @@ function determineRefererType(referer) {
         return "player";
     } else if(referer.includes("caster")){
         return "caster";
+    } else if(referer.includes("obs")){
+        return "obs";
     }
     throw Error("Unknown Referer Type: " + referer);
 }
+
+// Utility Methods
 
 function determinePeerCompatibility(local, remote){
     let r = false;
@@ -428,7 +395,9 @@ function determinePeerCompatibility(local, remote){
         } else if (local.type === "broadcaster") {
             r = (remote.type !== "observer");
         } else if (local.type === "player") {
-            r = (remote.type === "broadcaster");
+            r = (remote.type === "broadcaster" || remote.type === "obs");
+        } else if(local.type === "obs"){
+            r = (remote.type === "player");
         }
         // console.log("Compatibility between " + local.type + " and " + remote.type + ": " + r);
     }
@@ -440,20 +409,80 @@ function processPlayerData(){
     let i = 0;
     for(let player in rawPlayerDatabase){
         let entry = rawPlayerDatabase[player];
-        if(i % 2 == 0){
-            entry.sender = true;
-        }
-        else{
-            entry.sender = false;
-        }
+        entry.sender = i % 2 === 0;
         playerDatabase[player] = entry;
         i++;
     }
 }
 
+//TODO PLAYERS SELECTING NONE CRASHES SERVER
+function getPlayerBySocketID(socket){
+    for(let i in activePlayers){
+        if(activePlayers[i].socketId === socket){
+            console.log("Found Player!", activePlayers[i].name);
+            return activePlayers[i];
+        }
+    }
+    console.log("Player Not Found")
+    return Player.generateEmptyPlayer();
+}
+
+function getPlayerBySteamID(steamID){
+    for(let i in activePlayers){
+        if(activePlayers[i].steamID64 === steamID){
+            console.log("Found Player!", activePlayers[i].name);
+            return activePlayers[i];
+        }
+    }
+    console.log("Player Not Found")
+    return Player.generateEmptyPlayer();
+}
+
+function doesPlayerHaveSocketID(socket){
+    for(let i in activePlayers){
+        if(activePlayers[i] === undefined){
+            return false;
+        }
+        if(activePlayers[i].socketId === socket){
+            return true;
+        }
+    }
+    return false;
+}
+
+function isPlayerTaken(p){
+    for(let i in activePlayers){
+        if (activePlayers[i] !== undefined && activePlayers[i].steamID64 === p.steamID64) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function determineTeammate(player){
+    for(let p in activePlayers){
+        if(player.steamID64 !== activePlayers[p].steamID64){
+            if(activePlayers[p].team === player.team){
+                console.log("Teammate Found for ", player.name, ": ", activePlayers[p].name);
+                let peerSocket = peers[activePlayers[p].socketId];
+                console.log("Sending ", {socket_id: activePlayers[p].socketId, type: peerSocket.type});
+                if(rawPlayerDatabase[player.name].sender === true){
+                    console.log(player.name, " is emitting initReceive")
+                    peerSocket.emit('initReceive', {socket_id: player.socketId, type: peerSocket.type});
+                }
+                return activePlayers[p];
+            }
+        }
+    }
+    console.log("No Teammate Found for ", player.name);
+    return Player.generateEmptyPlayer();
+}
+
+// Game-State Integration
+
 let lastPlayer = "";
 let GSIServer = http.createServer((req, res) => {
-    if (req.method != "POST") {
+    if (req.method !== "POST") {
         res.writeHead(405)
         return res.end("Only POST requests are allowed")
     }
@@ -467,11 +496,14 @@ let GSIServer = http.createServer((req, res) => {
         res.end("")
 
         let game = JSON.parse(body)
-        let currentPlayer = game.player.steamid;
-        if(currentPlayer != lastPlayer && currentPlayer != undefined){
+        let currentPlayer = game.player["steamid"];
+        if(currentPlayer !== lastPlayer && currentPlayer !== undefined){
             console.log("Now Observing: ", currentPlayer);
             if(peers[broadcasterSocket] !== undefined){
                 peers[broadcasterSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
+            }
+            if(peers[obsSocket] !== undefined){
+                peers[obsSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
             }
             lastPlayer = currentPlayer;
         }

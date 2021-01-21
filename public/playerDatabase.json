@@ -59,14 +59,14 @@
     "steamID64": "76561198969346528",
     "team": "The Football Team"
   },
-  "Thomas": {
-    "name": "Thomas",
-    "steamID64": "76561198049549411",
-    "team": "The Amazing James"
-  },
   "Liam": {
     "name": "Liam",
     "steamID64": "76561198295367309",
+    "team": "The Football Team"
+  },
+  "Thomas": {
+    "name": "Thomas",
+    "steamID64": "76561198049549411",
     "team": "The Amazing James"
   },
   "Tim": {
