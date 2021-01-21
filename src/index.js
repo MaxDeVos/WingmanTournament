@@ -463,14 +463,16 @@ function determineTeammate(player){
                 console.log("Teammate Found for ", player.name, ": ", activePlayers[p].name);
                 let peerSocket = peers[activePlayers[p].socketId];
                 console.log("Sending ", {socket_id: activePlayers[p].socketId, type: peerSocket.type});
-                if(rawPlayerDatabase[player.name].sender === true){
+                if(activePlayers[p]["teammate"] === undefined){
                     console.log(player.name, " is emitting initReceive")
                     peerSocket.emit('initReceive', {socket_id: player.socketId, type: peerSocket.type});
                 }
+                Player.setTeammate(player, activePlayers[p].socketId);
                 return activePlayers[p];
             }
         }
     }
+    Player.clearTeammate(player);
     console.log("No Teammate Found for ", player.name);
     return Player.generateEmptyPlayer();
 }

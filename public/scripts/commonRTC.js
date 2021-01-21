@@ -90,7 +90,7 @@ function init() {
                     broadcasterPeer = incoming.socket;
                 }
             }
-        } else if(isBroadcaster){
+        } else if(mutePlayers){
             if(incoming.type === "player"){
                 addPeer(incoming.socket, true, true);
             }
@@ -203,7 +203,12 @@ function addPeer(socket_id, am_initiator, muted) {
         let newVid = document.createElement('video')
         newVid.srcObject = stream
         newVid.id = socket_id
-        newVid.style = "position:absolute;left:0;";
+        if(videoStyle === "absolute"){
+            newVid.style = "position:absolute;left:0;";
+        }
+        else{
+            newVid.style = "float: left;width: 45%;"
+        }
         newVid.playsinline = false
         newVid.autoplay = true
         if(muted){

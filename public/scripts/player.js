@@ -174,6 +174,9 @@ function configUser(socket){
 
 function setTeammate(t){
     teammate = t;
+    if(teammate === undefined){
+        teammate = generateEmptyPlayer();
+    }
     document.getElementById("teammateName").innerText = teammate.name;
     document.getElementById("teammateTeam").innerText = teammate.team;
     document.getElementById("teammateSteamID").innerText = teammate.steamID64;

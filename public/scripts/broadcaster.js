@@ -53,12 +53,12 @@ function configUser(socket){
     socket.on('new-observed-player', playerSocket => {
         try{
             for(let i in peers){
-                document.getElementById(i).style.position = "absolute";
+                document.getElementById(i).style.position = "relative";
                 if(i === playerSocket){
-                    document.getElementById(i).style.visibility = "visible";
+                    document.getElementById(i).style.border = "solid red 5px";
                 }
                 else{
-                    document.getElementById(i).style.visibility = "hidden";
+                    document.getElementById(i).style.visibility = "solid black 1px";
                 }
             }
         }catch (e){
@@ -67,14 +67,12 @@ function configUser(socket){
         }
     })
 
-
-
-    // createUserListener('observer', socket);
-    // createUserListener('broadcaster', socket);
-    // createUserListener('caster1', socket);
-    // createUserListener('caster2', socket);
-    // createUserListener('player1', socket);
-    // createUserListener('player2', socket);
-    // createUserListener('player3', socket);
-    // createUserListener('player4', socket);
+    createUserListener('observer', socket);
+    createUserListener('broadcaster', socket);
+    createUserListener('caster1', socket);
+    createUserListener('caster2', socket);
+    createUserListener('player1', socket);
+    createUserListener('player2', socket);
+    createUserListener('player3', socket);
+    createUserListener('player4', socket);
 }

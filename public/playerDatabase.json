@@ -19,14 +19,14 @@
     "steamID64": "76561198161667713",
     "team": "Knife Fight Up Top"
   },
-  "Isaac": {
-    "name": "Isaac",
-    "steamID64": "76561198095390268",
-    "team": "Below Average Gaming"
-  },
   "Tanner": {
     "name": "Tanner",
     "steamID64": "76561198378241338",
+    "team": "Below Average Gaming"
+  },
+  "Isaac": {
+    "name": "Isaac",
+    "steamID64": "76561198095390268",
     "team": "Below Average Gaming"
   },
   "Madisen": {
@@ -62,7 +62,7 @@
   "Liam": {
     "name": "Liam",
     "steamID64": "76561198295367309",
-    "team": "The Football Team"
+    "team": "The Amazing James"
   },
   "Thomas": {
     "name": "Thomas",

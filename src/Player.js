@@ -17,4 +17,14 @@ function generateEmptyPlayer(){
     return new Player("none", "none", "none", "none");
 }
 
-module.exports = {Player, updatePlayerNS, generateEmptyPlayer};
+/** TEAMMATE IS A SOCKET YOU DUMBASS */
+function setTeammate(player, teammate){
+    player.teammate = teammate;
+}
+
+function clearTeammate(player){
+    player.teammate = undefined;
+}
+
+
+module.exports = {Player, updatePlayerNS, generateEmptyPlayer, setTeammate, clearTeammate};
