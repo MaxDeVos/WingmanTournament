@@ -5,21 +5,19 @@ const socket = require('socket.io')
 const path = require('path');
 const fs = require("fs");
 const rawPlayerDatabase = require('../public/playerDatabase.json')
+const Player = require('./Player');
+const http = require("http")
 
 let playerDatabase = {};
-let port;
-
-const http = require("http")
-const Player = require('./Player');
 
 processPlayerData();
 
 peers = {};
-port = 443;
+let port = 443;
 
 const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem'),
+    key: fs.readFileSync('private.pem'),
+    cert: fs.readFileSync('certificate.pem'),
 }
 
 const server = https.createServer(options, app);
@@ -27,7 +25,8 @@ const io = socket(server);
 
 app.use(express.static(path.join(__dirname, "../public")));
 
-function handleRoutes(){
+let handleRoutes;
+(handleRoutes = function(){
 
     io.on('connection', socket => {
         handlePlayerRoutes(socket);
@@ -36,7 +35,6 @@ function handleRoutes(){
         handleBroadcasterRoutes(socket);
         handleOBSRoutes(socket);
         configureSocketForRTC(socket);
-
 
         socket.on('disconnect', function() {
             if(socket.id === observerSocket){
@@ -56,8 +54,7 @@ function handleRoutes(){
             }
         });
     });
-}
-handleRoutes();
+})();
 
 function informAboutElders(socket){
     if (casterSocket1 !== undefined) {
