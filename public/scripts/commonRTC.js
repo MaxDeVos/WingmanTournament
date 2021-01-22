@@ -23,13 +23,15 @@ var recorder;
  * RTCPeerConnection configuration
  */
 const configuration = {
-    "iceServers": [{
-        url: "stun:stun.l.google.com:19302"
+    "iceServers": [        {
+        url: 'stun:wingmantournament.tk:3478?transport=tcp',
+        credential: 'fuck',
+        username: 'max'
     },
         // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
         // set your own servers here
         {
-            url: 'turn:18.223.76.104:3478?transport=tcp',
+            url: 'turn:wingmantournament.tk:3478?transport=tcp',
             credential: 'fuck',
             username: 'max'
         }
@@ -195,10 +197,26 @@ function unmutePeer(socket_id) {
 
 function addPeer(socket_id, am_initiator, muted) {
 
-    peers[socket_id] = new SimplePeer({
-        initiator: am_initiator,
+    peers[socket_id] = new SimplePeer({initiator: am_initiator,
         stream: localStream,
-        config: configuration, offerOptions: offerOptions
+        reconnectTimer: 10,
+        iceTransportPolicy: 'all',
+        trickle: true,
+        config: {
+            "iceServers": [        {
+                url: 'stun:wingmantournament.tk:3478?transport=tcp',
+                credential: 'fuck',
+                username: 'max'
+            },
+                // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
+                // set your own servers here
+                {
+                    url: 'turn:wingmantournament.tk:3478?transport=tcp',
+                    credential: 'fuck',
+                    username: 'max'
+                }
+            ]
+        }
     })
 
     peers[socket_id].on('signal', data => {
