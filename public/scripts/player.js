@@ -184,9 +184,18 @@ function setTeammate(t){
     if(teammate === undefined){
         teammate = generateEmptyPlayer();
     }
+    if(teammate.name === "none"){
+        document.getElementById("teammateName").style = "color:red";
+        document.getElementById("teammateName").innerText = "Not Connected!";
+    }
+    else{
+        document.getElementById("teammateName").style = "color:green";
+        document.getElementById("teammateName").innerText = teammate.name;
+    }
     document.getElementById("teammateName").innerText = teammate.name;
     document.getElementById("teammateTeam").innerText = teammate.team;
     document.getElementById("teammateSteamID").innerText = teammate.steamID64;
+
 }
 
 function muteNonTeammates(){
