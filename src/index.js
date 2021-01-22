@@ -309,7 +309,7 @@ function handleOBSDC(socket){
 
 require('./routes')(app)
 
-const publicIP = '134.129.53.252'
+const publicIP = '13.58.40.89'
 server.listen(port, () => {
     console.log(`Player: https://localhost/player.html`);
     console.log(`Observer: https://localhost/observer.html`);
