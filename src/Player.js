@@ -17,7 +17,6 @@ function generateEmptyPlayer(){
     return new Player("none", "none", "none", "none");
 }
 
-/** TEAMMATE IS A SOCKET YOU DUMBASS */
 function setTeammate(player, teammate){
     player.teammate = teammate;
 }

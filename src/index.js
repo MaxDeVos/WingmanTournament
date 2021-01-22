@@ -4,13 +4,9 @@ const https = require('https');
 const socket = require('socket.io')
 const path = require('path');
 const fs = require("fs");
-const rawPlayerDatabase = require('../public/playerDatabase.json')
+const playerDatabase = require('../public/playerDatabase.json')
 const Player = require('./Player');
 const http = require("http")
-
-let playerDatabase = {};
-
-processPlayerData();
 
 peers = {};
 let port = 443;
@@ -200,6 +196,15 @@ app.get('/caster', (req, res) => {
 function handleCasterRoutes(socket){
 
     socket.on('caster-con', () => {
+
+        //TODO TEMPORARY
+        for(let i in activePlayers){
+            if(activePlayers[i]["socketId"] !== "none"){
+                console.log("Telling ", activePlayers[i]["socketId"], " to start recording");
+                peers[activePlayers[i].socketId].emit("start-record");
+            }
+        }
+
         console.log("Caster " + socket.id + " Attempting To Connect");
         if (casterSocket1 === undefined) {
             console.log("Registered New Caster 1!");
@@ -223,6 +228,15 @@ function handleCasterRoutes(socket){
 }
 
 function handleCasterDC(socket){
+
+    //TODO TEMPORARY
+    for(let i in activePlayers){
+        if(activePlayers[i]["socketId"] !== "none"){
+            console.log("Telling ", activePlayers[i]["socketId"], " to stop recording");
+            peers[activePlayers[i].socketId].emit("stop-record");
+        }
+    }
+
     if(socket.id === casterSocket1){
         console.log("Caster1 Disconnected");
         socket.broadcast.emit('caster1-dc');
@@ -400,16 +414,6 @@ function determinePeerCompatibility(local, remote){
     }
 
     return r;
-}
-
-function processPlayerData(){
-    let i = 0;
-    for(let player in rawPlayerDatabase){
-        let entry = rawPlayerDatabase[player];
-        entry.sender = i % 2 === 0;
-        playerDatabase[player] = entry;
-        i++;
-    }
 }
 
 //TODO PLAYERS SELECTING NONE CRASHES SERVER

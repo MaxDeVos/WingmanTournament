@@ -12,6 +12,10 @@ let localStream = null;
  */
 let peers = {}
 
+let cameraStatus = false;
+
+var recorder;
+
 //////////// CONFIGURATION //////////////////
 
 /**
@@ -45,6 +49,17 @@ if(!noInput) {
 
         localVideo.srcObject = stream;
         localStream = stream;
+        cameraStatus = true;
+        if(isPlayer){
+            recorder = RecordRTC(stream,  {
+                bitsPerSecond: 200000,
+                bufferSize: 16384,
+                numberOfAudioChannels: 1,
+                type: 'video'
+            })
+            console.log("Defined Recorder!")
+        }
+
         init();
 
     }).catch(e => alert(`getusermedia error ${e.name}`))
@@ -72,12 +87,6 @@ function init() {
 
     socket.on('initSend', incoming => {
         console.log('INIT SEND FROM TYPE' + incoming.type);
-        /* TODO I HAVE NO IDEA WHY THIS WORKS
-         Despite the fact that this by all means SHOULD be receiving an undefined socket, it seems to work.
-         This is the most comically delicate piece of code I've ever come across and I
-         am terrified to touch it at all. I have it written as 15 question marks in the
-         documentation, and I intend to keep it that way.
-         */
         console.log("incoming.socket = ", incoming.socket);
         if(isPlayer){
             if(incoming.type === "player"){
@@ -220,6 +229,43 @@ function addPeer(socket_id, am_initiator, muted) {
             videosDiv.appendChild(newVid)
         }
     })
+}
+
+// Recording Shenanigans
+
+function startRecording(){
+    recorder.startRecording();
+}
+
+function stopRecording(){
+
+    recorder.stopRecording(function(){
+        var blob = this.getBlob();
+        console.log(bytesToSize(blob.size));
+        var file = new File([blob], getFileName('webm'), {
+            type: 'video/webm'
+        });
+        invokeSaveAsDialog(file);
+    });
+}
+
+function getFileName(fileExtension) {
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var date = d.getDate();
+    return 'RecordRTC-' + year + month + date + '-' + Math.random() + '.' + fileExtension;
+}
+
+function postFiles() {
+    let blob = recorder.getBlob();
+
+    // getting unique identifier for the file name
+    let fileName = (Math.random() * new Date().getTime()).toString(36).replace( /\./g , '') + '.webm';
+
+    let file = new File(blob, fileName, {
+        type: 'video/webm'
+    });
 }
 
 /**

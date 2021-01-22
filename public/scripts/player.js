@@ -34,7 +34,6 @@ function generateEmptyPlayer(){
     return new Player("none", "none", "none", "none");
 }
 
-
 function initPlayerHandler(socket){
 
     socket.on('player-data', (data) => {
@@ -133,7 +132,15 @@ function createUserListener(name, socket){
 
 function configUser(socket){
 
+    socket.on('start-record', () => {
+        console.log("Recording Audio and Video!")
+        startRecording();
+    })
 
+    socket.on('stop-record', () => {
+        console.log("Stopped Recording Audio and Video!")
+        stopRecording();
+    })
 
     socket.on('connect', () => {
         console.log("Connected!");
