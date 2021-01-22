@@ -3,6 +3,7 @@
  */
 let socket;
 let videos = {};
+let poop = "poop123"
 /**
  * The stream object used to send media
  */
@@ -23,14 +24,14 @@ var recorder;
  */
 const configuration = {
     "iceServers": [{
-        "urls": "stun:stun.l.google.com:19302"
+        url: "stun:stun.l.google.com:19302"
     },
         // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
         // set your own servers here
         {
-            url: 'turn:192.158.29.39:3478?transport=udp',
-            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-            username: '28224511:1379330808'
+            url: 'turn:18.223.76.104:3478?transport=tcp',
+            credential: 'fuck',
+            username: 'max'
         }
     ]
 }
