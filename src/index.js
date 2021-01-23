@@ -197,14 +197,6 @@ function handleCasterRoutes(socket){
 
     socket.on('caster-con', () => {
 
-        //TODO TEMPORARY
-        for(let i in activePlayers){
-            if(activePlayers[i]["socketId"] !== "none"){
-                console.log("Telling ", activePlayers[i]["socketId"], " to start recording");
-                peers[activePlayers[i].socketId].emit("start-record");
-            }
-        }
-
         console.log("Caster " + socket.id + " Attempting To Connect");
         if (casterSocket1 === undefined) {
             console.log("Registered New Caster 1!");
@@ -228,14 +220,6 @@ function handleCasterRoutes(socket){
 }
 
 function handleCasterDC(socket){
-
-    //TODO TEMPORARY
-    for(let i in activePlayers){
-        if(activePlayers[i]["socketId"] !== "none"){
-            console.log("Telling ", activePlayers[i]["socketId"], " to stop recording");
-            peers[activePlayers[i].socketId].emit("stop-record");
-        }
-    }
 
     if(socket.id === casterSocket1){
         console.log("Caster1 Disconnected");
@@ -309,7 +293,7 @@ function handleOBSDC(socket){
 
 require('./routes')(app)
 
-const publicIP = '13.58.40.89'
+const publicIP = '134.129.53.252'
 server.listen(port, () => {
     console.log(`Player: https://localhost/player.html`);
     console.log(`Observer: https://localhost/observer.html`);
@@ -372,6 +356,25 @@ function addRTCListeners(socket){
         // console.log('INIT SEND by ' + socket.id + ' for ' + clientData.socket_id +':'+clientData.type);
         peers[clientData.socket_id].emit('initSend', {socket: socket.id, type: clientData.type})
     })
+}
+
+function startRecording(){
+    for(let i in activePlayers){
+        if(activePlayers[i]["socketId"] !== "none"){
+            console.log("Telling ", activePlayers[i]["socketId"], " to start recording");
+            peers[activePlayers[i].socketId].emit("start-record");
+        }
+    }
+}
+
+function stopRecording(){
+    for(let i in activePlayers){
+        if(activePlayers[i]["socketId"] !== "none"){
+            console.log("Telling ", activePlayers[i]["socketId"], " to stop recording");
+            peers[activePlayers[i].socketId].emit("stop-record");
+        }
+    }
+
 }
 
 function determineRefererType(referer) {
@@ -510,6 +513,8 @@ let GSIServer = http.createServer((req, res) => {
             }
             lastPlayer = currentPlayer;
         }
+
+        console.log(game);
 
     })
 });

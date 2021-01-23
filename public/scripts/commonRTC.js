@@ -200,7 +200,7 @@ function addPeer(socket_id, am_initiator, muted) {
     peers[socket_id] = new SimplePeer({initiator: am_initiator,
         stream: localStream,
         reconnectTimer: 10,
-        iceTransportPolicy: 'all',
+        iceTransportPolicy: 'relay',
         trickle: true,
         config: {
             "iceServers": [        {
