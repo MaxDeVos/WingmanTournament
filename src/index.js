@@ -519,4 +519,4 @@ let GSIServer = http.createServer((req, res) => {
     })
 });
 
-GSIServer.listen(3050, "localhost")
+GSIServer.listen(3050)
