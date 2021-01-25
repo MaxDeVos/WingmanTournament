@@ -51,3 +51,8 @@ function configUser(socket){
     createUserListener('caster1', socket);
     createUserListener('caster2', socket);
 }
+
+let s = io.connect("https://localhost:2000")
+s.on("connect", () => {
+    console.log("GAMING");
+})

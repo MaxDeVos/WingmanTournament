@@ -52,15 +52,4 @@ function configUser(socket){
             console.log(e);
         }
     })
-
-
-
-    // createUserListener('observer', socket);
-    // createUserListener('broadcaster', socket);
-    // createUserListener('caster1', socket);
-    // createUserListener('caster2', socket);
-    // createUserListener('player1', socket);
-    // createUserListener('player2', socket);
-    // createUserListener('player3', socket);
-    // createUserListener('player4', socket);
 }
