@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Max DeVos\\source\\repos\\Observer\\Observer\\Observer.csproj": {}
+    "M:\\Workspace\\Javascript\\WingmanTournament\\Observer\\Observer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Max DeVos\\source\\repos\\Observer\\Observer\\Observer.csproj": {
+    "M:\\Workspace\\Javascript\\WingmanTournament\\Observer\\Observer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Max DeVos\\source\\repos\\Observer\\Observer\\Observer.csproj",
+        "projectUniqueName": "M:\\Workspace\\Javascript\\WingmanTournament\\Observer\\Observer.csproj",
         "projectName": "Observer",
-        "projectPath": "C:\\Users\\Max DeVos\\source\\repos\\Observer\\Observer\\Observer.csproj",
+        "projectPath": "M:\\Workspace\\Javascript\\WingmanTournament\\Observer\\Observer.csproj",
         "packagesPath": "C:\\Users\\Max DeVos\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Max DeVos\\source\\repos\\Observer\\Observer\\obj\\",
+        "outputPath": "M:\\Workspace\\Javascript\\WingmanTournament\\Observer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Max DeVos\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,6 +39,16 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            },
+            "Microsoft.AspNet.WebApi.Core": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
