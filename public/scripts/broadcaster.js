@@ -58,7 +58,7 @@ function configUser(socket){
                     document.getElementById(i).style.border = "solid red 5px";
                 }
                 else{
-                    document.getElementById(i).style.visibility = "solid black 1px";
+                    document.getElementById(i).style.border = "solid black 1px";
                 }
             }
         }catch (e){
