@@ -302,19 +302,6 @@ function handleOBSDC(socket){
 
 require('./routes')(app)
 
-const publicIP = '134.129.53.252'
-server.listen(port, () => {
-    console.log(`Player: https://localhost/player.html`);
-    console.log(`Observer: https://localhost/observer.html`);
-    console.log(`Caster: https://localhost/caster.html`);
-    console.log(`Broadcaster: https://localhost/broadcaster.html`);
-    console.log('========== Public IPs ============');
-    console.log(`Player: https://${publicIP}/player.html`);
-    console.log(`Observer: https://${publicIP}/observer.html`);
-    console.log(`Caster: https://${publicIP}/caster.html`);
-    console.log(`Broadcaster: https://${publicIP}/broadcaster.html`);
-})
-
 // RTC Socket Configuration
 
 function configureSocketForRTC(socket){
@@ -529,3 +516,17 @@ let GSIServer = http.createServer((req, res) => {
 });
 
 GSIServer.listen(3000)
+
+// Max's PC
+// const publicIP = '134.129.53.252'
+
+// AWS IP
+const publicIP = '13.58.40.89';
+
+server.listen(port, () => {
+    console.log('========== Public IPs ============');
+    console.log(`Player: https://${publicIP}/player.html`);
+    console.log(`Observer: https://${publicIP}/observer.html`);
+    console.log(`Caster: https://${publicIP}/caster.html`);
+    console.log(`Broadcaster: https://${publicIP}/broadcaster.html`);
+})
