@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4761460e-fb8c-4ccd-ab64-648f1ca72317" name="Default Changelist" comment="Added IPs for both setups">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/certificate.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/oldCerts/certificate.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/oldCerts/private.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/private.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/.well-known/pki-validation/7CE48A8CFB56DE05CA37FCA6D59969FA.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/.well-known/pki-validation/DC35246B9F49B449BCB9F0F2D5D01A9F.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/broadcaster.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/caster.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/obs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/observer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/player.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/playerDatabase.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/broadcaster.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/caster.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/commonRTC.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/obs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/observer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/player.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/styles/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Player.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1n5taApYy8Cib3bT116qT1ZEnhy" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.15.3" />
+    <property name="javascript.nodejs.core.library.typings.version" value="14.14.21" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path" value="node" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.3.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="M:\Workspace\Javascript\WingmanTournament" />
+      <recent name="M:\Workspace\Javascript\WingmanTournament\public" />
+      <recent name="M:\Workspace\Javascript\WingmanTournament\src" />
+      <recent name="M:\Workspace\Javascript\WingmanTournament\public\scripts" />
+      <recent name="M:\Workspace\Javascript\wingman-architecture" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="M:\Workspace\Javascript\WingmanTournament\oldCerts" />
+      <recent name="M:\Workspace\Javascript\WingmanTournament\public\.well-known\pki-validation" />
+      <recent name="M:\Workspace\Javascript\WingmanTournament\src" />
+      <recent name="M:\Workspace\Javascript\WingmanTournament\public" />
+      <recent name="M:\Workspace\Javascript\WingmanTournament\public\scripts" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4761460e-fb8c-4ccd-ab64-648f1ca72317" name="Default Changelist" comment="" />
+      <created>1610691840235</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1610691840235</updated>
+      <workItem from="1610691841338" duration="292000" />
+      <workItem from="1610692162557" duration="5057000" />
+      <workItem from="1610748170118" duration="11976000" />
+      <workItem from="1610761920865" duration="999000" />
+      <workItem from="1610764851369" duration="4633000" />
+      <workItem from="1610772263437" duration="6833000" />
+      <workItem from="1610785711403" duration="3516000" />
+      <workItem from="1610827719627" duration="24972000" />
+      <workItem from="1610855525909" duration="6632000" />
+      <workItem from="1610862236294" duration="12257000" />
+      <workItem from="1610925406171" duration="10140000" />
+      <workItem from="1610938409912" duration="17601000" />
+      <workItem from="1611015638901" duration="22224000" />
+      <workItem from="1611097071543" duration="39000" />
+      <workItem from="1611104772112" duration="322000" />
+      <workItem from="1611105271715" duration="10830000" />
+      <workItem from="1611183815238" duration="525000" />
+      <workItem from="1611188955017" duration="11166000" />
+      <workItem from="1611206567854" duration="4704000" />
+      <workItem from="1611254230876" duration="1504000" />
+      <workItem from="1611264820366" duration="6503000" />
+      <workItem from="1611281895300" duration="2554000" />
+      <workItem from="1611286598735" duration="282000" />
+      <workItem from="1611288590455" duration="1775000" />
+      <workItem from="1611293837651" duration="714000" />
+      <workItem from="1611350630520" duration="2894000" />
+      <workItem from="1611354912491" duration="1649000" />
+      <workItem from="1611359987992" duration="2278000" />
+      <workItem from="1611364202040" duration="2742000" />
+      <workItem from="1611368395597" duration="3120000" />
+      <workItem from="1611377872052" duration="1902000" />
+      <workItem from="1611429531232" duration="1592000" />
+      <workItem from="1611471227707" duration="1157000" />
+      <workItem from="1611472941747" duration="2065000" />
+      <workItem from="1611532178735" duration="3333000" />
+      <workItem from="1611546551139" duration="2756000" />
+      <workItem from="1611604581203" duration="3719000" />
+      <workItem from="1611618310817" duration="479000" />
+      <workItem from="1611620575176" duration="9800000" />
+    </task>
+    <task id="LOCAL-00001" summary="Laid Framework for Human Centipede Computing Model.  Fixed jamming bug in CUM.">
+      <created>1610784565052</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1610784565052</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Single Instance calling is working.  I can feel my hands again.">
+      <created>1610786815237</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1610786815237</updated>
+    </task>
+    <task id="LOCAL-00003" summary="I JUST WANT SOME COMMIE MOMMY MILKERS. I AM LONELY">
+      <created>1610788685857</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1610788685857</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Multimedia Routing is working.  I am going to cry.">
+      <created>1610841049720</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1610841049720</updated>
+    </task>
+    <task id="LOCAL-00005" summary="It ***SEEMS*** Stable.  Refactored client classes.">
+      <created>1610856036046</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1610856036046</updated>
+    </task>
+    <task id="LOCAL-00006" summary="I AM GOING TO INVERT MY RIBCAGE">
+      <created>1610861488965</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1610861488965</updated>
+    </task>
+    <task id="LOCAL-00007" summary="I MUST ABORT THE BROTHER">
+      <created>1610873620927</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1610873620927</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Broadcaster, Caster, and Player MMR Stable.">
+      <created>1610927301080</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1610927301080</updated>
+    </task>
+    <task id="LOCAL-00009" summary="All Types Stable (no specified IO)">
+      <created>1610927482459</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1610927482459</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Correct Audio/Video Per *Type*.">
+      <created>1610928611095</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1610928611095</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Pre Player-ID Bullshittery">
+      <created>1610929524414</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1610929524414</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Pre Player Array Refactoring">
+      <created>1610930786112</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1610930786112</updated>
+    </task>
+    <task id="LOCAL-00013" summary="HOLY MAMA THE END IS IN SIGHT.">
+      <created>1610934718880</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1610934718880</updated>
+    </task>
+    <task id="LOCAL-00014" summary="TEAM CALLING WORKS SOMETIMES">
+      <created>1610960649613</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1610960649613</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Desperate attempt to force JavaScript to have structure">
+      <created>1611030401383</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1611030401383</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Are we rushing in, or are we going Sneaky Beaky like?">
+      <created>1611039631125</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1611039631126</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added GSI Library">
+      <created>1611039763995</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1611039763995</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Holy fucking shit GSI works">
+      <created>1611047098083</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1611047098083</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Made It Pretty!">
+      <created>1611107749942</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1611107749942</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Added OBS Client,">
+      <created>1611193270874</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1611193270874</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Refactoring and quality of life changes">
+      <created>1611193292358</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1611193292358</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Proper SSL certs and OBS!!!!!">
+      <created>1611194698276</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1611194698276</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Competent teammate sender determination">
+      <created>1611208288141</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1611208288141</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Pushing to AWS">
+      <created>1611283354858</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1611283354858</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Updated Players page to clearly show disconnected teammate">
+      <created>1611285562266</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1611285562266</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Added TURN server">
+      <created>1611350836212</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1611350836212</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Added custom STUN server">
+      <created>1611356181235</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1611356181235</updated>
+    </task>
+    <task id="LOCAL-00028" summary="TLS Stuff">
+      <created>1611366324183</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1611366324183</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Making remote GSI work">
+      <created>1611548893760</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1611548893760</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Accept all hostnames">
+      <created>1611549143627</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1611549143627</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Added Observer GSI Reciever System">
+      <created>1611549319221</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1611549319221</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Added GSI Relay Executable">
+      <created>1611610940702</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1611610940702</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Added GSI Relay Executable">
+      <created>1611611953533</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1611611953533</updated>
+    </task>
+    <task id="LOCAL-00034" summary="OBS Freezing Bug Solved">
+      <created>1611632144944</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1611632144944</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Added IPs for both setups">
+      <created>1611632424915</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1611632424915</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Correct Audio/Video Per *Type*." />
+    <MESSAGE value="Pre Player-ID Bullshittery" />
+    <MESSAGE value="Pre Player Array Refactoring" />
+    <MESSAGE value="HOLY MAMA THE END IS IN SIGHT." />
+    <MESSAGE value="Desperate attempt to force JavaScript to have structure" />
+    <MESSAGE value="Are we rushing in, or are we going Sneaky Beaky like?" />
+    <MESSAGE value="Added GSI Library" />
+    <MESSAGE value="Holy fucking shit GSI works" />
+    <MESSAGE value="Made It Pretty!" />
+    <MESSAGE value="Added OBS Client," />
+    <MESSAGE value="Refactoring and quality of life changes" />
+    <MESSAGE value="Proper SSL certs and OBS!!!!!" />
+    <MESSAGE value="Competent teammate sender determination" />
+    <MESSAGE value="Pushing to AWS" />
+    <MESSAGE value="Updated Players page to clearly show disconnected teammate" />
+    <MESSAGE value="TEAM CALLING WORKS SOMETIMES" />
+    <MESSAGE value="Added TURN server" />
+    <MESSAGE value="Added custom STUN server" />
+    <MESSAGE value="TLS Stuff" />
+    <MESSAGE value="Making remote GSI work" />
+    <MESSAGE value="Accept all hostnames" />
+    <MESSAGE value="Added Observer GSI Reciever System" />
+    <MESSAGE value="Added GSI Relay Executable" />
+    <MESSAGE value="OBS Freezing Bug Solved" />
+    <MESSAGE value="Added IPs for both setups" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added IPs for both setups" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="js.build_tools.npm">
+        <watch expression="activePlayers" language="JavaScript" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

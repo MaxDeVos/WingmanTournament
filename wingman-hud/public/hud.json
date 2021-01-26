@@ -1,0 +1,12 @@
+{
+    "name":"MaxHUD",
+    "version":"1.0",
+    "author":"Max",
+    "legacy": false,
+    "radar": true,
+    "killfeed": true,
+    "boltobserv":{
+        "css":true,
+        "maps":true
+    }
+}
