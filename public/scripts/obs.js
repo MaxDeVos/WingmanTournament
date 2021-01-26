@@ -20,7 +20,7 @@ function configUser(socket){
 
     socket.on('obs-invalid', () => {
         document.open();
-        document.write('<h1 style="text-align: center;color:red">Caster Already Connected</h1>');
+        document.write('<h1 style="text-align: center;color:red">OBS Already Connected</h1>');
         document.close();
         socket.disconnect();
     });

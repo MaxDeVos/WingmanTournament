@@ -129,6 +129,7 @@ function handlePlayerRoutes(socket){
                 activePlayers[incomingData.number] = incomingData.player;
                 socket.emit("player-selected-confirm", activePlayers[incomingData.number]);
                 for(let i in peers){
+                    console.log(i);
                     console.log(`sending updated teammate to ${i}`);
                     peers[i].emit("player-changed-name", determineTeammate(getPlayerBySocketID(i)));
                 }
@@ -254,6 +255,14 @@ function handleBroadcasterRoutes(socket){
             socket.broadcast.emit('broadcaster-con', {socket: socket.id});
         }
     });
+    socket.on('start-recording', () => {
+        console.log("Commanding players to start recording");
+        startRecording();
+    });
+    socket.on('stop-recording', () => {
+        console.log("Commanding players to start recording");
+        stopRecording();
+    });
 }
 
 function handleBroadcasterDC(socket){
@@ -276,7 +285,7 @@ function handleOBSRoutes(socket){
             socket.emit('obs-invalid');
         }
         else{
-            console.log("Registered New OBS!");
+            console.log("Registered New OBS: ", socket.id);
             socket.type = 'obs';
             obsSocket = socket.id;
             informAboutElders(socket);
@@ -411,7 +420,7 @@ function determinePeerCompatibility(local, remote){
         } else if (local.type === "player") {
             r = (remote.type === "broadcaster" || remote.type === "obs");
         } else if(local.type === "obs"){
-            r = (remote.type === "player");
+            r = (remote.type !== "observer");
         }
         // console.log("Compatibility between " + local.type + " and " + remote.type + ": " + r);
     }
@@ -514,9 +523,9 @@ let GSIServer = http.createServer((req, res) => {
             lastPlayer = currentPlayer;
         }
 
-        console.log(game);
+        // console.log(game);
 
     })
 });
 
-GSIServer.listen(3050)
+GSIServer.listen(3000)

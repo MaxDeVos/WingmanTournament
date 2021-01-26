@@ -7,6 +7,7 @@
  */
 
 let lastObservedPlayer = "";
+let localSocket;
 
 //====================== User Listeners ============================
 
@@ -24,7 +25,18 @@ function createUserListener(name, socket){
 
 // ======================== RTC Bullshit Starts Here ============================
 
+function sendStartRecording(){
+    localSocket.emit("start-recording");
+}
+
+function sendStopRecording(){
+    localSocket.emit("stop-recording");
+}
+
 function configUser(socket){
+
+    localSocket = socket;
+
     socket.on('connect', () => {
         console.log("Connected!");
         socket.emit("broadcaster-con", function(data) {
@@ -51,6 +63,7 @@ function configUser(socket){
     })
 
     socket.on('new-observed-player', playerSocket => {
+        console.log("New Observed Player!")
         try{
             for(let i in peers){
                 document.getElementById(i).style.position = "relative";

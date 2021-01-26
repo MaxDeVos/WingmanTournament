@@ -11,6 +11,7 @@ let playerDatabase = {};
 let number;
 let nameAppendLatch = true;
 let broadcasterPeer;
+let obsPeer;
 
 let Player = class{
     constructor(socketID, name, team, steamID64) {
@@ -73,7 +74,7 @@ function initPlayerHandler(socket){
         console.log(teammate);
         setTeammate(teammate);
         for(let peer in peers){
-            if(peer !== teammate.socketId && peer !== broadcasterPeer){
+            if(peer !== teammate.socketId && peer !== broadcasterPeer && peer !== obsPeer){
                 removePeer(peer);
             }
         }
@@ -160,6 +161,9 @@ function configUser(socket){
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
         if(remoteData.type === "broadcaster"){
             broadcasterPeer = remoteData.socket_id;
+        }
+        else if(remoteData.type === "obs"){
+            obsPeer = remoteData.socket_id;
         }
         console.log("INITSEND INCOMING PEER = ", peers[remoteData.socket]);
         if(remoteData.type !== "player"){

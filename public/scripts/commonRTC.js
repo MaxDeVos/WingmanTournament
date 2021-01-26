@@ -55,7 +55,7 @@ if(!noInput) {
         cameraStatus = true;
         if(isPlayer){
             recorder = RecordRTC(stream,  {
-                bitsPerSecond: 200000,
+                bitsPerSecond: 300000,
                 bufferSize: 16384,
                 numberOfAudioChannels: 1,
                 type: 'video'
@@ -100,6 +100,9 @@ function init() {
                 addPeer(incoming.socket, true, true);
                 if(incoming.type === "broadcaster"){
                     broadcasterPeer = incoming.socket;
+                }
+                else if(incoming.type === "obs"){
+                    obsPeer = incoming.socket;
                 }
             }
         } else if(mutePlayers){
@@ -196,6 +199,8 @@ function unmutePeer(socket_id) {
  */
 
 function addPeer(socket_id, am_initiator, muted) {
+
+    console.log("Adding Peer ", socket_id);
 
     peers[socket_id] = new SimplePeer({initiator: am_initiator,
         stream: localStream,
