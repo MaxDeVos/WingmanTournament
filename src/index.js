@@ -6,10 +6,19 @@ const path = require('path');
 const fs = require("fs");
 const playerDatabase = require('../public/playerDatabase.json')
 const Player = require('./Player');
+const GSIManager = require('./GSIManager');
+const APIManager = require('./APIManager');
+const MapSelection = require('./MapSelection');
 const http = require("http")
 
 peers = {};
 let port = 443;
+
+// Max's PC
+const publicIP = '134.129.53.252'
+const csgoIP = '13.58.40.89';
+// AWS IP
+// const publicIP = '13.58.40.89';
 
 const options = {
     key: fs.readFileSync('private.pem'),
@@ -87,7 +96,8 @@ activePlayers[3] = Player.generateEmptyPlayer();
 activePlayers[4] = Player.generateEmptyPlayer();
 
 function handlePlayerRoutes(socket){
-    socket.on('player-con', () => {
+    socket.on('player-con', async () => {
+        await GSIManager.sendCommandRCON("say WELCOME PLAYER");
         console.log("Player Attempting To Connect");
         for(let i in activePlayers){
             if (activePlayers[i].socketId === "none") {
@@ -96,6 +106,7 @@ function handlePlayerRoutes(socket){
                 informAboutElders(socket);
                 socket.emit('player-data', {playerDatabase: playerDatabase, number: i, activePlayers: activePlayers});
                 socket.broadcast.emit(`player${i}-con`, activePlayers[i]);
+                MapSelection.onPlayerUpdate(activePlayers, socket);
                 return;
             }
         }
@@ -128,6 +139,7 @@ function handlePlayerRoutes(socket){
                 console.log(`Player${incomingData.number} Player Change Confirmed!`);
                 activePlayers[incomingData.number] = incomingData.player;
                 socket.emit("player-selected-confirm", activePlayers[incomingData.number]);
+                MapSelection.handlePlayerMapSelection(socket);
                 for(let i in peers){
                     console.log(i);
                     console.log(`sending updated teammate to ${i}`);
@@ -241,7 +253,8 @@ app.get('/broadcaster', (req, res) => {
 })
 
 function handleBroadcasterRoutes(socket){
-    socket.on('broadcaster-con', () => {
+    socket.on('broadcaster-con', async () => {
+        await GSIManager.connectToRCON(csgoIP);
         console.log("Broadcaster Attempting To Connect");
         if(broadcasterSocket !== undefined){
             console.log("Rejected New Broadcaster!");
@@ -253,6 +266,10 @@ function handleBroadcasterRoutes(socket){
             broadcasterSocket = socket.id;
             informAboutElders(socket);
             socket.broadcast.emit('broadcaster-con', {socket: socket.id});
+            MapSelection.onBroadcasterConnect(socket);
+            socket.on('start-map-selection', () => {
+                MapSelection.handleBroadcasterMapSelection(activePlayers, socket);
+            });
         }
     });
     socket.on('start-recording', () => {
@@ -317,6 +334,8 @@ function configureSocketForRTC(socket){
             peers[id].emit('initReceive', {socket_id: socket.id, type: socket.type})
         }
     }
+
+    MapSelection.updatePeers(peers);
 
     addRTCListeners(socket);
 }
@@ -494,7 +513,7 @@ let GSIServer = http.createServer((req, res) => {
         body += data
     })
 
-    req.on("end", () => {
+    req.on("end", async () => {
         res.end("")
 
         let game = JSON.parse(body)
@@ -510,18 +529,14 @@ let GSIServer = http.createServer((req, res) => {
             lastPlayer = currentPlayer;
         }
 
-        // console.log(game);
+        await GSIManager.update(game);
 
     })
 });
 
-GSIServer.listen(3000)
+GSIServer.listen(3254);
+console.log("Started GSI Server!")
 
-// Max's PC
-// const publicIP = '134.129.53.252'
-
-// AWS IP
-const publicIP = '13.58.40.89';
 
 server.listen(port, () => {
     console.log('========== Public IPs ============');
@@ -530,3 +545,5 @@ server.listen(port, () => {
     console.log(`Caster: https://${publicIP}/caster.html`);
     console.log(`Broadcaster: https://${publicIP}/broadcaster.html`);
 })
+
+module.exports = {activePlayers};

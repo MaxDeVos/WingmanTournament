@@ -1,0 +1,174 @@
+{
+    "teams": [{
+            "name": "The Yardents",
+            "shortName": "The Yardents",
+			"country": "",
+            "_id": "5A8rl7F3bV7yRQ8E"
+        }, {
+            "name": "The Power Bottoms",
+            "shortName": "The Power Bottoms",
+            "country": "",
+            "_id": "7Cuel8Z3BJ0YZjDD"
+        }, {
+            "name": "Fish Terrorists",
+            "shortName": "Fish Terrorists",
+            "country": "",
+            "_id": "G1mfsQNwtDhJ7ofO"
+        }, {
+            "name": "Knife Fight Up Top",
+            "shortName": "Knife Fight Up Top",
+            "country": "",
+            "_id": "VCt9XCScOlK26ZJr"
+        }, {
+            "name": "Below Average Gaming",
+            "shortName": "Below Average Gaming",
+            "country": "DZ",
+            "_id": "XBPHK2VeKK4Wh2V4"
+        }, {
+            "name": "The Amazing James",
+            "shortName": "The Amazing James",
+            "country": "",
+            "_id": "YsZFhTrXw6IiGbtJ"
+        }, {
+            "name": "Bimbois",
+            "shortName": "Bimbois",
+            "country": "",
+            "_id": "eNGWjL0ucnd71KZF"
+        }, {
+            "name": "The Football Team",
+            "shortName": "The Football Team",
+            "country": "BA",
+            "_id": "pao8TCmpgUBSXpZc"
+        }
+    ],
+    "players": [{
+            "firstName": "Owen",
+            "lastName": "Reinert-Nash",
+            "username": "Cooj The Almighty",
+            "country": "AD",
+            "steamid": "76561198049068045",
+            "team": "VCt9XCScOlK26ZJr",
+            "_id": "0qbvdQkfVAgHyJa5"
+        }, {
+            "firstName": "Eli",
+            "lastName": "Straub",
+            "username": "Good Nut",
+            "country": "IQ",
+            "steamid": "76561198070844774",
+            "team": "G1mfsQNwtDhJ7ofO",
+            "_id": "326Xqzvh6hBN3RbF"
+        }, {
+            "firstName": "Tanner",
+            "lastName": "Miller",
+            "username": "Tangent",
+            "country": "SH",
+            "steamid": "76561198378241338",
+            "team": "XBPHK2VeKK4Wh2V4",
+            "_id": "5YATN7bDfjoatKJG"
+        }, {
+            "firstName": "Colton",
+            "lastName": "Richardson",
+            "username": "Berry Weis",
+            "country": "FJ",
+            "steamid": "76561198142491811",
+            "team": "eNGWjL0ucnd71KZF",
+            "_id": "73jjDZkJivmjcFVj"
+        }, {
+            "firstName": "Liam",
+            "lastName": "Straub",
+            "username": "Fine Nut",
+            "country": "NG",
+            "steamid": "76561198295367309",
+            "team": "YsZFhTrXw6IiGbtJ",
+            "_id": "KxuFwBVR2aSzdYWw"
+        }, {
+            "firstName": "Ricky",
+            "lastName": "Cusing",
+            "username": "AllRickyBobby",
+            "country": "US",
+            "steamid": "76561198066464381",
+            "team": "eNGWjL0ucnd71KZF",
+            "_id": "L9RA3RLAWUF6IciS"
+        }, {
+            "firstName": "Thomas",
+            "lastName": "Lins",
+            "username": "Tomlins212",
+            "country": "IN",
+            "steamid": "76561198049549411",
+            "team": "YsZFhTrXw6IiGbtJ",
+            "_id": "LAGILBgewfMccsj0"
+        }, {
+            "firstName": "Madisen",
+            "lastName": "Clemensen",
+            "username": "gooselover111",
+            "country": "AR",
+            "steamid": "76561198398963636",
+            "team": "G1mfsQNwtDhJ7ofO",
+            "_id": "PYepxTQtpgdz9W5r"
+        }, {
+            "firstName": "Max",
+            "lastName": "DeVos",
+            "username": "Max",
+            "country": "NU",
+            "steamid": "76561198291283116",
+            "team": "5A8rl7F3bV7yRQ8E",
+            "_id": "R9ZtkqCJOUYtG3sE"
+        }, {
+            "firstName": "Tim",
+            "lastName": "DeCesare",
+            "username": "DrDooglestein",
+            "country": "IL",
+            "steamid": "76561198094330605",
+            "team": "XBPHK2VeKK4Wh2V4",
+            "_id": "SBAt1EZDSqg6ngbC"
+        }, {
+            "firstName": "Gavin",
+            "lastName": "Tersteeg",
+            "username": "Yardent",
+            "country": "AO",
+            "steamid": "76561198104671626",
+            "team": "5A8rl7F3bV7yRQ8E",
+            "_id": "TADvQgZbezoehxCS"
+        }, {
+            "firstName": "Joe",
+            "lastName": "Lins",
+            "username": "BoeBins",
+            "country": "AQ",
+            "steamid": "76561198201559519",
+            "team": "7Cuel8Z3BJ0YZjDD",
+            "_id": "X75sMOK2S9FPZEnl"
+        }, {
+            "firstName": "Sam",
+            "lastName": "Hovda",
+            "username": "PercyJ2013",
+            "country": "LY",
+            "steamid": "76561198161667713",
+            "team": "pao8TCmpgUBSXpZc",
+            "_id": "YEmxroncuvSRRQjR"
+        }, {
+            "firstName": "Ashton",
+            "lastName": "Schenck",
+            "username": "Kisnu",
+            "country": "PG",
+            "steamid": "76561198330492295",
+            "team": "pao8TCmpgUBSXpZc",
+            "_id": "afJRqUt3O6710B9O"
+        }, {
+            "firstName": "Peter",
+            "lastName": "Braun",
+            "username": "jeffyost3",
+            "country": "AL",
+            "steamid": "76561198969346528",
+            "team": "YsZFhTrXw6IiGbtJ",
+            "_id": "avrFJwVEensecsM9"
+        }, {
+            "firstName": "Isaac",
+            "lastName": "Brown",
+            "username": "donwersa",
+            "country": "AF",
+            "steamid": "76561198095390268",
+            "team": "XBPHK2VeKK4Wh2V4",
+            "_id": "jMSCpdGdgjI8AWn0"
+        }
+    ]
+}

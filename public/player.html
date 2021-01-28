@@ -10,38 +10,40 @@
 </head>
 <body>
 <h1 style="text-align:center">Welcome Gamer!</h1>
-<h3 style="text-align:center">Status: <span id="status" style="font-size:20px;">Loading Camera Before Connecting To Peers</span></h3>
+<h3 style="text-align:center">Server Status: <span id="status" style="font-size:20px;">Loading Camera Before Connecting To Peers</span>
+</h3>
 <div id="player-selection">
     <form id="form">
         <select id="player-select" onchange="handlePlayerChange(this.value)"></select>
     </form>
 </div>
-<div id="statusContainer">
-<h4>Broadcaster Status: <span id="broadcaster-status" class="status">Disconnected</span></h4>
-<h4>Observer Status: <span id="observer-status" class="status">Disconnected</span></h4>
-<h4>Caster #1 Status: <span id="caster1-status" class="status">Disconnected</span></h4>
-<h4>Caster #2 Status: <span id="caster2-status" class="status">Disconnected</span></h4>
-</div>
-<div id="dataContainer">
-<div id="playerDataContainer">
-    <h4 id="playerDataTitle">Your Info</h4>
-    <p class="playerData">Name: <span id="playerName"></span></p>
-    <p class="playerData">Team: <span id="playerTeam"></span></p>
-    <p class="playerData">Steam ID: <span id="playerSteamID"></span></p>
-</div>
-<div id="teammateDataContainer">
-    <h4 id="teammateDataTitle">Teammate Info</h4>
-    <p class="teammateData">Name: <span id="teammateName"></span></p>
-    <p class="teammateData">Team: <span id="teammateTeam"></span></p>
-    <p class="teammateData">Steam ID: <span id="teammateSteamID"></span></p>
-</div>
-</div>
-<div id="videos" class="container">
-    <video id="localVideo" class="vid localVideo" autoplay muted></video>
-    <br />
-    <div style="display:block; width:100%;text-align: center">
-        <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
-        <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
+
+<div id="startPickContainer"></div>
+<h2 style="text-align: center">Status: <span id="info">Waiting For Your Name</span></h2>
+<div id="playerMapSelectionContainer"></div>
+
+<div id="persistent-container">
+    <div id="dataContainer">
+        <div id="playerDataContainer">
+            <h4 id="playerDataTitle">Your Info</h4>
+            <p class="playerData">Name: <span id="playerName"></span></p>
+            <p class="playerData">Team: <span id="playerTeam"></span></p>
+            <p class="playerData">Steam ID: <span id="playerSteamID"></span></p>
+        </div>
+        <div id="teammateDataContainer">
+            <h4 id="teammateDataTitle">Teammate Info</h4>
+            <p class="teammateData">Name: <span id="teammateName"></span></p>
+            <p class="teammateData">Team: <span id="teammateTeam"></span></p>
+            <p class="teammateData">Steam ID: <span id="teammateSteamID"></span></p>
+        </div>
+    </div>
+    <div id="videos" class="container">
+        <video id="localVideo" class="vid localVideo" autoplay muted></video>
+        <br/>
+        <div style="display:block; width:100%;text-align: center">
+            <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
+            <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
+        </div>
     </div>
 </div>
 </body>

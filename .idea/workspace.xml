@@ -5,254 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4761460e-fb8c-4ccd-ab64-648f1ca72317" name="Default Changelist" comment="Added IPs for both setups">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/.well-known/pki-validation/7CE48A8CFB56DE05CA37FCA6D59969FA.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/.well-known/pki-validation/DC35246B9F49B449BCB9F0F2D5D01A9F.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/broadcaster.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/caster.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/obs.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/observer.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/player.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/playerDatabase.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/scripts/broadcaster.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/scripts/caster.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/scripts/commonRTC.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/scripts/obs.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/scripts/observer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/scripts/player.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/styles/styles.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/public/test.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/src/Player.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WingmanTournament/src/routes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.env" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.idea/watcherTasks.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/.idea/wingman-hud.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/craco.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/lexogrine_hud_1.6.2.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/lexogrine_hud_1.6.2_2.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/maxhud.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/preview.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/hud.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/keybinds.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_cache/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_cache/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_dust2/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_dust2/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_inferno/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_inferno/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_mirage/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_mirage/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_nuke/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_nuke/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_overpass/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_overpass/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_shortnuke/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_shortnuke/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_train/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_train/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_vertigo/meta.json5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/maps/de_vertigo/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/panel.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/radar.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/public/thumb.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/settings.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/App.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Indicators/Armor.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Indicators/Bomb.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Indicators/Defuse.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Killfeed/Kill.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Killfeed/Killfeed.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Killfeed/killfeed.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Layout/Layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MapSeries/MapSeries.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MapSeries/mapseries.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MatchBar/MatchBar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MatchBar/SeriesBox.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MatchBar/TeamLogo.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MatchBar/TeamScore.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MatchBar/WinIndicator.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MatchBar/matchbar.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/MatchOverview/MatchOverview.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Overview/Overview.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/PauseTimeout/Pause.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/PauseTimeout/Timeout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/PlayerOverview/PlayerOverview.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/PlayerOverview/playeroverview.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Players/Avatar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Players/Observed.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Players/Player.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Players/TeamBox.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Players/observed.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Players/players.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/LexoRadar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/LexoRadarContainer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/assets/playerBg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/grenades/bomb.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/grenades/firebomb.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/grenades/flash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/grenades/frag.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/grenades/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/grenades/smoke.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/grenades/weapon_decoy.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/grenades/weapon_incgrenade.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/interface.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_cache/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_cache/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_dust2/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_dust2/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_elysion/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_elysion/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_guard/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_guard/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_inferno/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_inferno/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_lake/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_lake/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_mirage/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_mirage/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_nuke/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_nuke/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_overpass/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_overpass/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_shortnuke/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_shortnuke/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_train/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_train/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_vertigo/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/de_vertigo/radar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/LexoRadar/maps/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/Radar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/RadarMaps.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Radar/radar.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/SideBoxes/Money.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/SideBoxes/SideBox.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/SideBoxes/UtilityLevel.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/SideBoxes/sideboxes.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/TeamOverview/TeamOverview.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/TeamOverview/teamoverview.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Timers/BombTimer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Timers/Countdown.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Timers/PlantDefuse.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Tournament/Ladder.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Tournament/Tournament.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Tournament/tournament.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Trivia/Trivia.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Trivia/trivia.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/Weapon/Weapon.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/countries.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/HUD/isSvg.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/api/actionManager.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/api/api.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/api/avatars.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/api/interfaces.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/Icons.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/flash_assist.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/flashed_kill.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/headshot.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/Bomb.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_full_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_full_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_full_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_half_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_half_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_half_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_half_helmet_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_half_helmet_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_half_helmet_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_helmet_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_helmet_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_helmet_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_none_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_none_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_armor_none_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_blind.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_bomb_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_bomb_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_bomb_explosion_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_bomb_explosion_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_bomb_explosion_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_bullets_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_bullets_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_bullets_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_burning.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_c4_T.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_c4_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_c4_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_c4_red.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_defuse_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_defuse_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_health_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_health_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_health_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_health_full_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_health_full_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_health_full_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_hourglass_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_microphone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_pause_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_pause_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_pause_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_skull_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_skull_T.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_skull_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_timer_CT.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/icon_timer_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/logo_CT_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/images/logo_T_default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/noscope_kill.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/smoke_kill.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/assets/wallbang.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/Louis George Cafe.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/Rounded_Elegance.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/Stratum2/Stratum2 Bold Regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/Stratum2/Stratum2 Bold Regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-Black.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-BlackItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-Bold.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-BoldItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-ExtraBold.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-ExtraBoldItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-ExtraLight.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-ExtraLightItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-Italic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-Light.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-LightItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-Medium.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-MediumItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-Regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-SemiBold.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-SemiBoldItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-Thin.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/montserrat/Montserrat-ThinItalic.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/fonts/stratum2.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/src/react-app-env.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wingman-hud/yarn.lock" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Observer/Observer.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/hudmanagerdb.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/scripts/mapSelectionClient.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/APIManager.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GSIManager.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MapSelection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Observer/.vs/Observer/DesignTimeBuild/.dtbcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/Observer/.vs/Observer/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Observer/.vs/Observer/v16/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/Observer/.vs/Observer/v16/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Observer/SynchronousSocketClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Observer/SynchronousSocketClient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Observer/obj/Debug/netcoreapp3.1/Observer.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Observer/obj/Debug/netcoreapp3.1/Observer.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/broadcaster.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/broadcaster.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/player.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/broadcaster.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/broadcaster.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/player.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/player.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -321,11 +92,11 @@
       <recent name="M:\Workspace\Javascript\wingman-architecture" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="M:\Workspace\Javascript\WingmanTournament\public" />
+      <recent name="M:\Workspace\Javascript\WingmanTournament" />
       <recent name="M:\Workspace\Javascript\WingmanTournament\oldCerts" />
       <recent name="M:\Workspace\Javascript\WingmanTournament\public\.well-known\pki-validation" />
       <recent name="M:\Workspace\Javascript\WingmanTournament\src" />
-      <recent name="M:\Workspace\Javascript\WingmanTournament\public" />
-      <recent name="M:\Workspace\Javascript\WingmanTournament\public\scripts" />
     </key>
   </component>
   <component name="RunManager">
@@ -387,7 +158,10 @@
       <workItem from="1611604581203" duration="3719000" />
       <workItem from="1611618310817" duration="479000" />
       <workItem from="1611620575176" duration="9800000" />
-      <workItem from="1611708364327" duration="87000" />
+      <workItem from="1611708364327" duration="1239000" />
+      <workItem from="1611718561588" duration="774000" />
+      <workItem from="1611722715735" duration="3189000" />
+      <workItem from="1611787451774" duration="40922000" />
     </task>
     <task id="LOCAL-00001" summary="Laid Framework for Human Centipede Computing Model.  Fixed jamming bug in CUM.">
       <created>1610784565052</created>
@@ -634,7 +408,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611632424915</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="RIP Repo">
+      <created>1611709576134</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1611709576134</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,7 +435,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Correct Audio/Video Per *Type*." />
     <MESSAGE value="Pre Player-ID Bullshittery" />
     <MESSAGE value="Pre Player Array Refactoring" />
     <MESSAGE value="HOLY MAMA THE END IS IN SIGHT." />
@@ -679,7 +459,8 @@
     <MESSAGE value="Added GSI Relay Executable" />
     <MESSAGE value="OBS Freezing Bug Solved" />
     <MESSAGE value="Added IPs for both setups" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added IPs for both setups" />
+    <MESSAGE value="RIP Repo" />
+    <option name="LAST_COMMIT_MESSAGE" value="RIP Repo" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

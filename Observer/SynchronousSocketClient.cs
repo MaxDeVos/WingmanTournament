@@ -15,9 +15,9 @@ namespace HttpListenerExample
 
         public static HttpListener listener;
         public static HttpClient client;
-        public static string url = "http://localhost:3000/";
-        public static string serverUrl = "http://13.58.40.89:3050/";
-        //public static string serverUrl = "http://localhost:3050/";
+        public static string url = "http://localhost:3254/";
+        //public static string serverUrl = "http://13.58.40.89:3050/";
+        public static string serverUrl = "http://localhost:3050/";
         public static string latestData = "";
         private static bool debugMode = false;
         public static string getRequestData(HttpListenerRequest request)

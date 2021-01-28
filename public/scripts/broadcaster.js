@@ -33,6 +33,10 @@ function sendStopRecording(){
     localSocket.emit("stop-recording");
 }
 
+function startMapSelection(){
+    localSocket.emit("start-map-selection");
+}
+
 function configUser(socket){
 
     localSocket = socket;
@@ -79,6 +83,10 @@ function configUser(socket){
             console.log(e);
         }
     })
+
+    socket.on('start-map-selection', (maps) => {
+        specStartMapSelection(maps)
+    });
 
     createUserListener('observer', socket);
     createUserListener('broadcaster', socket);
