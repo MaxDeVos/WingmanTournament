@@ -5,17 +5,18 @@ function specStartMapSelection(maps){
         let container = document.getElementById("mapSelectionContainer");
         console.log(maps)
         for(let map in maps){
+            let m = map.name;
             let div = document.createElement("div");
             div.className = "mapBox";
-            div.id = maps[map];
+            div.id = m;
                 let title = document.createElement("p");
-                title.innerText = convertMapToName(maps[map]);
+                title.innerText = convertMapToName(m);
                 title.className = "mapTitle";
-                div.id = `${maps[map]}_title`
+                div.id = `${m}_title`
                 div.appendChild(title);
                 let data = document.createElement("p");
                 data.className = "mapData";
-                data.id = `${maps[map]}_data`
+                data.id = `${m}_data`
                 div.appendChild(data);
             container.appendChild(div);
         }

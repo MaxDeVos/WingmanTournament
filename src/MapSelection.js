@@ -1,7 +1,4 @@
-const maps = ['de_cobblestone', 'de_elysion', 'de_lake', 'de_shortnuke', 'de_guard', 'de_overpass', 'de_vertigo'];
-let availableMaps = maps;
-let selectedMaps = [];
-let bannedMaps = [];
+let maps = {};
 let mapSelectionActive = false;
 let activePlayers = {};
 let broadcasterSocket = undefined;
@@ -11,42 +8,39 @@ let tossWinner;
 let tossLoser;
 let pickOrder = [];
 let inversePickOrder = [];
+let mapOrder = [];
+let pickConfig = ["ban","ban","pick","pick","ban","ban", "auto"];
+let pickRound = 0;
 
 function initMapSelection(){
-    availableMaps = maps;
-    selectedMaps = [];
-    bannedMaps = [];
+    maps = getEmptyMapList();
 }
 
-function banMap(map, team){
-    console.log(team, "banned", map);
-    if(availableMaps.includes(map)){
-        bannedMaps.push({map:map, team:team});
-        delete availableMaps.indexOf(map);
-        return true;
-    }
-    else{
-        return false;
-    }
+function banMap(map, team, round){
+    console.log(team, "banned", map, "on round", round);
+    maps[map].status = "banned";
+    maps[map].selector = team;
+    maps[map].round = round;
 }
 
-function pickMap(map, picker, ct, t){
-    if(availableMaps.includes(map)){
-        selectedMaps.push({map:map, team: picker, ct: ct, t: t});
-        delete availableMaps.indexOf(map);
-        return true;
-    }
-    else{
-        return false;
-    }
+function pickMap(map, team, round){
+    console.log(team, "picked", map, "on round", round);
+    maps[map].status = "picked";
+    maps[map].selector = team;
+    maps[map].round = round;
 }
 
-function getMapStartingConfig(map){
-    for(let i in selectedMaps){
-        if(i.map === "map"){
-            return {ct: i.ct, t: i.t};
-        }
+function setMapStartingConfig(map, team1, side1, team2){
+    let m = maps[map];
+    m[side1] = team1;
+    if(side1 === "ct"){
+        m.t = team2;
     }
+    else if(side1 === "t"){
+        m.ct = team2;
+    }
+    console.log("T: ", m.t);
+    console.log("CT: ", m.ct);
 }
 
 function updatePeers(p){
@@ -57,37 +51,85 @@ function onPlayerUpdate(updatedActivePlayers, socket){
     activePlayers = updatedActivePlayers;
     if(mapSelectionActive) {
         console.log("Adding new player to map selection")
-        socket.emit("start-map-selection", availableMaps);
+        socket.emit("start-map-selection", maps);
     }
     socket.on("coin-response", (choice) => {
         console.log(tossWinner, " chose ", choice);
         emitToTeam(tossLoser, "coin-inform", choice);
         emitToTeam(tossWinner, "coin-confirmed");
         if(choice === "map"){
-            pickOrder = [tossWinner, tossLoser, tossWinner, tossLoser, tossWinner, tossLoser];
-            inversePickOrder = [tossWinner, tossLoser, tossWinner, tossLoser, tossWinner, tossLoser];
+            pickOrder = [tossWinner, tossLoser, tossWinner, tossLoser, tossWinner, tossLoser, tossWinner];
+            inversePickOrder = [tossLoser, tossWinner, tossLoser, tossWinner, tossLoser, tossWinner, tossLoser];
         } else{
-            pickOrder = [tossLoser, tossWinner, tossLoser, tossWinner, tossLoser, tossWinner];
-            inversePickOrder = [tossWinner, tossLoser, tossWinner, tossLoser, tossWinner, tossLoser];
+            pickOrder = [tossLoser, tossWinner, tossLoser, tossWinner, tossLoser, tossWinner, tossLoser];
+            inversePickOrder = [tossWinner, tossLoser, tossWinner, tossLoser, tossWinner, tossLoser, tossWinner];
         }
-        emitToTeam(pickOrder[0], "ban-map-request", {maps:availableMaps, round:0});
+        emitToTeam(pickOrder[0], "ban-map-request", {maps:maps, round:pickRound});
     })
     socket.on("ban", (data)=>{
-        banMap(data.map, pickOrder[data.team]);
-        socket.emit("ban-confirm", {picked:selectedMaps, banned:bannedMaps, available:availableMaps});
+        handlePlayerBan(data, socket);
     });
+    socket.on("pick", (data) => {
+        handlePlayerPick(data);
+    })
+    socket.on("side-pick", (data) => {
+        setMapStartingConfig(data.map, inversePickOrder[pickRound], data.side, pickOrder[pickRound]);
+        emitToTeam(inversePickOrder[pickRound], "side-pick-confirm", {maps: maps, next: pickConfig[pickRound+1]});
+        pickRound++;
+        if(pickConfig[pickRound] === "pick"){
+            emitToTeam(pickOrder[pickRound], "pick-map-request", {maps:maps, round:pickRound});
+        }else{
+            emitToTeam(pickOrder[pickRound], "ban-map-request", {maps:maps, round:pickRound});
+        }
+        if(pickRound === 7){
+            console.log("Map Selection Completed");
+            broadcasterSocket.broadcast.emit("map-selection-complete", maps);
+        }
+
+    })
+}
+
+function handlePlayerBan(data){
+    banMap(data.map, pickOrder[pickRound], pickRound);
+    emitToTeam(pickOrder[pickRound], "ban-confirm",{maps:maps, round:pickRound})
+    pickRound++;
+    if(pickConfig[pickRound] === "ban"){
+        emitToTeam(pickOrder[pickRound], "ban-map-request",{maps:maps, round:pickRound})
+    }
+    else if(pickConfig[pickRound] === "pick"){
+        handleRequestPick();
+    }
+    else if(pickConfig[pickRound] === "auto"){
+        pickRound--;
+        let map = getAvailableMap();
+        pickMap(getAvailableMap(), pickOrder[pickRound], pickRound);
+        maps[map].round = 6;
+        emitToTeam(pickOrder[pickRound], "pick-confirm", {maps: maps, round: pickRound})
+        emitToTeam(inversePickOrder[pickRound], "side-pick-request", {map: map, maps: maps, round: 6})
+    }
+}
+
+function handlePlayerPick(data) {
+    pickMap(data.map, pickOrder[pickRound], pickRound);
+    emitToTeam(pickOrder[pickRound], "pick-confirm", {maps: maps, round: pickRound})
+    emitToTeam(inversePickOrder[pickRound], "side-pick-request", {map: data.map, maps: maps, round: pickRound})
+
+}
+
+function handleRequestPick(){
+    emitToTeam(pickOrder[pickRound], "pick-map-request",{maps:maps, round:pickRound})
 }
 
 function handlePlayerMapSelection(socket){
     if(mapSelectionActive) {
         console.log("Adding new player to map selection")
-        socket.emit("start-map-selection", availableMaps);
+        socket.emit("start-map-selection", maps);
     }
 }
 
 function handleSpectatorMapSelection(socket){
     if(!mapSelectionActive) {
-        socket.emit("start-map-selection", availableMaps);
+        socket.emit("start-map-selection", maps);
     }
 }
 
@@ -95,7 +137,7 @@ function onBroadcasterConnect(socket){
     broadcasterSocket = socket;
     if(mapSelectionActive) {
         console.log("Adding new player to map selection")
-        socket.emit("start-map-selection", availableMaps);
+        socket.emit("start-map-selection", maps);
     }
 }
 
@@ -106,8 +148,8 @@ function handleBroadcasterMapSelection(updatedActivePlayers, socket){
         // mapSelectionActive = true;
         console.log("Starting Map Selection!", mapSelectionActive);
         initMapSelection();
-        socket.emit("start-map-selection", availableMaps);
-        socket.broadcast.emit("start-map-selection", availableMaps);
+        socket.emit("start-map-selection", maps);
+        socket.broadcast.emit("start-map-selection", maps);
         teams = determineTeams();
         if(teams !== undefined){
             if(Math.random() > .5){
@@ -146,6 +188,7 @@ function determineTeams(){
 }
 
 function emitToTeam(team, message, payload){
+    console.log(`Sending ${message} to ${team}`)
     for(let i in activePlayers){
         if(activePlayers[i].team === team){
             peers[activePlayers[i].socketId].emit(message, payload);
@@ -156,8 +199,49 @@ function emitToTeam(team, message, payload){
 function endMapSelection(){
     console.log("Ending Map Selection!");
     mapSelectionActive = false;
-    socket.broadcast.emit("end-map-selection");
-    socket.emit("end-map-selection");
+    broadcasterSocket.broadcast.emit("end-map-selection");
+    broadcasterSocket.emit("end-map-selection");
+}
+
+function getEmptyMapList(){
+    console.log("Generating Map List!")
+    let mapList = {};
+    mapList["de_cobblestone"] = generateMap("de_cobblestone");
+    mapList["de_elysion"] = generateMap("de_elysion");
+    mapList["de_lake"] = generateMap('de_lake');
+    mapList["de_shortnuke"] = generateMap('de_shortnuke');
+    mapList["de_guard"] = generateMap('de_guard');
+    mapList["de_overpass"] = generateMap('de_overpass');
+    mapList["de_vertigo"] = generateMap('de_vertigo');
+    return mapList;
+}
+
+function generateMap(mapName) {
+    return {
+        name: mapName,
+        status: "available", selector: undefined,
+        t: undefined, ct: undefined, round: undefined
+    }
+}
+
+function isMapAvailable(name){
+    return (name.status === "available");
+}
+
+function isMapPicked(name){
+    return (name.status === "picked");
+}
+
+function isMapBanned(name){
+    return (name.status === "banned");
+}
+
+function getAvailableMap(){
+    for(let map in maps){
+        if(isMapAvailable(maps[map])){
+            return map;
+        }
+    }
 }
 
 module.exports = {handlePlayerMapSelection, handleSpectatorMapSelection, onBroadcasterConnect, onPlayerUpdate, handleBroadcasterMapSelection, updatePeers}

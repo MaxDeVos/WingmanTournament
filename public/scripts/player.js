@@ -171,24 +171,24 @@ function configUser(socket){
     socket.on('start-map-selection', (maps) => {
         console.log(maps)
         if(!mapSelectionRunning){
-            playerStartMapSelection(maps)
+            playerStartMapSelection(maps);
         }
         mapSelectionRunning = true;
-        changeButtons(maps, true, undefined);
+        updateMapList(maps, false);
     });
 
     socket.on('coin-toss', (result) => {
         console.log(result);
         if(result === "won"){
-            alert(`You won the coin toss!  Select either "Pick Side First" or 
-            "Pick Map First" to proceed.`)
+            // alert(`You won the coin toss!  Select either "Pick Side First" or
+            // "Pick Map First" to proceed.`)
             updateInfo("Please choose an starting option below");
             createStartPicker();
         }
         else{
             updateInfo("Waiting on opponents");
-            alert("Your opponents won the coin toss.  They are selecting between " +
-                "\"Pick Side First\" and \"Pick Map First\"")
+            // alert("Your opponents won the coin toss.  They are selecting between " +
+            //     "\"Pick Side First\" and \"Pick Map First\"")
         }
     });
 
@@ -197,11 +197,11 @@ function configUser(socket){
         console.log(result);
         if(result === "map"){
             updateInfo("Opponents are banning a map");
-            alert(`Your opponents have chosen to choose a map first.`)
+            // alert(`Your opponents have chosen to choose a map first.`)
         }
         else{
             updateInfo("Please ban a map");
-            alert(`Your opponents have chosen to choose a side first.  Please select a map.`)
+            // alert(`Your opponents have chosen to choose a side first.  Please select a map.`)
         }
     });
 
@@ -212,55 +212,53 @@ function configUser(socket){
     socket.on('ban-map-request', (data) => {
         updateInfo("Please ban a map");
         pickRound = data.round;
-        changeButtons(data.maps, true, "Ban", "ban");
+        updateMapList(data.maps, true, "ban");
     });
 
     socket.on('ban-confirm', (data) => {
-        updateMapList(data.banned)
-        changeButtons(data.picked, false);
-        changeButtons(data.banned, false);
-        changeButtons(data.available, false);
+        updateInfo("Waiting on opponents to pick a map!");
+        updateMapList(data.maps, false);
     })
 
+    socket.on('pick-confirm', (data) => {
+        updateInfo("Waiting on opponents to pick a side!");
+        updateMapList(data.maps, false);
+        document.getElementById("side-container").remove();
+    })
+
+    socket.on('side-pick-request', (data) => {
+        updateMapList(data.maps, false);
+        updateInfo("Please pick a starting side for " + data.map + "!");
+        startSideSelector(data.map);
+    })
+
+    socket.on('pick-map-request', (data) => {
+        updateMapList(data.maps, true, "pick");
+        updateInfo("Please pick a map!");
+        document.getElementById("side-container").remove();
+    })
+
+    socket.on('side-pick-confirm', (data) => {
+        console.log("Side Pick Confirm");
+        document.getElementById("side-container").remove();
+        // updateMapList(data.maps, false, "pick");
+        // updateInfo(`Waiting for your opponent to ${data.next} a map!`);
+    })
+
+
     initPlayerHandler(socket);
-}
-
-function setTeammate(t){
-    teammate = t;
-    if(teammate === undefined){
-        teammate = generateEmptyPlayer();
-    }
-    if(teammate.name === "none"){
-        document.getElementById("teammateName").style = "color:red";
-        document.getElementById("teammateName").innerText = "Not Connected!";
-    }
-    else{
-        document.getElementById("teammateName").style = "color:green";
-        document.getElementById("teammateName").innerText = teammate.name;
-    }
-    document.getElementById("teammateName").innerText = teammate.name;
-    document.getElementById("teammateTeam").innerText = teammate.team;
-    document.getElementById("teammateSteamID").innerText = teammate.steamID64;
-
-}
-
-function muteNonTeammates(){
-    for(let p in peers){
-        if(p !== undefined && p !== teammate.socket){
-            console.log(`Muting ${p}`);
-            mutePeer(p);
-        }
-    }
 }
 
 function playerStartMapSelection(maps){
     let container = document.getElementById("playerMapSelectionContainer");
     console.log(maps)
     for(let map in maps){
-        let mapNameString = convertMapToName(maps[map]);
+        let m = maps[map];
+        console.log(m.name);
+        let mapNameString = convertMapToName(m.name);
         let cont = document.createElement("div");
         cont.className = "playerMapContainer"
-        cont.id = maps[map];
+        cont.id = m.name;
 
             let mapBox = document.createElement("div");
             mapBox.className = "playerMapBox";
@@ -268,17 +266,17 @@ function playerStartMapSelection(maps){
                 let title = document.createElement("p");
                 title.innerText = mapNameString;
                 title.className = "mapTitle";
-                title.id = `${maps[map]}_title`
+                title.id = `${m.name}_title`
                 mapBox.appendChild(title);
 
                 let data = document.createElement("p");
                 data.className = "mapData";
-                data.id = `${maps[map]}_data`
+                data.id = `${m.name}_data`
                 mapBox.appendChild(data);
 
             let button = document.createElement("button");
             button.className = "playerButton";
-            button.id = `${maps[map]}_button`
+            button.id = `${m.name}_button`
             button.style.visibility = "visible";
             button.innerText = title;
             cont.appendChild(mapBox);
@@ -287,52 +285,111 @@ function playerStartMapSelection(maps){
 
         container.appendChild(cont);
 
-        mapSelectorUI[maps[map]] = {};
-        mapSelectorUI[maps[map]].container = cont;
-        mapSelectorUI[maps[map]].mapData = data;
-        mapSelectorUI[maps[map]].mapTitle = title;
-        mapSelectorUI[maps[map]].mapBox = mapBox;
-        mapSelectorUI[maps[map]].button = button;
+        mapSelectorUI[m.name] = {};
+        mapSelectorUI[m.name].container = cont;
+        mapSelectorUI[m.name].mapData = data;
+        mapSelectorUI[m.name].mapTitle = title;
+        mapSelectorUI[m.name].mapBox = mapBox;
+        mapSelectorUI[m.name].button = button;
     }
 }
 
-function changeButtons(maps, enabled, title, type){
-    for(let map in maps){
+function changeMapButtons(m, enabled, type){
+        let title = "";
         if(enabled){
-            mapSelectorUI[maps[map]].button.style.visibility = "visible";
+            document.getElementById(`${m.name}_button`).style.visibility = "visible";
             if(type === "pick"){
-                document.getElementById(`${maps[map]}_button`).addEventListener("click", ()=>{
-                    localSocket.emit("pick", {map:maps[map],round:pickRound});
+                title = "Pick";
+                document.getElementById(`${m.name}_button`).addEventListener("click", ()=>{
+                    localSocket.emit("pick", {map:m.name, round:pickRound, team:player.team});
                 });
             } else if(type === "ban"){
-                document.getElementById(`${maps[map]}_button`).addEventListener("click", ()=>{
+                title = "Ban";
+                document.getElementById(`${m.name}_button`).addEventListener("click", ()=>{
                     console.log("ban");
-                    localSocket.emit("ban", {map:maps[map],round:pickRound});
+                    localSocket.emit("ban", {map:m.name, round:pickRound, team:player.team});
                 });
             }
         }
         else if(!enabled){
-            console.log("Looking For Button: ")
-            console.log(maps[map].map);
-            let button = document.getElementById(`${maps[map].map}_button`);
+            // console.log(m.name);
+            let button = document.getElementById(`${m.name}_button`);
             button.style.visibility = "hidden";
             let new_element = button.cloneNode(true);
             button.replaceWith(new_element);
         }
-        if(title === undefined){
-            title = "";
+    document.getElementById(`${m.name}_button`).innerText= title;
+
+}
+
+function updateMapList(maps, currentlyPicking, pickType){
+    for(let m in maps){
+        let map = maps[m];
+        console.log(map);
+        if(isMapBanned(map)){
+            console.log("Setting Banned to ", map.name);
+            document.getElementById(map.name).style.backgroundColor = "lightcoral"
+            document.getElementById(`${map.name}_data`).textContent = map.selector;
+            changeMapButtons(map, false);
         }
-        console.log("what the fuck", maps[map]);
-        document.getElementById(`${maps[map]}_button`).innerText= title;
+        else if(isMapPicked(map)){
+            console.log("Setting Picked to ", map.name);
+            document.getElementById(map.name).style.backgroundColor = "green"
+            document.getElementById(`${map.name}_data`).textContent = map.selector;
+            changeMapButtons(map, false);
+        }
+        else{
+            // console.log("Setting Available to ", map.name);
+            document.getElementById(map.name).style.backgroundColor = "white"
+            changeMapButtons(map, currentlyPicking, pickType);
+        }
     }
 }
 
-function updateMapList(banned, picked, available){
-    for(let i in all_maps){
-        let map = all_maps[i];
-        if(banned.includes(map)){
-            document.getElementById(map).style.backgroundColor = "red"
+function startSideSelector(map){
+    let outer = document.getElementById("side-picker");
+    let container = document.createElement("div");
+    container.id = "side-container";
+    let sides = {ct: "Counter-Terrorists", t: "Terrorists"};
+
+    let mapNameString = convertMapToName(map);
+    let top = document.createElement("h3");
+    top.className = "sideSelectorTop";
+    top.innerText = `Pick Starting Side for ${mapNameString}`;
+    container.appendChild(top);
+
+    for(let s in sides){
+        let m = sides[s];
+        console.log(m);
+        let cont = document.createElement("div");
+        cont.className = "sideSelectorContainer"
+        cont.id = `${m}_side`;
+
+        let mapBox = document.createElement("div");
+        mapBox.className = "sideSelectorBox";
+
+        let button = document.createElement("button");
+        button.className = "sidePickButton";
+        button.id = `${m}_button`
+        button.style.visibility = "visible";
+        button.innerText = m;
+        button.addEventListener("click", function(){
+            console.log("Picked",m);
+            socket.emit("side-pick",{side: s, map: map});
+        })
+        if(s === "ct"){
+            cont.style.backgroundColor = "#06024a";
         }
+        else{
+            cont.style.backgroundColor = "#a6840a";
+        }
+        cont.appendChild(mapBox);
+
+        cont.appendChild(button);
+
+        container.appendChild(cont);
+
+        outer.appendChild(container);
     }
 }
 
@@ -405,6 +462,34 @@ function updateInfo(status){
     document.getElementById("info").innerText = status;
 }
 
+function setTeammate(t){
+    teammate = t;
+    if(teammate === undefined){
+        teammate = generateEmptyPlayer();
+    }
+    if(teammate.name === "none"){
+        document.getElementById("teammateName").style = "color:red;";
+        document.getElementById("teammateName").innerText = "Not Connected!";
+    }
+    else{
+        document.getElementById("teammateName").style = "color:green";
+        document.getElementById("teammateName").innerText = teammate.name;
+    }
+    document.getElementById("teammateName").innerText = teammate.name;
+    document.getElementById("teammateTeam").innerText = teammate.team;
+    document.getElementById("teammateSteamID").innerText = teammate.steamID64;
+
+}
+
+function muteNonTeammates(){
+    for(let p in peers){
+        if(p !== undefined && p !== teammate.socket){
+            console.log(`Muting ${p}`);
+            mutePeer(p);
+        }
+    }
+}
+
 function createPlayerList(){
     let form = document.getElementById('form');
     let selection = document.getElementById('player-select');
@@ -434,4 +519,16 @@ function convertMapToName(name){
         string = string.charAt(0).toUpperCase() + string.slice(1);
     }
     return string;
+}
+
+function isMapAvailable(name){
+    return (name.status === "available");
+}
+
+function isMapPicked(name){
+    return (name.status === "picked");
+}
+
+function isMapBanned(name){
+    return (name.status === "banned");
 }

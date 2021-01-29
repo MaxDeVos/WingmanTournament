@@ -169,7 +169,7 @@ label > input {
     width:100%;
 }
 .mapData{
-    padding:0;
+    font-size:11px;
     margin:0;
     text-align: center;
     height:60%;
@@ -233,4 +233,31 @@ label > input {
 }
 .startPickerButton:hover {
     background-color: #8f8f8f;
+}
+.sideSelectorContainer {
+    float:left;
+    width:198px;
+    height:75%;
+    margin:0 auto;
+    border: solid black 1px;
+}
+#side-container{
+    width:50%;
+    text-align:center;
+    margin:0 auto;
+    height:100px;
+}
+.sidePickButton {
+    margin-top:9px;
+    height: 75%;
+    width: 80%;
+    border-radius: 10px;
+}
+.sidePickButton:hover {
+    border: solid gray 3px;
+}
+.sideSelectorTop {
+    margin-bottom:0px;
+    border: solid black 1px;
+    border-bottom-width: 0px;
 }
