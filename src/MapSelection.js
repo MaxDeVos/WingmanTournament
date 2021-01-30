@@ -52,6 +52,7 @@ function onPlayerUpdate(updatedActivePlayers, socket){
     if(mapSelectionActive) {
         console.log("Adding new player to map selection")
         socket.emit("start-map-selection", maps);
+        broadcasterSocket.broadcast.emit("map-selection-complete", maps);
     }
     socket.on("coin-response", (choice) => {
         console.log(tossWinner, " chose ", choice);

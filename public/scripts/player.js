@@ -223,7 +223,11 @@ function configUser(socket){
     socket.on('pick-confirm', (data) => {
         updateInfo("Waiting on opponents to pick a side!");
         updateMapList(data.maps, false);
-        document.getElementById("side-container").remove();
+        try{
+            document.getElementById("side-container").remove();
+        }catch(e){
+
+        }
     })
 
     socket.on('side-pick-request', (data) => {
@@ -235,14 +239,27 @@ function configUser(socket){
     socket.on('pick-map-request', (data) => {
         updateMapList(data.maps, true, "pick");
         updateInfo("Please pick a map!");
-        document.getElementById("side-container").remove();
+        try{
+            document.getElementById("side-container").remove();
+        }catch(e){
+
+        }
     })
 
     socket.on('side-pick-confirm', (data) => {
         console.log("Side Pick Confirm");
-        document.getElementById("side-container").remove();
+        try{
+            document.getElementById("side-container").remove();
+        }catch(e){
+
+        }
         // updateMapList(data.maps, false, "pick");
         // updateInfo(`Waiting for your opponent to ${data.next} a map!`);
+    })
+
+    socket.on('join-map-selection', maps => {
+        playerStartMapSelection(maps);
+        updateMapList(maps);
     })
 
 
@@ -269,10 +286,36 @@ function playerStartMapSelection(maps){
                 title.id = `${m.name}_title`
                 mapBox.appendChild(title);
 
-                let data = document.createElement("p");
+                let image = document.createElement("img");
+                image.className = "mapImage";
+                image.id = `${m.name}_image`
+                image.src = getMapImage(m.name);
+                mapBox.appendChild(image);
+
+                let data = document.createElement("div");
                 data.className = "mapData";
                 data.id = `${m.name}_data`
                 mapBox.appendChild(data);
+
+                    let selectedByTitle = document.createElement("p");
+                    selectedByTitle.className = "dataTitle";
+                    selectedByTitle.id = `${m.name}_selectedByTitle`;
+                    data.appendChild(selectedByTitle);
+
+                    let selectedBy = document.createElement("p");
+                    selectedBy.className = "data";
+                    selectedBy.id = `${m.name}_selectedBy`;
+                    data.appendChild(selectedBy);
+
+                    let yourStartingSideTitle = document.createElement("p");
+                    yourStartingSideTitle.className = "dataTitle";
+                    yourStartingSideTitle.id = `${m.name}_yourStartingSideTitle`;
+                    data.appendChild(yourStartingSideTitle);
+
+                    let yourStartingSide = document.createElement("p");
+                    yourStartingSide.className = "data";
+                    yourStartingSide.id = `${m.name}_yourStartingSide`;
+                    data.appendChild(yourStartingSide);
 
             let button = document.createElement("button");
             button.className = "playerButton";
@@ -329,67 +372,39 @@ function updateMapList(maps, currentlyPicking, pickType){
         if(isMapBanned(map)){
             console.log("Setting Banned to ", map.name);
             document.getElementById(map.name).style.backgroundColor = "lightcoral"
-            document.getElementById(`${map.name}_data`).textContent = map.selector;
+            document.getElementById(`${map.name}_selectedByTitle`).textContent = "Banned By";
+            document.getElementById(`${map.name}_selectedBy`).textContent = map.selector;
             changeMapButtons(map, false);
         }
         else if(isMapPicked(map)){
             console.log("Setting Picked to ", map.name);
             document.getElementById(map.name).style.backgroundColor = "green"
-            document.getElementById(`${map.name}_data`).textContent = map.selector;
+            document.getElementById(`${map.name}_selectedByTitle`).textContent = "Picked By";
+            document.getElementById(`${map.name}_selectedBy`).textContent = map.selector;
             changeMapButtons(map, false);
+
+            if(map.ct !== undefined){
+                if(map.ct === player.team){
+                    document.getElementById(`${map.name}_yourStartingSideTitle`).textContent = "Your Start Side";
+                    document.getElementById(`${map.name}_yourStartingSide`).textContent = "CT";
+                    document.getElementById(`${map.name}_yourStartingSide`).style.fontSize = "20px";
+                    document.getElementById(`${map.name}_yourStartingSide`).style.color = "navy";
+                    document.getElementById(`${map.name}_yourStartingSide`).style.fontWeight = "600";
+                }
+                else{
+                    document.getElementById(`${map.name}_yourStartingSideTitle`).textContent = "Your Start Side";
+                    document.getElementById(`${map.name}_yourStartingSide`).textContent = "T";
+                    document.getElementById(`${map.name}_yourStartingSide`).style.fontSize = "20px";
+                    document.getElementById(`${map.name}_yourStartingSide`).style.color = "gold";
+                    document.getElementById(`${map.name}_yourStartingSide`).style.fontWeight = "600";
+                }
+            }
         }
         else{
             // console.log("Setting Available to ", map.name);
             document.getElementById(map.name).style.backgroundColor = "white"
             changeMapButtons(map, currentlyPicking, pickType);
         }
-    }
-}
-
-function startSideSelector(map){
-    let outer = document.getElementById("side-picker");
-    let container = document.createElement("div");
-    container.id = "side-container";
-    let sides = {ct: "Counter-Terrorists", t: "Terrorists"};
-
-    let mapNameString = convertMapToName(map);
-    let top = document.createElement("h3");
-    top.className = "sideSelectorTop";
-    top.innerText = `Pick Starting Side for ${mapNameString}`;
-    container.appendChild(top);
-
-    for(let s in sides){
-        let m = sides[s];
-        console.log(m);
-        let cont = document.createElement("div");
-        cont.className = "sideSelectorContainer"
-        cont.id = `${m}_side`;
-
-        let mapBox = document.createElement("div");
-        mapBox.className = "sideSelectorBox";
-
-        let button = document.createElement("button");
-        button.className = "sidePickButton";
-        button.id = `${m}_button`
-        button.style.visibility = "visible";
-        button.innerText = m;
-        button.addEventListener("click", function(){
-            console.log("Picked",m);
-            socket.emit("side-pick",{side: s, map: map});
-        })
-        if(s === "ct"){
-            cont.style.backgroundColor = "#06024a";
-        }
-        else{
-            cont.style.backgroundColor = "#a6840a";
-        }
-        cont.appendChild(mapBox);
-
-        cont.appendChild(button);
-
-        container.appendChild(cont);
-
-        outer.appendChild(container);
     }
 }
 
@@ -458,6 +473,53 @@ function createStartPicker(){
 
 }
 
+function startSideSelector(map){
+    let outer = document.getElementById("side-picker");
+    let container = document.createElement("div");
+    container.id = "side-container";
+    let sides = {ct: "Counter-Terrorists", t: "Terrorists"};
+
+    let mapNameString = convertMapToName(map);
+    let top = document.createElement("h3");
+    top.className = "sideSelectorTop";
+    top.innerText = `Pick Starting Side for ${mapNameString}`;
+    container.appendChild(top);
+
+    for(let s in sides){
+        let m = sides[s];
+        console.log(m);
+        let cont = document.createElement("div");
+        cont.className = "sideSelectorContainer"
+        cont.id = `${m}_side`;
+
+        let mapBox = document.createElement("div");
+        mapBox.className = "sideSelectorBox";
+
+        let button = document.createElement("button");
+        button.className = "sidePickButton";
+        button.id = `${m}_button`
+        button.style.visibility = "visible";
+        button.innerText = m;
+        button.addEventListener("click", function(){
+            console.log("Picked",m);
+            socket.emit("side-pick",{side: s, map: map});
+        })
+        if(s === "ct"){
+            cont.style.backgroundColor = "#06024a";
+        }
+        else{
+            cont.style.backgroundColor = "#a6840a";
+        }
+        cont.appendChild(mapBox);
+
+        cont.appendChild(button);
+
+        container.appendChild(cont);
+
+        outer.appendChild(container);
+    }
+}
+
 function updateInfo(status){
     document.getElementById("info").innerText = status;
 }
@@ -519,6 +581,12 @@ function convertMapToName(name){
         string = string.charAt(0).toUpperCase() + string.slice(1);
     }
     return string;
+}
+
+function getMapImage(name){
+    let string;
+    string = name.replace("de_","");
+    return "/media/maps/" + string + ".jpg";
 }
 
 function isMapAvailable(name){

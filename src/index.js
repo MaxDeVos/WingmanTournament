@@ -369,7 +369,11 @@ function addRTCListeners(socket){
      */
     socket.on('initSend', clientData => {
         // console.log('INIT SEND by ' + socket.id + ' for ' + clientData.socket_id +':'+clientData.type);
-        peers[clientData.socket_id].emit('initSend', {socket: socket.id, type: clientData.type})
+        try{
+            peers[clientData.socket_id].emit('initSend', {socket: socket.id, type: clientData.type})
+        }catch(e){
+            delete peers[clientData.socket_id];
+        }
     })
 }
 
