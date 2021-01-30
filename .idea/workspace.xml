@@ -5,22 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4761460e-fb8c-4ccd-ab64-648f1ca72317" name="Default Changelist" comment="Added IPs for both setups">
-      <change afterPath="$PROJECT_DIR$/public/media/maps/cobblestone.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/dust2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/elysion.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/guard.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/inferno.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/lake.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/mirage.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/overpass.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/shortnuke.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/train.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/media/maps/vertigo.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/scripts/player.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/player.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MapSelection.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/MapSelection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +151,7 @@
       <workItem from="1611897312610" duration="299000" />
       <workItem from="1611988436866" duration="6000" />
       <workItem from="1611988588579" duration="2086000" />
-      <workItem from="1612034776181" duration="2055000" />
+      <workItem from="1612034776181" duration="5404000" />
     </task>
     <task id="LOCAL-00001" summary="Laid Framework for Human Centipede Computing Model.  Fixed jamming bug in CUM.">
       <created>1610784565052</created>
@@ -431,7 +419,14 @@
       <option name="project" value="LOCAL" />
       <updated>1611892034112</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Side picking mostly works">
+      <created>1612039027743</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1612039027743</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -451,7 +446,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="HOLY MAMA THE END IS IN SIGHT." />
     <MESSAGE value="Desperate attempt to force JavaScript to have structure" />
     <MESSAGE value="Are we rushing in, or are we going Sneaky Beaky like?" />
     <MESSAGE value="Added GSI Library" />
@@ -476,7 +470,8 @@
     <MESSAGE value="RIP Repo" />
     <MESSAGE value="ONE DATA STRUCTURE TO RULE THEM ALL" />
     <MESSAGE value="Map Selection works" />
-    <option name="LAST_COMMIT_MESSAGE" value="Map Selection works" />
+    <MESSAGE value="Side picking mostly works" />
+    <option name="LAST_COMMIT_MESSAGE" value="Side picking mostly works" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

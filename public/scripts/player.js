@@ -262,6 +262,13 @@ function configUser(socket){
         updateMapList(maps);
     })
 
+    socket.on('opponent-pick-side', maps => {
+        updateMapList(maps);
+    })
+
+    socket.on('map-selection-complete', data => {
+        updateMapList(data.maps);
+    })
 
     initPlayerHandler(socket);
 }
@@ -316,6 +323,11 @@ function playerStartMapSelection(maps){
                     yourStartingSide.className = "data";
                     yourStartingSide.id = `${m.name}_yourStartingSide`;
                     data.appendChild(yourStartingSide);
+
+                    let mapOrder = document.createElement("p");
+                    mapOrder.className = "mapOrder";
+                    mapOrder.id = `${m.name}_mapOrder`;
+                    data.appendChild(mapOrder);
 
             let button = document.createElement("button");
             button.className = "playerButton";
@@ -378,9 +390,10 @@ function updateMapList(maps, currentlyPicking, pickType){
         }
         else if(isMapPicked(map)){
             console.log("Setting Picked to ", map.name);
-            document.getElementById(map.name).style.backgroundColor = "green"
+            document.getElementById(map.name).style.backgroundColor = "MediumSeaGreen"
             document.getElementById(`${map.name}_selectedByTitle`).textContent = "Picked By";
             document.getElementById(`${map.name}_selectedBy`).textContent = map.selector;
+            document.getElementById(`${map.name}_mapOrder`).textContent = `Map #${map.order}`;
             changeMapButtons(map, false);
 
             if(map.ct !== undefined){

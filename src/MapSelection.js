@@ -28,6 +28,8 @@ function pickMap(map, team, round){
     maps[map].status = "picked";
     maps[map].selector = team;
     maps[map].round = round;
+    mapOrder.push(map);
+    maps[map].order = mapOrder.length;
 }
 
 function setMapStartingConfig(map, team1, side1, team2){
@@ -41,6 +43,7 @@ function setMapStartingConfig(map, team1, side1, team2){
     }
     console.log("T: ", m.t);
     console.log("CT: ", m.ct);
+    maps[map] = m;
 }
 
 function updatePeers(p){
@@ -76,6 +79,7 @@ function onPlayerUpdate(updatedActivePlayers, socket){
     socket.on("side-pick", (data) => {
         setMapStartingConfig(data.map, inversePickOrder[pickRound], data.side, pickOrder[pickRound]);
         emitToTeam(inversePickOrder[pickRound], "side-pick-confirm", {maps: maps, next: pickConfig[pickRound+1]});
+        emitToTeam(pickOrder[pickRound], "opponent-pick-side", maps);
         pickRound++;
         if(pickConfig[pickRound] === "pick"){
             emitToTeam(pickOrder[pickRound], "pick-map-request", {maps:maps, round:pickRound});
@@ -85,6 +89,7 @@ function onPlayerUpdate(updatedActivePlayers, socket){
         if(pickRound === 7){
             console.log("Map Selection Completed");
             broadcasterSocket.broadcast.emit("map-selection-complete", maps);
+            broadcasterSocket.emit("map-selection-complete", maps);
         }
 
     })
@@ -221,7 +226,7 @@ function generateMap(mapName) {
     return {
         name: mapName,
         status: "available", selector: undefined,
-        t: undefined, ct: undefined, round: undefined
+        t: undefined, ct: undefined, round: undefined, order: undefined
     }
 }
 
