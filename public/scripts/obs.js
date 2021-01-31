@@ -27,11 +27,11 @@ function configUser(socket){
 
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
-        if(remoteData.type === "player"){
-            addPeer(remoteData.socket_id, false, true, remoteData.type);
+        if(remoteData.type === "caster"){
+            addPeer(remoteData.socket_id, false, false, remoteData.type);
         }
         else{
-            addPeer(remoteData.socket_id, false, false, remoteData.type);
+            addPeer(remoteData.socket_id, false, true, remoteData.type);
         }
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "obs"})
     })
@@ -51,5 +51,15 @@ function configUser(socket){
             console.log("Error Handling Player Camera Switch: ", playerSocket);
             console.log(e);
         }
+    })
+
+    socket.on('active-player-cam', ()=>{
+        console.log("Switching to Active Player Cam");
+    })
+    socket.on('all-players-cam', ()=>{
+        console.log("Switching to All Players Cam");
+    })
+    socket.on('caster-cam', ()=>{
+        console.log("Switching to Caster Cam");
     })
 }

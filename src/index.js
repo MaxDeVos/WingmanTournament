@@ -300,6 +300,9 @@ function handleBroadcasterRoutes(socket){
     socket.on('update-players', () =>{
         socket.emit("update-players", {players:activePlayers});
     })
+    socket.on('to-obs', (data) => {
+        peers[obsSocket].emit(data.type, data);
+    })
 }
 
 function handleBroadcasterDC(socket){

@@ -177,3 +177,14 @@ function setCasterName(activePlayers, socket){
     }
 }
 
+function setActivePlayersCam(){
+    localSocket.emit("to-obs",{type: "active-player-cam"});
+}
+
+function setAllPlayersCam(){
+    localSocket.emit("to-obs",{type: "all-players-cam"});
+}
+
+function setCasterCam(){
+    localSocket.emit("to-obs",{type: "caster-cam"});
+}

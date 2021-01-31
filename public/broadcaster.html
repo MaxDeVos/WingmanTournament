@@ -7,6 +7,8 @@
     <script src="/simple-peer/simplepeer.min.js"></script>
     <script type='text/javascript' src='./obs-websocket-js/dist/obs-websocket.js'></script>
     <link rel="stylesheet" href="styles/broadcasterStyles.css">
+    <link rel="stylesheet" href="styles/mapSelection.css">
+    
 </head>
 <body>
 <h1 style="text-align: center">Broadcaster</h1>
@@ -48,6 +50,9 @@
             </div>
             <div class="box-cell box4">
                 <div id="scene-controls" class="controls">
+                    <button id="active-player-cam" class="settings" onclick="setActivePlayersCam()">Active Player Cam</button>
+                    <button id="teams-cam" class="settings" onclick="setAllPlayersCam()">All Player Cameras</button>
+                    <button id="casters-cam" class="settings" onclick="setCasterCam()">Caster Cameras</button>
                 </div>
             </div>
         </div>
