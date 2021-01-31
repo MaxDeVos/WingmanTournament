@@ -15,6 +15,7 @@
 <h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
 <h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
 <h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
+<div id="mapSelectionContainer"></div>
 <div id="videos" class="container">
     <video id="localVideo" class="vid" autoplay muted></video>
 </div>
@@ -26,7 +27,7 @@
 <script>
     let constraints = {
         audio: true,
-        video: false
+        video: true
     }
     let offerOptions = {
         offerToReceiveAudio: true,
@@ -37,7 +38,9 @@
     let isPlayer = false;
     let mutePlayers = false;
     let videoStyle = "relative";
+    let isBroadcaster = false;
 </script>
+<script src="scripts/mapSelectionClient.js"></script>
 <script src='scripts/caster.js' lang="text/javascript"></script>
 <script src='scripts/commonRTC.js' lang="text/javascript"></script>
 </html>

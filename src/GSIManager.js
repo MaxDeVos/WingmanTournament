@@ -55,7 +55,7 @@ async function update(data) {
             halftimeLatch = true;
         }
         if (data["map"]["phase"] === "gameover" && gameoverLatch) {
-            handleGameOver();
+            await handleGameOver();
             gameoverLatch = false;
         } else if (!gameoverLatch && data["map"]["phase"] !== "gameover") {
             gameoverLatch = true;
@@ -63,12 +63,40 @@ async function update(data) {
     }
 }
 
-function handleGameOver(){
+async function changeMap(map){
+    await sendCommandRCON(`changelevel ${map.name};mp_teamname_1 ${map.ct};mp_teamname_2 ${map.t};rdy`);
+}
+
+async function warnStart(seconds){
+    await sendCommandRCON(`say Starting Game In ${seconds} Seconds!`);
+}
+
+async function startRecording(map, stage){
+    let command = "tv_record ";
+    command += `${map.ct}_vs_${map.t}_${map.name}_${stage}`
+    await sendCommandRCON(command)
+}
+
+async function stopRecording(){
+    let command = "ew; tv_stoprecord";
+    await sendCommandRCON(command);
+}
+
+async function pauseGame(){
+    let command = "pause";
+    await sendCommandRCON(command);
+}
+
+async function unpauseGame(){
+    let command = "unpause";
+    await sendCommandRCON(command);
+}
+
+async function handleGameOver(){
+    await stopRecording()
     console.log("Game Over!")
 }
 
-function getTeamFromPlayers(){
-
-}
-
-module.exports = {update,connectToRCON, sendCommandRCON};
+module.exports = {update,connectToRCON, sendCommandRCON,
+    changeMap, warnStart, startRecording, stopRecording, pauseGame, unpauseGame,
+    handleGameOver};

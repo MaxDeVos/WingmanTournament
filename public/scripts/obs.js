@@ -28,10 +28,10 @@ function configUser(socket){
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
         if(remoteData.type === "player"){
-            addPeer(remoteData.socket_id, false, true);
+            addPeer(remoteData.socket_id, false, true, remoteData.type);
         }
         else{
-            addPeer(remoteData.socket_id, false, false);
+            addPeer(remoteData.socket_id, false, false, remoteData.type);
         }
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "obs"})
     })

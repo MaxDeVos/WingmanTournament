@@ -13,7 +13,6 @@ let nameAppendLatch = true;
 let broadcasterPeer;
 let obsPeer;
 let mapSelectionRunning = false;
-let mapSelectorUI = {};
 let localSocket = undefined;
 let pickRound;
 
@@ -160,10 +159,10 @@ function configUser(socket){
         }
         console.log("INITSEND INCOMING PEER = ", peers[remoteData.socket]);
         if(remoteData.type !== "player"){
-            addPeer(remoteData.socket_id, false, true);
+            addPeer(remoteData.socket_id, false, true, remoteData.type);
         }
         else{
-            addPeer(remoteData.socket_id, false, false);
+            addPeer(remoteData.socket_id, false, false, remoteData.type);
         }
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "player"})
     })
@@ -267,6 +266,7 @@ function configUser(socket){
     })
 
     socket.on('map-selection-complete', data => {
+        updateInfo("Map Selection Complete");
         updateMapList(data.maps);
     })
 
@@ -339,13 +339,6 @@ function playerStartMapSelection(maps){
             cont.appendChild(button);
 
         container.appendChild(cont);
-
-        mapSelectorUI[m.name] = {};
-        mapSelectorUI[m.name].container = cont;
-        mapSelectorUI[m.name].mapData = data;
-        mapSelectorUI[m.name].mapTitle = title;
-        mapSelectorUI[m.name].mapBox = mapBox;
-        mapSelectorUI[m.name].button = button;
     }
 }
 

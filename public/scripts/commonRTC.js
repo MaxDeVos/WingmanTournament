@@ -65,6 +65,11 @@ if(!noInput) {
 
         init();
 
+
+        if(!isPlayer){
+            document.getElementById("localVideo").remove();
+        }
+
     }).catch(e => alert(`getusermedia error ${e.name}`))
     /**
      * initialize the socket connections
@@ -94,10 +99,10 @@ function init() {
         if(isPlayer){
             if(incoming.type === "player"){
                 // console.log("INITSEND INCOMING PEER = ", peers[incoming.socket]);
-                addPeer(incoming.socket, true, false);
+                addPeer(incoming.socket, true, false, incoming.type);
             }
             else{
-                addPeer(incoming.socket, true, true);
+                addPeer(incoming.socket, true, true, incoming.type);
                 if(incoming.type === "broadcaster"){
                     broadcasterPeer = incoming.socket;
                 }
@@ -107,14 +112,14 @@ function init() {
             }
         } else if(mutePlayers){
             if(incoming.type === "player"){
-                addPeer(incoming.socket, true, true);
+                addPeer(incoming.socket, true, true, incoming.type);
             }
             else{
-                addPeer(incoming.socket, true, false);
+                addPeer(incoming.socket, true, false, incoming.type);
             }
         }
         else {
-            addPeer(incoming.socket, true, false);
+            addPeer(incoming.socket, true, false, incoming.type);
         }
     })
 
@@ -155,7 +160,15 @@ function removePeer(socket_id) {
         })
 
         videoEl.srcObject = null
-        videoEl.parentNode.removeChild(videoEl)
+
+        if(isBroadcaster){
+            videoEl.parentElement.remove();
+        }
+        else{
+
+            videoEl.parentNode.removeChild(videoEl)
+
+        }
     }
     if (peers[socket_id]) peers[socket_id].destroy()
     delete peers[socket_id]
@@ -198,7 +211,7 @@ function unmutePeer(socket_id) {
  *                  Set to false if the peer receives the connection.
  */
 
-function addPeer(socket_id, am_initiator, muted) {
+function addPeer(socket_id, am_initiator, muted, type) {
 
     console.log("Adding Peer ", socket_id);
 
@@ -236,23 +249,51 @@ function addPeer(socket_id, am_initiator, muted) {
         let newVid = document.createElement('video')
         newVid.srcObject = stream
         newVid.id = socket_id
-        if(videoStyle === "absolute"){
-            newVid.style = "position:absolute;left:0;";
+
+        if(isBroadcaster){
+            console.log("YOU ARE DA BROADCASTER")
+            let vidDiv = document.createElement("div");
+            vidDiv.id = `${socket_id}_cont`;
+            vidDiv.className = "feedContainer";
+                let title = document.createElement("div");
+                title.id = `${socket_id}_title`;
+                title.className = "feedTitle";
+                vidDiv.appendChild(title);
+                vidDiv.appendChild(newVid);
+
+            newVid.playsinline = false
+            newVid.autoplay = true
+            if(muted){
+                newVid.muted = true;
+            }
+            newVid.className = "broadcasterVid"
+            videos[socket_id] = newVid
+
+            videosDiv.appendChild(vidDiv);
         }
-        else{
-            newVid.style = "float: left;width: 45%;"
-        }
-        newVid.playsinline = false
-        newVid.autoplay = true
-        if(muted){
-            newVid.muted = true;
-        }
-        newVid.className = "vid"
-        videos[socket_id] = newVid
-        if(!noVideoInput){
-            videosDiv.appendChild(newVid)
+        else {
+            if (videoStyle === "absolute") {
+                newVid.style = "position:absolute;left:0;";
+            } else {
+                newVid.style = "float: left;width: 45%;"
+            }
+            newVid.playsinline = false
+            newVid.autoplay = true
+            if (muted) {
+                newVid.muted = true;
+            }
+            newVid.className = "vid"
+            videos[socket_id] = newVid
+            if (!noVideoInput) {
+                videosDiv.appendChild(newVid)
+            }
         }
     })
+
+    if(type === "player" && isBroadcaster){
+        console.log("ATTEMPTING TO ADD PLAYER NAME TO " + socket_id)
+        getUpdatedPlayers(setPlayerName, socket_id)
+    }
 }
 
 // Recording Shenanigans

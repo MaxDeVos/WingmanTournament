@@ -5,31 +5,57 @@
     <title>Broadcaster</title>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/simple-peer/simplepeer.min.js"></script>
-    <link rel="stylesheet" href="styles/styles.css">
+    <script type='text/javascript' src='./obs-websocket-js/dist/obs-websocket.js'></script>
+    <link rel="stylesheet" href="styles/broadcasterStyles.css">
 </head>
 <body>
 <h1 style="text-align: center">Broadcaster</h1>
-<h3 style="text-align: center">UUID: <span id="UUID"></span></h3>
-<h4 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Player #1 Status: <span id="player1-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Player #2 Status: <span id="player2-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Player #3 Status: <span id="player3-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Player #4 Status: <span id="player4-status" style="color:red">Disconnected</span></h4>
-<div id="mapSelectionContainer"></div>
-<div id="videos" class="container" style="width:100%; float:left">
-    <video style="visibility: hidden;width:0;float:left" id="localVideo" class="vid" autoplay muted></video>
-</div>
-<br />
-<div style="display:block">
-    <button id="muteButton" style="visibility: visible" class="settings" onclick="toggleMute()">Unmuted</button>
-    <button id="start-record" style="visibility: visible" class="settings" onclick="sendStartRecording()">Start Recording</button>
-    <button id="stop-record" style="visibility: visible" class="settings" onclick="sendStopRecording()">Stop Recording</button>
-    <button id="start-map-selection" style="visibility: visible" class="settings" onclick="startMapSelection()">Start Map Selection</button>
-</div>
 <h3 style="text-align:center;visibility: visible">Status: <span id="status" style="color:red">Loading Camera Before Connecting To Peers</span></h3>
+
+<div class="container">
+    <div class="box">
+        <div class="box-row">
+            <div class="box-cell box1">
+                <div id="statusContainer">
+                    <h4 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h4>
+                    <h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
+                    <h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
+                    <h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
+                    <h4 style="text-align: center;color:black">Player #1 Status: <span id="player1-status" style="color:red">Disconnected</span></h4>
+                    <h4 style="text-align: center;color:black">Player #2 Status: <span id="player2-status" style="color:red">Disconnected</span></h4>
+                    <h4 style="text-align: center;color:black">Player #3 Status: <span id="player3-status" style="color:red">Disconnected</span></h4>
+                    <h4 style="text-align: center;color:black">Player #4 Status: <span id="player4-status" style="color:red">Disconnected</span></h4>
+                </div>
+            </div>
+            <div class="box-cell box2">
+                <div id="main-controls" class="controls">
+                    <button id="start-map-selection" style="visibility: visible" class="settings" onclick="startMapSelection()">Start Map Selection</button>
+                    <button id="muteButton" style="visibility: visible" class="settings" onclick="toggleMute()">Unmuted</button>
+                    <br>
+                    <button id="start-record" style="visibility: visible" class="settings" onclick="sendStartRecording()">Start Recording</button>
+                    <button id="stop-record" style="visibility: visible" class="settings" onclick="sendStopRecording()">Stop Recording</button>
+                    <br>
+                    <button id="pauseGame" class="settings" onclick="pauseGame()">Pause Game</button>
+                    <button id="unpauseGame" class="settings" onclick="unpauseGame()">Unpause Game</button>
+                </div>
+            </div>
+    </div>
+        <div class="box-row">
+            <div class="box-cell box3">
+                <div id="videos" class="grid-container">
+                    <video style="visibility: hidden;width:0;float:left" id="localVideo" class="vid" autoplay muted></video>
+                </div>
+            </div>
+            <div class="box-cell box4">
+                <div id="scene-controls" class="controls">
+                </div>
+            </div>
+        </div>
+
+</div>
+<div id="mapSelectionContainer"></div>
+
+<br />
 </body>
 <script>
     let constraints = {
@@ -45,6 +71,7 @@
     let isPlayer = false;
     let mutePlayers = true;
     let videoStyle = "relative";
+    let isBroadcaster = true;
 </script>
 <script src="scripts/mapSelectionClient.js"></script>
 <script src="scripts/broadcaster.js"></script>

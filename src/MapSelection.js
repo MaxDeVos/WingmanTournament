@@ -1,3 +1,4 @@
+let GSIManager = require("./GSIManager");
 let maps = {};
 let mapSelectionActive = false;
 let activePlayers = {};
@@ -14,6 +15,17 @@ let pickRound = 0;
 
 function initMapSelection(){
     maps = getEmptyMapList();
+    pickOrder = [];
+    inversePickOrder = [];
+    mapOrder = [];
+    pickRound = 0;
+}
+
+function resetMapSelection(){
+    activePlayers = {};
+    teams = undefined;
+    tossWinner = undefined;
+    tossLoser = undefined;
 }
 
 function banMap(map, team, round){
@@ -28,7 +40,7 @@ function pickMap(map, team, round){
     maps[map].status = "picked";
     maps[map].selector = team;
     maps[map].round = round;
-    mapOrder.push(map);
+    mapOrder.push(maps[map]);
     maps[map].order = mapOrder.length;
 }
 
@@ -56,6 +68,7 @@ function onPlayerUpdate(updatedActivePlayers, socket){
         console.log("Adding new player to map selection")
         socket.emit("start-map-selection", maps);
         broadcasterSocket.broadcast.emit("map-selection-complete", maps);
+        mapSelectionActive = false;
     }
     socket.on("coin-response", (choice) => {
         console.log(tossWinner, " chose ", choice);
@@ -76,20 +89,24 @@ function onPlayerUpdate(updatedActivePlayers, socket){
     socket.on("pick", (data) => {
         handlePlayerPick(data);
     })
-    socket.on("side-pick", (data) => {
+    socket.on("side-pick", async (data) => {
         setMapStartingConfig(data.map, inversePickOrder[pickRound], data.side, pickOrder[pickRound]);
         emitToTeam(inversePickOrder[pickRound], "side-pick-confirm", {maps: maps, next: pickConfig[pickRound+1]});
         emitToTeam(pickOrder[pickRound], "opponent-pick-side", maps);
+        broadcasterSocket.broadcast.emit("side-pick-spec", maps);
+        broadcasterSocket.emit("side-pick-spec", maps);
         pickRound++;
         if(pickConfig[pickRound] === "pick"){
             emitToTeam(pickOrder[pickRound], "pick-map-request", {maps:maps, round:pickRound});
         }else{
             emitToTeam(pickOrder[pickRound], "ban-map-request", {maps:maps, round:pickRound});
         }
-        if(pickRound === 7){
+        if(pickRound === 6){
             console.log("Map Selection Completed");
             broadcasterSocket.broadcast.emit("map-selection-complete", maps);
             broadcasterSocket.emit("map-selection-complete", maps);
+            console.log(mapOrder);
+            await GSIManager.changeMap(mapOrder[0]);
         }
 
     })
@@ -98,6 +115,8 @@ function onPlayerUpdate(updatedActivePlayers, socket){
 function handlePlayerBan(data){
     banMap(data.map, pickOrder[pickRound], pickRound);
     emitToTeam(pickOrder[pickRound], "ban-confirm",{maps:maps, round:pickRound})
+    broadcasterSocket.broadcast.emit("ban-spec", maps);
+    broadcasterSocket.emit("ban-spec", maps);
     pickRound++;
     if(pickConfig[pickRound] === "ban"){
         emitToTeam(pickOrder[pickRound], "ban-map-request",{maps:maps, round:pickRound})
@@ -117,6 +136,8 @@ function handlePlayerBan(data){
 
 function handlePlayerPick(data) {
     pickMap(data.map, pickOrder[pickRound], pickRound);
+    broadcasterSocket.broadcast.emit("pick-spec", maps);
+    broadcasterSocket.emit("pick-spec", maps);
     emitToTeam(pickOrder[pickRound], "pick-confirm", {maps: maps, round: pickRound})
     emitToTeam(inversePickOrder[pickRound], "side-pick-request", {map: data.map, maps: maps, round: pickRound})
 
@@ -151,7 +172,7 @@ function handleBroadcasterMapSelection(updatedActivePlayers, socket){
     activePlayers = updatedActivePlayers;
     broadcasterSocket = socket;
     if(!mapSelectionActive) {
-        // mapSelectionActive = true;
+        mapSelectionActive = true;
         console.log("Starting Map Selection!", mapSelectionActive);
         initMapSelection();
         socket.emit("start-map-selection", maps);

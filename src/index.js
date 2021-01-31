@@ -78,7 +78,7 @@ function informAboutElders(socket){
         socket.emit("obs-con", {socket: socket.id});
     }
     for(let i in activePlayers){
-        if(activePlayers[i].socket !== undefined){
+        if(activePlayers[i].socketId !== "none"){
             socket.emit(`player${i}-con`,{socket: socket.id});
         }
     }
@@ -137,14 +137,22 @@ function handlePlayerRoutes(socket){
             }
             else{
                 console.log(`Player${incomingData.number} Player Change Confirmed!`);
-                activePlayers[incomingData.number] = incomingData.player;
-                socket.emit("player-selected-confirm", activePlayers[incomingData.number]);
-                MapSelection.handlePlayerMapSelection(socket);
-                for(let i in peers){
-                    console.log(i);
-                    console.log(`sending updated teammate to ${i}`);
-                    peers[i].emit("player-changed-name", determineTeammate(getPlayerBySocketID(i)));
+                if(incomingData.player.name !== "none"){
+                    activePlayers[incomingData.number] = incomingData.player;
+                    socket.emit("player-selected-confirm", activePlayers[incomingData.number]);
+                    MapSelection.handlePlayerMapSelection(socket);
+                    for(let i in peers){
+                        console.log(i);
+                        console.log(`sending updated teammate to ${i}`);
+                        peers[i].emit("player-changed-name", determineTeammate(getPlayerBySocketID(i)));
+                        peers[i].emit("update-players", {socket_id: socket.id, players: activePlayers});
+                    }
                 }
+                else{
+                    activePlayers[incomingData.number] = Player.generateEmptyPlayer();
+                    socket.emit("player-selected-confirm", activePlayers[incomingData.number]);
+                }
+
             }
 
         }
@@ -264,12 +272,13 @@ function handleBroadcasterRoutes(socket){
             console.log("Registered New Broadcaster!");
             socket.type = 'broadcaster';
             broadcasterSocket = socket.id;
-            informAboutElders(socket);
             socket.broadcast.emit('broadcaster-con', {socket: socket.id});
+            socket.emit("update-players", {players:activePlayers});
             MapSelection.onBroadcasterConnect(socket);
             socket.on('start-map-selection', () => {
                 MapSelection.handleBroadcasterMapSelection(activePlayers, socket);
             });
+            informAboutElders(socket);
         }
     });
     socket.on('start-recording', () => {
@@ -280,6 +289,17 @@ function handleBroadcasterRoutes(socket){
         console.log("Commanding players to start recording");
         stopRecording();
     });
+    socket.on('pause-game', async () => {
+        await GSIManager.pauseGame();
+        console.log("Game Paused")
+    })
+    socket.on('unpause-game', async () => {
+        await GSIManager.unpauseGame();
+        console.log("Game Resumed")
+    })
+    socket.on('update-players', () =>{
+        socket.emit("update-players", {players:activePlayers});
+    })
 }
 
 function handleBroadcasterDC(socket){
@@ -438,9 +458,11 @@ function determinePeerCompatibility(local, remote){
     return r;
 }
 
-//TODO PLAYERS SELECTING NONE CRASHES SERVER
 function getPlayerBySocketID(socket){
     for(let i in activePlayers){
+        if(activePlayers[i] === undefined) {
+            activePlayers[i] = Player.generateEmptyPlayer();
+        }
         if(activePlayers[i].socketId === socket){
             console.log("Found Player!", activePlayers[i].name);
             return activePlayers[i];
@@ -463,8 +485,8 @@ function getPlayerBySteamID(steamID){
 
 function doesPlayerHaveSocketID(socket){
     for(let i in activePlayers){
-        if(activePlayers[i] === undefined){
-            return false;
+        if(activePlayers[i] === undefined) {
+            activePlayers[i] = Player.generateEmptyPlayer();
         }
         if(activePlayers[i].socketId === socket){
             return true;
@@ -484,6 +506,9 @@ function isPlayerTaken(p){
 
 function determineTeammate(player){
     for(let p in activePlayers){
+        if(activePlayers[p] === undefined) {
+            activePlayers[p] = Player.generateEmptyPlayer();
+        }
         if(player.steamID64 !== activePlayers[p].steamID64){
             if(activePlayers[p].team === player.team){
                 console.log("Teammate Found for ", player.name, ": ", activePlayers[p].name);

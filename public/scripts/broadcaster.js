@@ -8,6 +8,9 @@
 
 let lastObservedPlayer = "";
 let localSocket;
+let scenes;
+let activePlayers;
+let obs;
 
 //====================== User Listeners ============================
 
@@ -37,7 +40,25 @@ function startMapSelection(){
     localSocket.emit("start-map-selection");
 }
 
+function pauseGame(){
+    localSocket.emit("pause-game");
+}
+
+function unpauseGame(){
+    localSocket.emit("unpause-game");
+}
+
 function configUser(socket){
+
+    obs = new OBSWebSocket();
+    obs.connect({ address: 'localhost:4444'});
+    obs.on('ConnectionOpened', (data) => {
+        console.log("Connected!")
+        obs.send('GetSceneList').then(data =>{
+            scenes = data.scenes;
+            createSceneButtons(scenes);
+        })
+    });
 
     localSocket = socket;
 
@@ -58,10 +79,10 @@ function configUser(socket){
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
         if(remoteData.type === "player"){
-            addPeer(remoteData.socket_id, false, true);
+            addPeer(remoteData.socket_id, false, true, remoteData.type);
         }
         else{
-            addPeer(remoteData.socket_id, false, false);
+            addPeer(remoteData.socket_id, false, false, remoteData.type);
         }
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "broadcaster"})
     })
@@ -84,9 +105,7 @@ function configUser(socket){
         }
     })
 
-    socket.on('start-map-selection', (maps) => {
-        specStartMapSelection(maps)
-    });
+    configSockets(socket);
 
     createUserListener('observer', socket);
     createUserListener('broadcaster', socket);
@@ -96,4 +115,50 @@ function configUser(socket){
     createUserListener('player2', socket);
     createUserListener('player3', socket);
     createUserListener('player4', socket);
+
 }
+
+function createSceneButtons(scenes){
+    let controls = document.getElementById("scene-controls");
+    for(let scene in scenes){
+        console.log(scenes[scene]);
+        let sceneName = scenes[scene].name;
+        let button = document.createElement("button");
+        button.className = "settings";
+        button.id = `${sceneName}_button`;
+        button.innerText = sceneName;
+        button.addEventListener("click", ()=>{
+            obs.send('SetCurrentScene', {
+                'scene-name': sceneName
+            });
+        })
+        controls.appendChild(button);
+    }
+}
+
+function getUpdatedPlayers(callback, socketID){
+    localSocket.emit("update-players");
+      localSocket.on("update-players", data =>{
+          activePlayers = data.players;
+          console.log("IS THIS JUST NOT OCCURING");
+          console.log(activePlayers);
+          callback(data.players, socketID);
+      })
+}
+
+function setPlayerName(activePlayers, socket){
+    if(activePlayers !== undefined){
+        for(let p in activePlayers){
+            console.log("Looking for player with socket ID :",activePlayers[p].socketId);
+            if(activePlayers[p].socketId === socket){
+                if(activePlayers[p].socketId !== "none"){
+                    document.getElementById(`${activePlayers[p].socketId}_title`).innerText = activePlayers[p].name;
+                }
+            }
+        }
+    }else{
+        console.log("No Active Players");
+    }
+
+}
+

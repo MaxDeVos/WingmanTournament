@@ -1,0 +1,177 @@
+body {
+    font-family: Courier;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1em;
+}
+h4{
+    text-align: center;
+    color:black;
+    font-size:15px;
+    line-height: 5px;
+}
+label {
+    display: block;
+    margin-top: 1em;
+}
+label > input {
+    margin-left: 1em;
+}
+.status{
+    color:red;
+}
+
+.container .box {
+    width:100%;
+    display:table;
+}
+.container .box .box-row {
+    display:table-row;
+}
+.container .box .box-cell {
+    display:table-cell;
+    border:1px solid black;
+    padding:10px;
+}
+.box2{
+    background-image: url("/media/misc/stanced.png");
+    background-position:center;
+    background-size: 100% 100%;
+}
+.box3{
+    width:460px;
+}
+.controls{
+    position: relative;
+    top: 50%;
+    text-align: center;
+}
+.settings{
+    width:150px;
+    height:30px;
+    margin:5px;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 10px;
+}
+.feedContainer {
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    font-size: 30px;
+    text-align: center;
+    width:100%;
+}
+.broadcasterVid{
+    width:100%;
+}
+.feedTitle{
+    height:24px;
+    font-size:18px;
+}
+#videos{
+    max-width: 480px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    padding: 10px;
+}
+.mapBox {
+    float:left;
+    text-align:center;
+    width:100%;
+    height:220px;
+    border-bottom: solid black 1px;
+}
+.mapContainer {
+    float:left;
+    text-align:center;
+    width:14%;
+    height:220px;
+    border: solid black 1px;
+}
+#mapSelectionContainer{
+    width:100%;
+    padding-top:20px;
+    padding-bottom:0px;
+    margin-bottom:15px;
+    height:220px;
+    float:left;
+}
+#playerMapSelectionContainer{
+    width:100%;
+    padding-top:20px;
+    padding-bottom:0px;
+    margin-bottom:15px;
+    height:80px;
+}
+.playerMapContainer {
+    float:left;
+    text-align:center;
+    width:14%;
+    height:230px;
+    border: solid black 1px;
+}
+.playerMapBox {
+    float:left;
+    text-align:center;
+    width:100%;
+    height:200px;
+    border-bottom: solid black 1px;
+}
+.playerButton {
+    text-align:center;
+    width:75%;
+    height:20px;
+    border: black solid 1px;
+    margin: 3px auto 0;
+    border-radius: 10%;
+}
+.mapTitle{
+    padding:0;
+    margin:0;
+    text-align: center;
+    width:100%;
+    float:left;
+}
+.mapData{
+    font-size:11px;
+    margin:0;
+    text-align: center;
+    width:100%;
+    float:left;
+}
+.mapImage{
+    width:100%;
+    float:left;
+}
+.dataTitle{
+    font-weight:600;
+    float:left;
+    width:100%;
+    margin: 10px 0 0;
+    height:12px;
+}
+.data{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+    margin:0;
+    float:left;
+    width:100%;
+    height:24px;
+}
+.mapOrder{
+    font-weight:600;
+    float:left;
+    width:100%;
+    margin: 0 0 10px;
+    height:16px;
+    font-size:16px;
+}
+.teamSide{
+    line-height: normal;
+    float:left;
+    width:100%;
+    height:24px;
+    margin: 10px 0 0;
+}
