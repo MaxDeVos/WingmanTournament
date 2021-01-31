@@ -159,6 +159,21 @@ function setPlayerName(activePlayers, socket){
     }else{
         console.log("No Active Players");
     }
+}
 
+function setCasterName(activePlayers, socket){
+    if(activePlayers !== undefined){
+        for(let p in activePlayers){
+            console.log("Looking for player with socket ID :",activePlayers[p].socketId);
+            if(activePlayers[p].socketId === socket){
+                if(activePlayers[p].socketId !== "none"){
+                    document.getElementById(`${activePlayers[p].socketId}_title`).innerText = "CASTER";
+                    document.getElementById(`${activePlayers[p].socketId}_title`).style.fontWeight = 800;
+                }
+            }
+        }
+    }else{
+        console.log("No Active Players");
+    }
 }
 

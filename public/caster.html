@@ -5,24 +5,28 @@
     <title>Caster</title>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/simple-peer/simplepeer.min.js"></script>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/casterStyles.css">
 </head>
 <body>
 <h1 style="text-align:center">Caster</h1>
 <h3 style="text-align:center">Status: <span id="status" style="color:red">Loading Camera Before Connecting To Peers</span></h3>
-<h3 style="text-align: center">UUID: <span id="UUID"></span></h3>
-<h4 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
-<h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
-<div id="mapSelectionContainer"></div>
-<div id="videos" class="container">
-    <video id="localVideo" class="vid" autoplay muted></video>
+<div id="statusContainer">
+    <h3 style="text-align: center">UUID: <span id="UUID"></span></h3>
+    <h4 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h4>
+    <h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
+    <h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
+    <h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
 </div>
-<br />
-<div style="display:block">
+<div class="controls">
     <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
+    <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
 </div>
+<div id="videos">
+    <video id="localVideo" class="vid" style="outline: solid red 5px" autoplay muted></video>
+</div>
+<div id="mapSelectionContainer"></div>
+<br />
+
 </body>
 <script>
     let constraints = {
@@ -34,11 +38,10 @@
         offerToReceiveVideo: false
     }
     let noInput = false;
-    let noVideoInput = true;
-    let isPlayer = false;
+    let noVideoInput = false;
     let mutePlayers = false;
     let videoStyle = "relative";
-    let isBroadcaster = false;
+    let localType = "caster";
 </script>
 <script src="scripts/mapSelectionClient.js"></script>
 <script src='scripts/caster.js' lang="text/javascript"></script>

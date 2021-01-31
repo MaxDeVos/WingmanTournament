@@ -53,7 +53,7 @@ if(!noInput) {
         localVideo.srcObject = stream;
         localStream = stream;
         cameraStatus = true;
-        if(isPlayer){
+        if(localType === "player"){
             recorder = RecordRTC(stream,  {
                 bitsPerSecond: 300000,
                 bufferSize: 16384,
@@ -66,7 +66,7 @@ if(!noInput) {
         init();
 
 
-        if(!isPlayer){
+        if(localType !== "player" && localType !== "caster"){
             document.getElementById("localVideo").remove();
         }
 
@@ -96,7 +96,7 @@ function init() {
     socket.on('initSend', incoming => {
         console.log('INIT SEND FROM TYPE' + incoming.type);
         console.log("incoming.socket = ", incoming.socket);
-        if(isPlayer){
+        if(localType === "player"){
             if(incoming.type === "player"){
                 // console.log("INITSEND INCOMING PEER = ", peers[incoming.socket]);
                 addPeer(incoming.socket, true, false, incoming.type);
@@ -161,13 +161,11 @@ function removePeer(socket_id) {
 
         videoEl.srcObject = null
 
-        if(isBroadcaster){
+        if(localType === "broadcaster"){
             videoEl.parentElement.remove();
         }
         else{
-
             videoEl.parentNode.removeChild(videoEl)
-
         }
     }
     if (peers[socket_id]) peers[socket_id].destroy()
@@ -250,7 +248,7 @@ function addPeer(socket_id, am_initiator, muted, type) {
         newVid.srcObject = stream
         newVid.id = socket_id
 
-        if(isBroadcaster){
+        if(localType === "broadcaster"){
             console.log("YOU ARE DA BROADCASTER")
             let vidDiv = document.createElement("div");
             vidDiv.id = `${socket_id}_cont`;
@@ -275,7 +273,7 @@ function addPeer(socket_id, am_initiator, muted, type) {
             if (videoStyle === "absolute") {
                 newVid.style = "position:absolute;left:0;";
             } else {
-                newVid.style = "float: left;width: 45%;"
+                // newVid.style = "float: left;width: 45%;"
             }
             newVid.playsinline = false
             newVid.autoplay = true
@@ -285,14 +283,20 @@ function addPeer(socket_id, am_initiator, muted, type) {
             newVid.className = "vid"
             videos[socket_id] = newVid
             if (!noVideoInput) {
-                videosDiv.appendChild(newVid)
+                if(type !== "broadcaster"){
+                    videosDiv.appendChild(newVid)
+                }
             }
         }
     })
 
-    if(type === "player" && isBroadcaster){
+    if(type === "player" && localType === "broadcaster"){
         console.log("ATTEMPTING TO ADD PLAYER NAME TO " + socket_id)
         getUpdatedPlayers(setPlayerName, socket_id)
+    }
+    else if(type === "caster" && localType === "broadcaster"){
+        console.log("ATTEMPTING TO ADD CASTER NAME TO " + socket_id)
+        getUpdatedPlayers(setCasterName, socket_id)
     }
 }
 

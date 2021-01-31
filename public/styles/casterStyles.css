@@ -20,40 +20,26 @@ label > input {
 .status{
     color:red;
 }
-.container .box {
-    width:100%;
-    display:table;
+#statusContainer{
+    margin: 10px auto;
+    width:50%;
+    border:solid black 2px;
 }
-.container .box .box-row {
-    display:table-row;
-}
-.container .box .box-cell {
-    display:table-cell;
-    border:1px solid black;
-    padding:10px;
-}
-.box2{
-    background-image: url("/media/misc/stanced.png");
-    background-position:center;
-    background-size: 100% 100%;
-}
-.box3{
-    width:460px;
-}
-.controls{
-    position: relative;
-    top: 50%;
-    text-align: center;
-}
-.settings{
-    width:150px;
-    height:30px;
-    margin:5px;
-}
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto;
+
+
+/*Video*/
+#videos{
+    max-width: 100%;
     padding: 10px;
+    height:100%;
+    text-align: center;
+    margin:auto;
+    float:left;
+}
+.vid {
+    float:left;
+    width:48%;
+    margin:5px;
 }
 .feedContainer {
     border: 1px solid rgba(0, 0, 0, 0.8);
@@ -68,12 +54,23 @@ label > input {
     height:24px;
     font-size:18px;
 }
-#videos{
-    max-width: 480px;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    padding: 10px;
+
+
+
+
+/*Settings*/
+.controls{
+    position: relative;
+    top: 50%;
+    text-align: center;
 }
+.settings{
+    width:150px;
+    height:30px;
+    margin:5px;
+}
+
+/*Map Selection*/
 .mapBox {
     float:left;
     text-align:center;
