@@ -96,31 +96,7 @@ function init() {
     socket.on('initSend', incoming => {
         console.log('INIT SEND FROM TYPE' + incoming.type);
         console.log("incoming.socket = ", incoming.socket);
-        if(localType === "player"){
-            if(incoming.type === "player"){
-                // console.log("INITSEND INCOMING PEER = ", peers[incoming.socket]);
-                addPeer(incoming.socket, true, false, incoming.type);
-            }
-            else{
-                addPeer(incoming.socket, true, true, incoming.type);
-                if(incoming.type === "broadcaster"){
-                    broadcasterPeer = incoming.socket;
-                }
-                else if(incoming.type === "obs"){
-                    obsPeer = incoming.socket;
-                }
-            }
-        } else if(mutePlayers){
-            if(incoming.type === "player"){
-                addPeer(incoming.socket, true, true, incoming.type);
-            }
-            else{
-                addPeer(incoming.socket, true, false, incoming.type);
-            }
-        }
-        else {
-            addPeer(incoming.socket, true, false, incoming.type);
-        }
+        handlePeer(incoming.socket, incoming.type, true);
     })
 
     socket.on('removePeer', socket_id => {
@@ -207,6 +183,8 @@ function unmutePeer(socket_id) {
  * @param {Boolean} am_initiator
  *                  Set to true if the peer initiates the connection process.
  *                  Set to false if the peer receives the connection.
+ * @param muted
+ * @param type
  */
 
 function addPeer(socket_id, am_initiator, muted, type) {
@@ -224,8 +202,6 @@ function addPeer(socket_id, am_initiator, muted, type) {
                 credential: 'fuck',
                 username: 'max'
             },
-                // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
-                // set your own servers here
                 {
                     url: 'turn:wingmantournament.tk:3478?transport=tcp',
                     credential: 'fuck',

@@ -27,12 +27,7 @@ function configUser(socket){
 
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
-        if(remoteData.type === "caster"){
-            addPeer(remoteData.socket_id, false, false, remoteData.type);
-        }
-        else{
-            addPeer(remoteData.socket_id, false, true, remoteData.type);
-        }
+        handlePeer(remoteData.socket_id, remoteData.type, false);
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "obs"})
     })
 
@@ -62,4 +57,10 @@ function configUser(socket){
     socket.on('caster-cam', ()=>{
         console.log("Switching to Caster Cam");
     })
+}
+
+function handlePeer(socketId, type, initiator){
+    if(type !== "player"){
+        addPeer(socketId, initiator, false, type);
+    }
 }

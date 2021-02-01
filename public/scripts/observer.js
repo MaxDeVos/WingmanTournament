@@ -40,7 +40,7 @@ function configUser(socket){
 
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
-        addPeer(remoteData.socket_id, false, false, remoteData.type)
+        handlePeer(remoteData.socket_id, remoteData.type, false);
 
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "observer"})
     })
@@ -56,3 +56,7 @@ let s = io.connect("https://localhost:2000")
 s.on("connect", () => {
     console.log("GAMING");
 })
+
+function handlePeer(socketId, type, initiator){
+    addPeer(socketId, initiator, false, type);
+}

@@ -151,19 +151,7 @@ function configUser(socket){
 
     socket.on('initReceive', remoteData => {
         console.log('INIT RECEIVE FROM ' + remoteData.socket_id + ":" + remoteData.type);
-        if(remoteData.type === "broadcaster"){
-            broadcasterPeer = remoteData.socket_id;
-        }
-        else if(remoteData.type === "obs"){
-            obsPeer = remoteData.socket_id;
-        }
-        console.log("INITSEND INCOMING PEER = ", peers[remoteData.socket]);
-        if(remoteData.type !== "player"){
-            addPeer(remoteData.socket_id, false, true, remoteData.type);
-        }
-        else{
-            addPeer(remoteData.socket_id, false, false, remoteData.type);
-        }
+        handlePeer(remoteData.socket_id, remoteData.type, false);
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "player"})
     })
 
@@ -606,3 +594,19 @@ function isMapPicked(name){
 function isMapBanned(name){
     return (name.status === "banned");
 }
+
+function handlePeer(socketId, type, initiator){
+    if(type === "player"){
+        addPeer(socketId, initiator, false, type);
+    }
+    else{
+        addPeer(socketId, initiator, true, type);
+        if(type === "broadcaster"){
+            broadcasterPeer = socketId;
+        }
+        else if(type === "obs"){
+            obsPeer = socketId;
+        }
+    }
+}
+
