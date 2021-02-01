@@ -61,7 +61,6 @@ label > input {
 /*Settings*/
 .controls{
     position: relative;
-    top: 50%;
     text-align: center;
 }
 .settings{

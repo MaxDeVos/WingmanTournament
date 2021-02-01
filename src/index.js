@@ -306,6 +306,15 @@ function handleBroadcasterRoutes(socket){
     socket.on('to-obs', (data) => {
         peers[obsSocket].emit("to-obs", data);
     })
+    socket.on('obs-command', (data) => {
+        console.log("SENDING OBS COMMAND");
+
+        try{
+            peers[obsSocket].emit('obs-command', data);
+        }catch (e){
+            console.warn("No OBS Client to send command to!")
+        }
+    })
 }
 
 function handleBroadcasterDC(socket){

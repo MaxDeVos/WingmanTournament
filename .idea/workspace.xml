@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4761460e-fb8c-4ccd-ab64-648f1ca72317" name="Default Changelist" comment="Decentralized video control to clients">
-      <change afterPath="$PROJECT_DIR$/public/styles/obsStyles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/broadcaster.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/broadcaster.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/obs.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/obs.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/scripts/broadcaster.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/broadcaster.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/scripts/commonRTC.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/commonRTC.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/scripts/obs.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/obs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/scripts/observer.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/observer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/styles/casterStyles.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/casterStyles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -161,7 +159,8 @@
       <workItem from="1612129818113" duration="6681000" />
       <workItem from="1612138330896" duration="6428000" />
       <workItem from="1612147951882" duration="1749000" />
-      <workItem from="1612157036274" duration="3463000" />
+      <workItem from="1612157036274" duration="5144000" />
+      <workItem from="1612216535251" duration="2280000" />
     </task>
     <task id="LOCAL-00001" summary="Laid Framework for Human Centipede Computing Model.  Fixed jamming bug in CUM.">
       <created>1610784565052</created>
@@ -485,7 +484,14 @@
       <option name="project" value="LOCAL" />
       <updated>1612140099115</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Broadcaster phantom disconnect bug fixed">
+      <created>1612160547340</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1612160547340</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -505,7 +511,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Proper SSL certs and OBS!!!!!" />
     <MESSAGE value="Competent teammate sender determination" />
     <MESSAGE value="Pushing to AWS" />
     <MESSAGE value="Updated Players page to clearly show disconnected teammate" />
@@ -530,7 +535,8 @@
     <MESSAGE value="Backup before major refactoring" />
     <MESSAGE value="Decentralized peer control" />
     <MESSAGE value="Decentralized video control to clients" />
-    <option name="LAST_COMMIT_MESSAGE" value="Decentralized video control to clients" />
+    <MESSAGE value="Broadcaster phantom disconnect bug fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Broadcaster phantom disconnect bug fixed" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

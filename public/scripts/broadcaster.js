@@ -10,7 +10,7 @@ let lastObservedPlayer = "";
 let localSocket;
 let scenes;
 let activePlayers;
-let obs;
+
 
 //====================== User Listeners ============================
 
@@ -49,20 +49,6 @@ function unpauseGame(){
 }
 
 function configUser(socket){
-
-    try{
-        obs = new OBSWebSocket();
-        obs.connect({ address: 'localhost:4444'});
-        obs.on('ConnectionOpened', (data) => {
-            console.log("Connected!")
-            obs.send('GetSceneList').then(data =>{
-                scenes = data.scenes;
-                createSceneButtons(scenes);
-            })
-        });
-    }catch(e){
-        console.warn("Couldn't connect to OBS!");
-    }
 
 
     localSocket = socket;
@@ -119,6 +105,10 @@ function configUser(socket){
 }
 
 function populatePlayerNames(data){
+
+    //TODO REMOVE THIS DIPSHIT
+    relayToOBS("SetCurrentScene",
+        {'scene-name': "Red"});
 
     console.log("POPULATING PLAYER NAMES FUCKERS");
     for(let a in data){
@@ -196,4 +186,8 @@ function handleNewFeed(newVid, socket_id, type){
     vidDiv.appendChild(newVid);
     newVid.className = "broadcasterVid"
     videosDiv.appendChild(vidDiv);
+}
+
+function relayToOBS(event, payload){
+    localSocket.emit("obs-command", {event: event, payload: payload});
 }

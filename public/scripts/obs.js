@@ -11,10 +11,30 @@
 let playerVideos = {};
 let casterVideos = {};
 let cameraState = "none";
+let obs;
 
 function configUser(socket){
+
+    try{
+        obs = new OBSWebSocket();
+        obs.connect({ address: 'localhost:4444'});
+        obs.on('ConnectionOpened', (data) => {
+            console.log("OBS Connected!")
+            obs.send('GetSceneList').then((data) =>{
+                console.log(data);
+            });
+        });
+    }catch(e){
+        console.warn("Couldn't connect to OBS!");
+    }
+
+    obs.on('GetSceneList', data => {
+        console.log("GOT SOME DATA!!!")
+        console.log(data);
+    })
+
     socket.on('connect', () => {
-        console.log("Connected!");
+        console.log("NodeJS Connected!");
         socket.emit("obs-con", function(data) {
             console.log(data);
         });
@@ -59,6 +79,11 @@ function configUser(socket){
             console.log("Switching to Caster Cam");
             disableCurrentCam();
         }
+    })
+
+    socket.on('obs-command', data =>{
+        console.log("SENDING ", data);
+        obs.send(data.event, data.payload);
     })
 }
 
