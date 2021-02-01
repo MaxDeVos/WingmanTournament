@@ -124,7 +124,7 @@ function init() {
  */
 function removePeer(socket_id) {
 
-    let videoEl = document.getElementById(socket_id)
+    let videoEl = videos[socket_id];
     if (videoEl) {
 
         const tracks = videoEl.srcObject.getTracks();
@@ -135,19 +135,14 @@ function removePeer(socket_id) {
 
         videoEl.srcObject = null
 
-        if(localType === "broadcaster"){
-            videoEl.parentElement.remove();
-        }
-        else{
-            videoEl.parentNode.removeChild(videoEl)
-        }
+        delete videos[socket_id];
     }
     if (peers[socket_id]) peers[socket_id].destroy()
     delete peers[socket_id]
 }
 
 function mutePeer(socket_id) {
-    let videoEl = document.getElementById(socket_id)
+    let videoEl = videos[socket_id];
     console.log(videoEl)
     if (videoEl) {
 
@@ -161,7 +156,7 @@ function mutePeer(socket_id) {
 }
 
 function unmutePeer(socket_id) {
-    let videoEl = document.getElementById(socket_id)
+    let videoEl = videos[socket_id];
     console.log(videoEl)
     if (videoEl) {
 
@@ -226,19 +221,11 @@ function addPeer(socket_id, am_initiator, muted, type) {
         if(muted){
             newVid.muted = true;
         }
+        videos[socket_id] = newVid;
 
-        handleNewFeed(newVid, type);
+        handleNewFeed(newVid, socket_id, type);
 
     })
-
-    if(type === "player" && localType === "broadcaster"){
-        console.log("ATTEMPTING TO ADD PLAYER NAME TO " + socket_id)
-        getUpdatedPlayers(setPlayerName, socket_id)
-    }
-    else if(type === "caster" && localType === "broadcaster"){
-        console.log("ATTEMPTING TO ADD CASTER NAME TO " + socket_id)
-        getUpdatedPlayers(setCasterName, socket_id)
-    }
 }
 
 // Recording Shenanigans

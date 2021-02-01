@@ -50,15 +50,20 @@ function unpauseGame(){
 
 function configUser(socket){
 
-    obs = new OBSWebSocket();
-    obs.connect({ address: 'localhost:4444'});
-    obs.on('ConnectionOpened', (data) => {
-        console.log("Connected!")
-        obs.send('GetSceneList').then(data =>{
-            scenes = data.scenes;
-            createSceneButtons(scenes);
-        })
-    });
+    try{
+        obs = new OBSWebSocket();
+        obs.connect({ address: 'localhost:4444'});
+        obs.on('ConnectionOpened', (data) => {
+            console.log("Connected!")
+            obs.send('GetSceneList').then(data =>{
+                scenes = data.scenes;
+                createSceneButtons(scenes);
+            })
+        });
+    }catch(e){
+        console.warn("Couldn't connect to OBS!");
+    }
+
 
     localSocket = socket;
 
@@ -113,6 +118,25 @@ function configUser(socket){
 
 }
 
+function populatePlayerNames(data){
+
+    console.log("POPULATING PLAYER NAMES FUCKERS");
+    for(let a in data){
+        if(peers[data[a].socketId] !== undefined){
+            setPlayerName(data[a].socketId, data[a].name);
+        }
+    }
+
+}
+
+function updatePlayers(callback){
+    localSocket.emit("update-players");
+    localSocket.on("update-players", data =>{
+        callback(data.players);
+    })
+
+}
+
 function createSceneButtons(scenes){
     let controls = document.getElementById("scene-controls");
     for(let scene in scenes){
@@ -131,56 +155,22 @@ function createSceneButtons(scenes){
     }
 }
 
-function getUpdatedPlayers(callback, socketID){
-    localSocket.emit("update-players");
-      localSocket.on("update-players", data =>{
-          activePlayers = data.players;
-          console.log("IS THIS JUST NOT OCCURING");
-          console.log(activePlayers);
-          callback(data.players, socketID);
-      })
-}
-
-function setPlayerName(activePlayers, socket){
-    if(activePlayers !== undefined){
-        for(let p in activePlayers){
-            console.log("Looking for player with socket ID :",activePlayers[p].socketId);
-            if(activePlayers[p].socketId === socket){
-                if(activePlayers[p].socketId !== "none"){
-                    document.getElementById(`${activePlayers[p].socketId}_title`).innerText = activePlayers[p].name;
-                }
-            }
-        }
-    }else{
-        console.log("No Active Players");
-    }
-}
-
-function setCasterName(activePlayers, socket){
-    if(activePlayers !== undefined){
-        for(let p in activePlayers){
-            console.log("Looking for player with socket ID :",activePlayers[p].socketId);
-            if(activePlayers[p].socketId === socket){
-                if(activePlayers[p].socketId !== "none"){
-                    document.getElementById(`${activePlayers[p].socketId}_title`).innerText = "CASTER";
-                    document.getElementById(`${activePlayers[p].socketId}_title`).style.fontWeight = 800;
-                }
-            }
-        }
-    }else{
-        console.log("No Active Players");
-    }
+function setPlayerName(socket, name){
+    document.getElementById(`${socket}_title`).innerText = name;
 }
 
 function setActivePlayersCam(){
+    console.log("emit active-player-cam");
     localSocket.emit("to-obs",{type: "active-player-cam"});
 }
 
 function setAllPlayersCam(){
+    console.log("all-players-cam");
     localSocket.emit("to-obs",{type: "all-players-cam"});
 }
 
 function setCasterCam(){
+    console.log("Emit caster-cam");
     localSocket.emit("to-obs",{type: "caster-cam"});
 }
 

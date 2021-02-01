@@ -42,6 +42,8 @@ let handleRoutes;
         configureSocketForRTC(socket);
 
         socket.on('disconnect', function() {
+
+            console.log(socket.id, broadcasterSocket);
             if(socket.id === observerSocket){
                 handleObserverDC(socket);
             }
@@ -262,7 +264,7 @@ app.get('/broadcaster', (req, res) => {
 
 function handleBroadcasterRoutes(socket){
     socket.on('broadcaster-con', async () => {
-        await GSIManager.connectToRCON(csgoIP);
+        // await GSIManager.connectToRCON(csgoIP);
         console.log("Broadcaster Attempting To Connect");
         if(broadcasterSocket !== undefined){
             console.log("Rejected New Broadcaster!");
@@ -278,6 +280,7 @@ function handleBroadcasterRoutes(socket){
             socket.on('start-map-selection', () => {
                 MapSelection.handleBroadcasterMapSelection(activePlayers, socket);
             });
+            console.log(broadcasterSocket)
             informAboutElders(socket);
         }
     });
@@ -301,7 +304,7 @@ function handleBroadcasterRoutes(socket){
         socket.emit("update-players", {players:activePlayers});
     })
     socket.on('to-obs', (data) => {
-        peers[obsSocket].emit(data.type, data);
+        peers[obsSocket].emit("to-obs", data);
     })
 }
 

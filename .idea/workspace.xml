@@ -4,20 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4761460e-fb8c-4ccd-ab64-648f1ca72317" name="Default Changelist" comment="Decentralized peer control">
+    <list default="true" id="4761460e-fb8c-4ccd-ab64-648f1ca72317" name="Default Changelist" comment="Decentralized video control to clients">
+      <change afterPath="$PROJECT_DIR$/public/styles/obsStyles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/broadcaster.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/broadcaster.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/caster.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/caster.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/obs.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/obs.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/observer.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/observer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/player.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/player.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/scripts/broadcaster.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/broadcaster.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/scripts/caster.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/caster.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/scripts/commonRTC.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/commonRTC.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/scripts/obs.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/obs.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/scripts/observer.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/observer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/scripts/player.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/player.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +159,9 @@
       <workItem from="1612034776181" duration="29176000" />
       <workItem from="1612080738471" duration="3052000" />
       <workItem from="1612129818113" duration="6681000" />
-      <workItem from="1612138330896" duration="1709000" />
+      <workItem from="1612138330896" duration="6428000" />
+      <workItem from="1612147951882" duration="1749000" />
+      <workItem from="1612157036274" duration="3463000" />
     </task>
     <task id="LOCAL-00001" summary="Laid Framework for Human Centipede Computing Model.  Fixed jamming bug in CUM.">
       <created>1610784565052</created>
@@ -480,7 +478,14 @@
       <option name="project" value="LOCAL" />
       <updated>1612138372673</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Decentralized video control to clients">
+      <created>1612140099115</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1612140099115</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -500,7 +505,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Refactoring and quality of life changes" />
     <MESSAGE value="Proper SSL certs and OBS!!!!!" />
     <MESSAGE value="Competent teammate sender determination" />
     <MESSAGE value="Pushing to AWS" />
@@ -525,7 +529,8 @@
     <MESSAGE value="Decentralized mapSelection stylesheet" />
     <MESSAGE value="Backup before major refactoring" />
     <MESSAGE value="Decentralized peer control" />
-    <option name="LAST_COMMIT_MESSAGE" value="Decentralized peer control" />
+    <MESSAGE value="Decentralized video control to clients" />
+    <option name="LAST_COMMIT_MESSAGE" value="Decentralized video control to clients" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

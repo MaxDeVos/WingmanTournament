@@ -66,7 +66,7 @@ function handleNewFeed(newVid, socket_id, type){
     let videosDiv = document.getElementById('videos');
     newVid.className = "vid"
     if (!noVideoInput) {
-        if(type !== "broadcaster"){
+        if(type === "caster"){
             videosDiv.appendChild(newVid)
         }
     }
