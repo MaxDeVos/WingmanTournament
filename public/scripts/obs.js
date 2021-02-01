@@ -12,17 +12,20 @@ let playerVideos = {};
 let casterVideos = {};
 let cameraState = "none";
 let obs;
+let broadcasterConnected = false;
+let wsConnected = false;
+let localSocket;
 
 function configUser(socket){
+    localSocket = socket;
 
     try{
         obs = new OBSWebSocket();
         obs.connect({ address: 'localhost:4444'});
         obs.on('ConnectionOpened', (data) => {
-            console.log("OBS Connected!")
-            obs.send('GetSceneList').then((data) =>{
-                console.log(data);
-            });
+            console.log("OBS WS Connected!")
+            wsConnected = true;
+            relayToBroadcaster("obs-ws-connected");
         });
     }catch(e){
         console.warn("Couldn't connect to OBS!");
@@ -39,6 +42,21 @@ function configUser(socket){
             console.log(data);
         });
     });
+
+    // Handle if disconnects while OBS is connected
+    socket.on('broadcaster-dc', () =>{
+        console.log("Broadcaster Disconnected!");
+        broadcasterConnected = false;
+    })
+
+    // Handle if connects after OBS
+    socket.on('broadcaster-con', () =>{
+        if(wsConnected){
+            relayToBroadcaster("obs-ws-connected");
+        }
+        console.log("Broadcaster Connected!");
+        broadcasterConnected = true;
+    })
 
     socket.on('obs-invalid', () => {
         document.open();
@@ -133,4 +151,8 @@ function disableCurrentCam(){
             console.log("Unknown cameraState: ", cameraState);
     }
     cameraState = "none";
+}
+
+function relayToBroadcaster(event, payload){
+    localSocket.emit("to-broadcaster", {event: event, payload: payload});
 }

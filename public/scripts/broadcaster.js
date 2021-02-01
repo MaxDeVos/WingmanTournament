@@ -91,6 +91,22 @@ function configUser(socket){
         }
     })
 
+    socket.on('obs-con', data => {
+        console.log("OBS IS CONNECTED");
+    })
+
+    socket.on('obs-dc', data => {
+        console.log("OBS DISCONNECTED");
+    })
+
+    socket.on('obs-ws-connected', data => {
+        console.log("OBS WS IS CONNECTED");
+    })
+
+    socket.on('obs-ws-disconnected', data => {
+        console.log("OBS WS DISCONNECTED");
+    })
+
     configSockets(socket);
 
     createUserListener('observer', socket);
@@ -137,7 +153,7 @@ function createSceneButtons(scenes){
         button.id = `${sceneName}_button`;
         button.innerText = sceneName;
         button.addEventListener("click", ()=>{
-            obs.send('SetCurrentScene', {
+            relayToOBS('SetCurrentScene', {
                 'scene-name': sceneName
             });
         })

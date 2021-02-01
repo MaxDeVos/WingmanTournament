@@ -341,9 +341,19 @@ function handleOBSRoutes(socket){
             socket.type = 'obs';
             obsSocket = socket.id;
             informAboutElders(socket);
+            socket.emit('broadcaster-status', broadcasterSocket);
             socket.broadcast.emit('obs-con', {socket: socket.id});
         }
     });
+    socket.on('to-broadcaster', (data) => {
+        console.log("SENDING TO BROADCASTER");
+        try{
+            console.log("SENDING ", data.event)
+            peers[broadcasterSocket].emit(data.event, data.payload);
+        }catch (e){
+            console.warn("No Broadcaster Client to send command to!")
+        }
+    })
 }
 
 function handleOBSDC(socket){
