@@ -56,3 +56,14 @@ function configUser(socket){
 function handlePeer(socketId, type, initiator){
     addPeer(socketId, initiator, false, type);
 }
+
+function handleNewFeed(newVid, socket_id, type){
+
+    let videosDiv = document.getElementById('videos');
+    newVid.className = "vid"
+    if (!noVideoInput) {
+        if(type !== "broadcaster"){
+            videosDiv.appendChild(newVid)
+        }
+    }
+}

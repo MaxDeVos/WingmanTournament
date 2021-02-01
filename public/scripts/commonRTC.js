@@ -3,7 +3,6 @@
  */
 let socket;
 let videos = {};
-let poop = "poop123"
 /**
  * The stream object used to send media
  */
@@ -64,7 +63,6 @@ if(!noInput) {
         }
 
         init();
-
 
         if(localType !== "player" && localType !== "caster"){
             document.getElementById("localVideo").remove();
@@ -149,7 +147,7 @@ function removePeer(socket_id) {
 }
 
 function mutePeer(socket_id) {
-    let videoEl = videos[socket_id];
+    let videoEl = document.getElementById(socket_id)
     console.log(videoEl)
     if (videoEl) {
 
@@ -163,7 +161,7 @@ function mutePeer(socket_id) {
 }
 
 function unmutePeer(socket_id) {
-    let videoEl = videos[socket_id];
+    let videoEl = document.getElementById(socket_id)
     console.log(videoEl)
     if (videoEl) {
 
@@ -218,52 +216,19 @@ function addPeer(socket_id, am_initiator, muted, type) {
         })
     })
 
-    let videosDiv = document.getElementById('videos');
+
     peers[socket_id].on('stream', stream => {
         let newVid = document.createElement('video')
         newVid.srcObject = stream
         newVid.id = socket_id
-
-        if(localType === "broadcaster"){
-            console.log("YOU ARE DA BROADCASTER")
-            let vidDiv = document.createElement("div");
-            vidDiv.id = `${socket_id}_cont`;
-            vidDiv.className = "feedContainer";
-                let title = document.createElement("div");
-                title.id = `${socket_id}_title`;
-                title.className = "feedTitle";
-                vidDiv.appendChild(title);
-                vidDiv.appendChild(newVid);
-
-            newVid.playsinline = false
-            newVid.autoplay = true
-            if(muted){
-                newVid.muted = true;
-            }
-            newVid.className = "broadcasterVid"
-            videos[socket_id] = newVid
-
-            videosDiv.appendChild(vidDiv);
+        newVid.playsinline = false
+        newVid.autoplay = true
+        if(muted){
+            newVid.muted = true;
         }
-        else {
-            if (videoStyle === "absolute") {
-                newVid.style = "position:absolute;left:0;";
-            } else {
-                // newVid.style = "float: left;width: 45%;"
-            }
-            newVid.playsinline = false
-            newVid.autoplay = true
-            if (muted) {
-                newVid.muted = true;
-            }
-            newVid.className = "vid"
-            videos[socket_id] = newVid
-            if (!noVideoInput) {
-                if(type !== "broadcaster"){
-                    videosDiv.appendChild(newVid)
-                }
-            }
-        }
+
+        handleNewFeed(newVid, type);
+
     })
 
     if(type === "player" && localType === "broadcaster"){

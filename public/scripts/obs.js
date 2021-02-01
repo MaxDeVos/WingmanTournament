@@ -6,8 +6,6 @@
  * Video Out: No
  */
 
-let lastObservedPlayer = "";
-
 // ======================== RTC Bullshit Starts Here ============================
 
 function configUser(socket){
@@ -60,7 +58,14 @@ function configUser(socket){
 }
 
 function handlePeer(socketId, type, initiator){
-    if(type !== "player"){
+    if(type === "caster"){
         addPeer(socketId, initiator, false, type);
     }
+    else{
+        addPeer(socketId, initiator, true, type);
+    }
+}
+
+function handleNewFeed(newVid, socket_id, type){
+
 }

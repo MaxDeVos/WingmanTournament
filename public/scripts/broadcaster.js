@@ -192,3 +192,18 @@ function handlePeer(socketId, type, initiator){
         addPeer(socketId, initiator, false, type);
     }
 }
+
+function handleNewFeed(newVid, socket_id, type){
+    let videosDiv = document.getElementById('videos');
+    console.log("YOU ARE DA BROADCASTER")
+    let vidDiv = document.createElement("div");
+    vidDiv.id = `${socket_id}_cont`;
+    vidDiv.className = "feedContainer";
+    let title = document.createElement("div");
+    title.id = `${socket_id}_title`;
+    title.className = "feedTitle";
+    vidDiv.appendChild(title);
+    vidDiv.appendChild(newVid);
+    newVid.className = "broadcasterVid"
+    videosDiv.appendChild(vidDiv);
+}
