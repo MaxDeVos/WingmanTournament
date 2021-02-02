@@ -10,6 +10,7 @@ let lastObservedPlayer = "";
 let localSocket;
 let scenes;
 let activePlayers;
+let teams = {};
 
 
 //====================== User Listeners ============================
@@ -122,14 +123,18 @@ function configUser(socket){
 
 function populatePlayerNames(data){
 
-    //TODO REMOVE THIS DIPSHIT
-    relayToOBS("SetCurrentScene",
-        {'scene-name': "Red"});
+    // //TODO REMOVE THIS DIPSHIT
+    // relayToOBS("SetCurrentScene",
+    //     {'scene-name': "Red"});
 
     console.log("POPULATING PLAYER NAMES FUCKERS");
     for(let a in data){
         if(peers[data[a].socketId] !== undefined){
             setPlayerName(data[a].socketId, data[a].name);
+            if(!teams[data[a].team]){
+                teams[data[a].team] = true;
+                createTeamCamButton(data[a].team);
+            }
         }
     }
 
@@ -153,12 +158,24 @@ function createSceneButtons(scenes){
         button.id = `${sceneName}_button`;
         button.innerText = sceneName;
         button.addEventListener("click", ()=>{
-            relayToOBS('SetCurrentScene', {
+            obsCommand('SetCurrentScene', {
                 'scene-name': sceneName
             });
         })
         controls.appendChild(button);
     }
+}
+
+function createTeamCamButton(team){
+    let scenes = document.getElementById("scene-controls");
+    let button = document.createElement("button");
+    button.className = "settings";
+    button.id = `${team}_button`;
+    button.innerText = `${team} Cam`;
+    button.addEventListener("click", ()=>{
+        transmitSceneSwitch("team-cam", team);
+    })
+    scenes.appendChild(button);
 }
 
 function setPlayerName(socket, name){
@@ -167,17 +184,17 @@ function setPlayerName(socket, name){
 
 function setActivePlayersCam(){
     console.log("emit active-player-cam");
-    localSocket.emit("to-obs",{type: "active-player-cam"});
+    transmitSceneSwitch("active-player-cam");
 }
 
 function setAllPlayersCam(){
     console.log("all-players-cam");
-    localSocket.emit("to-obs",{type: "all-players-cam"});
+    transmitSceneSwitch("all-players-cam");
 }
 
 function setCasterCam(){
     console.log("Emit caster-cam");
-    localSocket.emit("to-obs",{type: "caster-cam"});
+    transmitSceneSwitch("caster-cam");
 }
 
 function handlePeer(socketId, type, initiator){
@@ -204,6 +221,14 @@ function handleNewFeed(newVid, socket_id, type){
     videosDiv.appendChild(vidDiv);
 }
 
-function relayToOBS(event, payload){
+function obsCommand(event, payload){
     localSocket.emit("obs-command", {event: event, payload: payload});
+}
+
+function relayToOBS(event, payload){
+    localSocket.emit("to-obs", {event: event, payload: payload});
+}
+
+function transmitSceneSwitch(type, payload){
+    localSocket.emit("to-obs", {type: type, payload: payload});
 }

@@ -1,10 +1,60 @@
+body{
+    max-width: 1920px;
+}
 video{
     width:100%;
 }
+
+/*Active Player Camera*/
 .active-player{
     position:absolute;
     width:480px;
     height:360px;
     left:1440px;
     top:200px;
+}
+
+/*Caster Camera*/
+#casterCamContainer{
+    position:absolute;
+    width:1480px;
+    height:560px;
+    left:220px;
+    top:260px;
+}
+.casterVideo{
+    width:720px;
+    height:540px;
+    margin:10px;
+    background-color: red;
+}
+
+/*All Players Cameras*/
+#allPlayersContainer{
+    position:absolute;
+    width:1320px;
+    height:1000px;
+    left:300px;
+    top:30px;
+}
+.allPlayersVideo{
+    width:640px;
+    height:480px;
+    margin:10px;
+    background-color: red;
+}
+
+/*Team Cam Camera*/
+#teamCamContainer{
+    position:absolute;
+    width:1480px;
+    height:560px;
+    left:220px;
+    top:260px;
+}
+.teamCamVideo{
+    width:720px;
+    height:540px;
+    margin:10px;
+    background-color: red;
 }

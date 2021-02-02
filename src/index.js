@@ -304,11 +304,14 @@ function handleBroadcasterRoutes(socket){
         socket.emit("update-players", {players:activePlayers});
     })
     socket.on('to-obs', (data) => {
-        peers[obsSocket].emit("to-obs", data);
+        try{
+            peers[obsSocket].emit("to-obs", data);
+        }catch(e){
+            console.warn("No OBS Client to send data to!");
+        }
     })
     socket.on('obs-command', (data) => {
         console.log("SENDING OBS COMMAND");
-
         try{
             peers[obsSocket].emit('obs-command', data);
         }catch (e){
@@ -353,6 +356,12 @@ function handleOBSRoutes(socket){
         }catch (e){
             console.warn("No Broadcaster Client to send command to!")
         }
+    })
+    socket.on('update-players', () =>{
+        socket.emit("update-players", {players:activePlayers});
+    })
+    socket.on('request-team-players', (teamName) =>{
+        socket.emit("response-team-players", getPlayersOnTeam(teamName));
     })
 }
 
@@ -527,6 +536,19 @@ function isPlayerTaken(p){
         }
     }
     return false;
+}
+
+function getPlayersOnTeam(team){
+    let out = {};
+    let i = 0;
+    for(let p in activePlayers){
+        if(activePlayers[p].team === team){
+            console.log(activePlayers[p].team);
+            out[i] = activePlayers[p];
+            i++;
+        }
+    }
+    return out;
 }
 
 function determineTeammate(player){
