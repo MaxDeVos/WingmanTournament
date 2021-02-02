@@ -101,7 +101,13 @@ function configUser(socket){
     })
 
     socket.on('obs-ws-connected', data => {
+        getFromOBS('GetSceneList', 'updateSceneButtons');
         console.log("OBS WS IS CONNECTED");
+    })
+
+    socket.on('updateSceneButtons', data=>{
+        scenes = data.scenes;
+        createSceneButtons(scenes);
     })
 
     socket.on('obs-ws-disconnected', data => {
@@ -124,7 +130,7 @@ function configUser(socket){
 function populatePlayerNames(data){
 
     // //TODO REMOVE THIS DIPSHIT
-    // relayToOBS("SetCurrentScene",
+    // obsCommand("SetCurrentScene",
     //     {'scene-name': "Red"});
 
     console.log("POPULATING PLAYER NAMES FUCKERS");
@@ -227,6 +233,10 @@ function obsCommand(event, payload){
 
 function relayToOBS(event, payload){
     localSocket.emit("to-obs", {event: event, payload: payload});
+}
+
+function getFromOBS(request, response, payload){
+    localSocket.emit("obs-get", {event: request, response: response, payload: payload});
 }
 
 function transmitSceneSwitch(type, payload){

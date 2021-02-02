@@ -34,13 +34,10 @@
                     <div id="main-controls" class="controls">
                         <button id="start-map-selection" style="visibility: visible" class="settings" onclick="startMapSelection()">Start Map Selection</button>
                         <button id="muteButton" style="visibility: visible" class="settings" onclick="toggleMute()">Unmuted</button>
-                        <br>
                         <button id="start-record" style="visibility: visible" class="settings" onclick="sendStartRecording()">Start Recording</button>
                         <button id="stop-record" style="visibility: visible" class="settings" onclick="sendStopRecording()">Stop Recording</button>
-                        <br>
                         <button id="pauseGame" class="settings" onclick="pauseGame()">Pause Game</button>
                         <button id="unpauseGame" class="settings" onclick="unpauseGame()">Unpause Game</button>
-                        <br>
                         <button id="populateNames" class="settings" onclick="updatePlayers(populatePlayerNames)">Populate Names</button>
                     </div>
                 </div>
@@ -54,6 +51,7 @@
                 <div class="box-cell box4">
                     <div id="scene-controls" class="controls">
                         <button id="active-player-cam" class="settings" onclick="setActivePlayersCam()">Active Player Cam</button>
+                        <button id="teams-cam" class="settings" onclick="setAllPlayersCam()">All Player Cameras</button>
                         <button id="teams-cam" class="settings" onclick="setAllPlayersCam()">All Player Cameras</button>
                         <button id="casters-cam" class="settings" onclick="setCasterCam()">Caster Cameras</button>
                     </div>

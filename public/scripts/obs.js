@@ -27,6 +27,8 @@ function configUser(socket){
             wsConnected = true;
             relayToBroadcaster("obs-ws-connected");
         });
+
+
     }catch(e){
         console.warn("Couldn't connect to OBS!");
     }
@@ -102,6 +104,12 @@ function configUser(socket){
             disableCurrentCam();
             enableTeamCam(data.payload);
         }
+    })
+
+    socket.on('obs-get', req =>{
+        obs.send(req.event).then(data =>{
+            relayToBroadcaster(req.response, data);
+        })
     })
 
     socket.on('obs-command', data =>{

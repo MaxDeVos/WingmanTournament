@@ -318,6 +318,14 @@ function handleBroadcasterRoutes(socket){
             console.warn("No OBS Client to send command to!")
         }
     })
+    socket.on('obs-get', (data) => {
+        console.log("SENDING OBS COMMAND");
+        try{
+            peers[obsSocket].emit('obs-get', data);
+        }catch (e){
+            console.warn("No OBS Client to send command to!")
+        }
+    })
 }
 
 function handleBroadcasterDC(socket){
