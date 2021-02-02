@@ -3,3 +3,4 @@ node_modules
 certificate.pem
 private.pem
 .idea/workspace.xml
+.xml
