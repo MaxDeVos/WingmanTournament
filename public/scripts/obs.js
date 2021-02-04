@@ -145,7 +145,7 @@ function handleNewFeed(newVid, socket_id, type){
 }
 
 function enableActivePlayerCamera(){
-    let activePlayer = createVideoObject("active-player");
+    let activePlayer = createVideoObject("active-player", true);
     activePlayer.id = "active-player";
     document.body.appendChild(activePlayer);
     cameraState = "active-player";
@@ -160,10 +160,10 @@ function enableCasterCamera(){
     let casterCamContainer = document.createElement("div");
     casterCamContainer.id = "casterCamContainer";
 
-    let caster1Cam = createVideoObject("casterVideo");
+    let caster1Cam = createVideoObject("casterVideo", false);
     casterCamContainer.appendChild(caster1Cam);
 
-    let caster2Cam = createVideoObject("casterVideo");
+    let caster2Cam = createVideoObject("casterVideo", false);
     casterCamContainer.appendChild(caster2Cam);
 
     let i = 0;
@@ -194,17 +194,34 @@ function enableAllPlayersCam(){
     let allPlayersContainer = document.createElement("div");
     allPlayersContainer.id = "allPlayersContainer";
 
-    let cam1 = createVideoObject("allPlayersVideo")
+    let cam1 = createVideoObject("allPlayersVideo", true);
     allPlayersContainer.appendChild(cam1);
 
-    let cam2 = createVideoObject("allPlayersVideo")
+    let cam2 = createVideoObject("allPlayersVideo", true);
     allPlayersContainer.appendChild(cam2);
 
-    let cam3 = createVideoObject("allPlayersVideo")
+    let cam3 = createVideoObject("allPlayersVideo", true);
     allPlayersContainer.appendChild(cam3);
 
-    let cam4 = createVideoObject("allPlayersVideo")
+    let cam4 = createVideoObject("allPlayersVideo", true);
     allPlayersContainer.appendChild(cam4);
+
+    let i = 0;
+    for(let player in playerVideos){
+        if(i === 0){
+            cam1.srcObject = playerVideos[player].srcObject;
+        }
+        else if(i === 1){
+            cam2.srcObject = playerVideos[player].srcObject;
+        }
+        else if(i === 2){
+            cam3.srcObject = playerVideos[player].srcObject;
+        }
+        else if(i === 3){
+            cam4.srcObject = playerVideos[player].srcObject;
+        }
+        i++;
+    }
 
     document.body.appendChild(allPlayersContainer);
     cameraState = "allPlayers";
@@ -223,11 +240,11 @@ function enableTeamCam(team){
     let teamCamContainer = document.createElement("div");
     teamCamContainer.id = "teamCamContainer";
 
-    let player1Cam = createVideoObject("teamCamVideo");
+    let player1Cam = createVideoObject("teamCamVideo", false);
     player1Cam.id = "player1Cam";
     teamCamContainer.appendChild(player1Cam);
 
-    let player2Cam = createVideoObject("teamCamVideo");
+    let player2Cam = createVideoObject("teamCamVideo", false);
     player2Cam.id = "player2Cam";
     teamCamContainer.appendChild(player2Cam);
 
@@ -284,11 +301,12 @@ function disableCurrentCam(){
     cameraState = "none";
 }
 
-function createVideoObject(className){
+function createVideoObject(className, muted){
     let videoObject = document.createElement("video");
     videoObject.className = className;
     videoObject.playsinline = false
     videoObject.autoplay = true
+    videoObject.muted = muted;
     return videoObject;
 }
 
