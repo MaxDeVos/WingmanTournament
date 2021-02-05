@@ -2,7 +2,7 @@ const Rcon = require('rcon-client').Rcon;
 const gsiDatabase = require('../public/hudmanagerdb.json')
 const APIManager = require('./APIManager');
 
-let totalRounds = 2;
+let totalRounds = 16;
 let halftimeLatch = true;
 let gameoverLatch = true;
 let gameStartLatch = true;
@@ -27,7 +27,7 @@ async function connectToRCON(address, informed_socket){
     })
     rcon.on("authenticated", () => console.log("RCON Authenticated!"))
     rcon.on("end", () => {
-        console.log("RCON Ended!")
+        console.log("RCON Disconnected!!")
         rconStatus = "disconnected";
         informed_socket.emit("rcon-dc");
     })
@@ -99,30 +99,31 @@ async function startGame(map, stage){
 
     //20 Second warning and wait 10 seconds
     await warnStart(20);
-    await delay(10);
+    await delay(10000);
 
     //10 Second warning and wait 5 seconds
     await warnStart(10);
-    await delay(5);
+    await delay(5000);
 
     //5 Second warning and wait 1 second
     await warnStart(5);
-    await delay(1);
+    await delay(1000);
 
     //4 Second warning and wait 1 second
     await warnStart(4);
-    await delay(1);
+    await delay(1000);
 
     //3 Second warning and wait 1 second
     await warnStart(3);
-    await delay(1);
+    await delay(1000);
 
     //2 Second warning and wait 1 second
     await warnStart(2);
-    await delay(1);
+    await delay(1000);
 
     //1 Second warning and wait 1 second
     await warnStart(1);
+    await delay(1000);
 
     await startDemoRecording(map, stage);
     await sendCommandRCON("ew;");
@@ -143,10 +144,12 @@ async function stopDemoRecording(){
 
 async function handleGameOver(){
     console.log("Game Over!", gameStartLatch);
+
+    await delay(10000);
+
     broadcasterSocket.emit("game-over");
     await stopDemoRecording();
 }
 
 module.exports = {update,connectToRCON, sendCommandRCON,
-    changeMap, warnStart, stopDemoRecording,
-    handleGameOver, sendRCONStatus, startGame};
+    changeMap, stopDemoRecording, sendRCONStatus, startGame};

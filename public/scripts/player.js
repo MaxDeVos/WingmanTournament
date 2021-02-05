@@ -597,6 +597,7 @@ function isMapBanned(name){
 
 function handlePeer(socketId, type, initiator){
     if(type === "player"){
+        console.log("ADDING OTHER PLAYER");
         addPeer(socketId, initiator, false, type);
     }
     else{
