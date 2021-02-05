@@ -10,6 +10,7 @@ const GSIManager = require('./GSIManager');
 const APIManager = require('./APIManager');
 const MapSelection = require('./MapSelection');
 const http = require("http");
+const localEnvironment = require('../localEnviroment.json');
 
 let state = "init";
 
@@ -19,8 +20,8 @@ peers = {};
 let port = 443;
 
 // Max's PC
-const publicIP = '134.129.53.252'
-const csgoIP = '13.58.40.89';
+const publicIP = localEnvironment.publicIP;
+const csgoIP = localEnvironment.csgoIP;
 // AWS IP
 // const publicIP = '13.58.40.89';
 
