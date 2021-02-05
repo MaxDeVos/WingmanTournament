@@ -89,7 +89,9 @@ function init() {
 
     socket = io();
 
-    tellUserConnected();
+    if(localType !== "broadcaster"){
+        tellUserConnected();
+    }
 
     socket.on('initSend', incoming => {
         console.log('INIT SEND FROM TYPE' + incoming.type);
@@ -138,6 +140,12 @@ function removePeer(socket_id) {
         delete videos[socket_id];
     }
     if (peers[socket_id]) peers[socket_id].destroy()
+
+    if(localType === "broadcaster"){
+        console.log("REMOVING AS BROADCASTER");
+        document.getElementById(socket_id).parentElement.remove();
+    }
+
     delete peers[socket_id]
 }
 

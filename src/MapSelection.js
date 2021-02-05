@@ -12,6 +12,7 @@ let inversePickOrder = [];
 let mapOrder = [];
 let pickConfig = ["ban","ban","pick","pick","ban","ban", "auto"];
 let pickRound = 0;
+let currentMap = 0;
 
 function initMapSelection(){
     maps = getEmptyMapList();
@@ -271,4 +272,19 @@ function getAvailableMap(){
     }
 }
 
-module.exports = {handlePlayerMapSelection, handleSpectatorMapSelection, onBroadcasterConnect, onPlayerUpdate, handleBroadcasterMapSelection, updatePeers}
+function getCurrentMap(){
+    return mapOrder[currentMap];
+}
+
+function getNextMap(){
+    if(mapOrder[currentMap + 1] !== undefined){
+        currentMap++;
+        return mapOrder[currentMap];
+    }
+    else{
+        return "none";
+    }
+}
+
+module.exports = {handlePlayerMapSelection, handleSpectatorMapSelection, onBroadcasterConnect, onPlayerUpdate,
+    handleBroadcasterMapSelection, updatePeers, getCurrentMap, getNextMap};

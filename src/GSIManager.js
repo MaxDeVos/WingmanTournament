@@ -2,14 +2,18 @@ const Rcon = require('rcon-client').Rcon;
 const gsiDatabase = require('../public/hudmanagerdb.json')
 const APIManager = require('./APIManager');
 
-let totalRounds = 4;
+let totalRounds = 2;
 let halftimeLatch = true;
 let gameoverLatch = true;
 let gameStartLatch = true;
 let rcon;
-let rconStatus;
+let rconStatus = "disconnected";
+let broadcasterSocket;
 
-async function connectToRCON(address){
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+async function connectToRCON(address, informed_socket){
+    broadcasterSocket = informed_socket;
     rcon = new Rcon({
         host: address,
         port: 27015,
@@ -17,16 +21,27 @@ async function connectToRCON(address){
     })
 
     rcon.on("connect", () => {
-        console.log("RCON Connected!")
+        console.log("RCON Connected!");
         rconStatus = "connected";
+        informed_socket.emit("rcon-con");
     })
     rcon.on("authenticated", () => console.log("RCON Authenticated!"))
     rcon.on("end", () => {
         console.log("RCON Ended!")
         rconStatus = "disconnected";
+        informed_socket.emit("rcon-dc");
     })
 
     await rcon.connect()
+}
+
+function sendRCONStatus(socket){
+    if(rconStatus === "connected"){
+        socket.emit("rcon-con");
+    }
+    else{
+        socket.emit("rcon-dc");
+    }
 }
 
 async function sendCommandRCON(command){
@@ -44,7 +59,6 @@ async function update(data) {
         if (data["round"]["phase"] === "freezetime" && data["map"]["round"] === 0 && gameStartLatch) {
             console.log("Game Starting!")
             gameStartLatch = false;
-            console.log(await APIManager.getCurrentTeams());
         } else if (!gameStartLatch && data["round"]["phase"] !== "freezetime") {
             gameStartLatch = true;
         }
@@ -55,48 +69,84 @@ async function update(data) {
             halftimeLatch = true;
         }
         if (data["map"]["phase"] === "gameover" && gameoverLatch) {
-            await handleGameOver();
             gameoverLatch = false;
-        } else if (!gameoverLatch && data["map"]["phase"] !== "gameover") {
+            await handleGameOver();
+        } else if (!gameoverLatch && data["map"]["phase"] === "live") {
             gameoverLatch = true;
         }
     }
 }
 
 async function changeMap(map){
-    await sendCommandRCON(`changelevel ${map.name};mp_teamname_1 ${map.ct};mp_teamname_2 ${map.t};rdy`);
+    let mapName = map.name;
+    if(mapName === "de_cobblestone"){
+        mapName = "de_cbble"
+    }
+    await sendCommandRCON(`changelevel ${mapName};mp_teamname_1 ${map.ct};mp_teamname_2 ${map.t};`);
+    console.log("SENDING COMMAND:", `changelevel ${mapName};mp_teamname_1 ${map.ct};mp_teamname_2 ${map.t};`);
+
+    await delay(7500);
+    await sendCommandRCON(`pw;rdy;`);
+    console.log("SENDING COMMAND:", `pw;rdy;`);
 }
 
 async function warnStart(seconds){
     await sendCommandRCON(`say Starting Game In ${seconds} Seconds!`);
 }
 
-async function startRecording(map, stage){
+async function startGame(map, stage){
+    console.log("Starting game on",map.name,"in 20 seconds!");
+
+    //20 Second warning and wait 10 seconds
+    await warnStart(20);
+    await delay(10);
+
+    //10 Second warning and wait 5 seconds
+    await warnStart(10);
+    await delay(5);
+
+    //5 Second warning and wait 1 second
+    await warnStart(5);
+    await delay(1);
+
+    //4 Second warning and wait 1 second
+    await warnStart(4);
+    await delay(1);
+
+    //3 Second warning and wait 1 second
+    await warnStart(3);
+    await delay(1);
+
+    //2 Second warning and wait 1 second
+    await warnStart(2);
+    await delay(1);
+
+    //1 Second warning and wait 1 second
+    await warnStart(1);
+
+    await startDemoRecording(map, stage);
+    await sendCommandRCON("ew;");
+    await sendCommandRCON("Starting Game!");
+
+}
+
+async function startDemoRecording(map, stage){
     let command = "tv_record ";
-    command += `${map.ct}_vs_${map.t}_${map.name}_${stage}`
-    await sendCommandRCON(command)
-}
-
-async function stopRecording(){
-    let command = "ew; tv_stoprecord";
+    command += `"${map.ct}_vs_${map.t}_${map.name}_${stage}"`
     await sendCommandRCON(command);
 }
 
-async function pauseGame(){
-    let command = "pause";
-    await sendCommandRCON(command);
-}
-
-async function unpauseGame(){
-    let command = "unpause";
+async function stopDemoRecording(){
+    let command = "tv_stoprecord";
     await sendCommandRCON(command);
 }
 
 async function handleGameOver(){
-    await stopRecording()
-    console.log("Game Over!")
+    console.log("Game Over!", gameStartLatch);
+    broadcasterSocket.emit("game-over");
+    await stopDemoRecording();
 }
 
 module.exports = {update,connectToRCON, sendCommandRCON,
-    changeMap, warnStart, startRecording, stopRecording, pauseGame, unpauseGame,
-    handleGameOver};
+    changeMap, warnStart, stopDemoRecording,
+    handleGameOver, sendRCONStatus, startGame};

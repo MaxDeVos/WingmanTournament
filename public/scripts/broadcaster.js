@@ -29,12 +29,12 @@ function createUserListener(name, socket){
 
 // ======================== RTC Bullshit Starts Here ============================
 
-function sendStartRecording(){
-    localSocket.emit("start-recording");
+function sendStartGame(){
+    localSocket.emit("start-game");
 }
 
-function sendStopRecording(){
-    localSocket.emit("stop-recording");
+function sendRestartGame(){
+    localSocket.emit("restart-game");
 }
 
 function startMapSelection(){
@@ -42,15 +42,22 @@ function startMapSelection(){
 }
 
 function pauseGame(){
-    localSocket.emit("pause-game");
+    rconCommand("pause");
 }
 
 function unpauseGame(){
-    localSocket.emit("unpause-game");
+    rconCommand("unpause");
+}
+
+function connectRCON(){
+    localSocket.emit("connect-rcon");
+}
+
+function rconCommand(command){
+    localSocket.emit('rcon-command', command);
 }
 
 function configUser(socket){
-
 
     localSocket = socket;
 
@@ -88,7 +95,6 @@ function configUser(socket){
             }
         }catch (e){
             console.log("Error Handling Player Camera Switch: ", playerSocket);
-            console.log(e);
         }
     })
 
@@ -114,24 +120,32 @@ function configUser(socket){
         console.log("OBS WS DISCONNECTED");
     })
 
+    socket.on('game-over', () =>{
+        updateStatus("Map Ended!");
+        console.log("CHANGING MAP NOW")
+        socket.emit('map-over');
+    })
+
+    socket.on('map-selection-complete', (maps) =>{
+        socket.emit('map-selection-confirm', (maps));
+    })
+
     configSockets(socket);
 
     createUserListener('observer', socket);
     createUserListener('broadcaster', socket);
     createUserListener('caster1', socket);
     createUserListener('caster2', socket);
+    createUserListener('obs', socket);
     createUserListener('player1', socket);
     createUserListener('player2', socket);
     createUserListener('player3', socket);
     createUserListener('player4', socket);
+    createUserListener('rcon', socket);
 
 }
 
 function populatePlayerNames(data){
-
-    // //TODO REMOVE THIS DIPSHIT
-    // obsCommand("SetCurrentScene",
-    //     {'scene-name': "Red"});
 
     console.log("POPULATING PLAYER NAMES FUCKERS");
     for(let a in data){
@@ -173,7 +187,7 @@ function createSceneButtons(scenes){
 }
 
 function createTeamCamButton(team){
-    let scenes = document.getElementById("scene-controls");
+    let scenes = document.getElementById("camera-controls");
     let button = document.createElement("button");
     button.className = "settings";
     button.id = `${team}_button`;
@@ -190,16 +204,19 @@ function setPlayerName(socket, name){
 
 function setActivePlayersCam(){
     console.log("emit active-player-cam");
+    updateStatus("In Active Player Cam");
     transmitSceneSwitch("active-player-cam");
 }
 
 function setAllPlayersCam(){
     console.log("all-players-cam");
+    updateStatus("In All Player Cam");
     transmitSceneSwitch("all-players-cam");
 }
 
 function setCasterCam(){
     console.log("Emit caster-cam");
+    updateStatus("In Caster Cam");
     transmitSceneSwitch("caster-cam");
 }
 
@@ -241,4 +258,10 @@ function getFromOBS(request, response, payload){
 
 function transmitSceneSwitch(type, payload){
     localSocket.emit("to-obs", {type: type, payload: payload});
+}
+
+function updateStatus(message){
+    let status = document.getElementById("status");
+    status.innerHTML = message;
+    status.style = "color:black";
 }

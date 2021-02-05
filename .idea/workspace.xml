@@ -6,7 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="4761460e-fb8c-4ccd-ab64-648f1ca72317" name="Default Changelist" comment="OBS WS listener">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/scripts/obs.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/obs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/broadcaster.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/broadcaster.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/playerDatabase.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/playerDatabase.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/broadcaster.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/broadcaster.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/commonRTC.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/commonRTC.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scripts/mapSelectionClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/scripts/mapSelectionClient.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/styles/obsStyles.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/styles/obsStyles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GSIManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/GSIManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MapSelection.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/MapSelection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,14 +167,8 @@
       <workItem from="1612157036274" duration="5144000" />
       <workItem from="1612216535251" duration="12942000" />
       <workItem from="1612320008775" duration="823000" />
-      <workItem from="1612473746585" duration="1744000" />
-    </task>
-    <task id="LOCAL-00002" summary="Single Instance calling is working.  I can feel my hands again.">
-      <created>1610786815237</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1610786815237</updated>
+      <workItem from="1612473746585" duration="6470000" />
+      <workItem from="1612482595781" duration="8744000" />
     </task>
     <task id="LOCAL-00003" summary="I JUST WANT SOME COMMIE MOMMY MILKERS. I AM LONELY">
       <created>1610788685857</created>
@@ -503,7 +506,14 @@
       <option name="project" value="LOCAL" />
       <updated>1612249426689</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Muting and All Player Cams now works">
+      <created>1612477568027</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1612477568027</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -523,7 +533,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Updated Players page to clearly show disconnected teammate" />
     <MESSAGE value="TEAM CALLING WORKS SOMETIMES" />
     <MESSAGE value="Added TURN server" />
     <MESSAGE value="Added custom STUN server" />
@@ -548,7 +557,8 @@
     <MESSAGE value="Broadcaster phantom disconnect bug fixed" />
     <MESSAGE value="Added SendToOBS System" />
     <MESSAGE value="OBS WS listener" />
-    <option name="LAST_COMMIT_MESSAGE" value="OBS WS listener" />
+    <MESSAGE value="Muting and All Player Cams now works" />
+    <option name="LAST_COMMIT_MESSAGE" value="Muting and All Player Cams now works" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

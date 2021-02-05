@@ -9,7 +9,11 @@ const Player = require('./Player');
 const GSIManager = require('./GSIManager');
 const APIManager = require('./APIManager');
 const MapSelection = require('./MapSelection');
-const http = require("http")
+const http = require("http");
+
+let state = "init";
+
+const stage = "D";
 
 peers = {};
 let port = 443;
@@ -172,6 +176,7 @@ function handlePlayerDC(socket){
                 console.log(`Unnamed Player${i} Disconnected`);
             }
             socket.broadcast.emit(`player${i}-dc`);
+            socket.broadcast.emit(`player-dc`, activePlayers[i].socketId);
             activePlayers[i] = Player.generateEmptyPlayer();
         }
     }
@@ -264,8 +269,6 @@ app.get('/broadcaster', (req, res) => {
 
 function handleBroadcasterRoutes(socket){
     socket.on('broadcaster-con', async () => {
-        // await GSIManager.connectToRCON(csgoIP);
-        console.log("Broadcaster Attempting To Connect");
         if(broadcasterSocket !== undefined){
             console.log("Rejected New Broadcaster!");
             socket.emit('broadcaster-invalid');
@@ -282,24 +285,21 @@ function handleBroadcasterRoutes(socket){
             });
             console.log(broadcasterSocket)
             informAboutElders(socket);
+            await GSIManager.connectToRCON(csgoIP, socket);
+            console.log("Broadcaster Attempting To Connect");
+            GSIManager.sendRCONStatus(socket);
         }
     });
-    socket.on('start-recording', () => {
+    socket.on('start-game', async () => {
         console.log("Commanding players to start recording");
         startRecording();
+        await GSIManager.startGame(MapSelection.getCurrentMap(), stage);
     });
-    socket.on('stop-recording', () => {
+    socket.on('restart-game', async () => {
         console.log("Commanding players to start recording");
         stopRecording();
+        await GSIManager.stopDemoRecording();
     });
-    socket.on('pause-game', async () => {
-        await GSIManager.pauseGame();
-        console.log("Game Paused")
-    })
-    socket.on('unpause-game', async () => {
-        await GSIManager.unpauseGame();
-        console.log("Game Resumed")
-    })
     socket.on('update-players', () =>{
         socket.emit("update-players", {players:activePlayers});
     })
@@ -311,7 +311,6 @@ function handleBroadcasterRoutes(socket){
         }
     })
     socket.on('obs-command', (data) => {
-        console.log("SENDING OBS COMMAND");
         try{
             peers[obsSocket].emit('obs-command', data);
         }catch (e){
@@ -319,11 +318,31 @@ function handleBroadcasterRoutes(socket){
         }
     })
     socket.on('obs-get', (data) => {
-        console.log("SENDING OBS COMMAND");
         try{
             peers[obsSocket].emit('obs-get', data);
         }catch (e){
             console.warn("No OBS Client to send command to!")
+        }
+    })
+    socket.on('connect-rcon', async () =>{
+        await GSIManager.connectToRCON(csgoIP, peers[broadcasterSocket]);
+    })
+    socket.on('rcon-command', async (command) =>{
+        await GSIManager.sendCommandRCON(command);
+    })
+    socket.on('map-selection-confirm', async (maps) =>{
+        await GSIManager.changeMap(MapSelection.getCurrentMap());
+        state = "gameStart";
+    })
+    socket.on('map-over', async () => {
+        let nextMap = MapSelection.getNextMap();
+        if(nextMap !== "none"){
+            console.log("Changing to next map: ", nextMap);
+            peers[broadcasterSocket].emit('change-map', nextMap);
+            await GSIManager.changeMap(nextMap);
+        }
+        else{
+            console.log("NO NEXT MAP PRESENT!!");
         }
     })
 }
@@ -357,9 +376,9 @@ function handleOBSRoutes(socket){
         }
     });
     socket.on('to-broadcaster', (data) => {
-        console.log("SENDING TO BROADCASTER");
+        // console.log("SENDING TO BROADCASTER");
         try{
-            console.log("SENDING ", data.event)
+            // console.log("SENDING ", data.event)
             peers[broadcasterSocket].emit(data.event, data.payload);
         }catch (e){
             console.warn("No Broadcaster Client to send command to!")

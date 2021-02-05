@@ -78,5 +78,15 @@
     "name": "Joe",
     "steamID64": "76561198201559519",
     "team": "The Power Bottoms"
+  },
+  "Avery": {
+    "name": "Avery",
+    "steamID64": "76561198085488224",
+    "team": "The Power Bottoms"
+  },
+  "Luke": {
+  "name": "Luke",
+  "steamID64": "76561199039007716",
+  "team": "The Power Bottoms"
   }
 }

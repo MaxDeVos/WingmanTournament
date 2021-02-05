@@ -26,7 +26,6 @@ video{
     width:720px;
     height:540px;
     margin:10px;
-    background-color: red;
 }
 
 /*All Players Cameras*/
@@ -41,7 +40,6 @@ video{
     width:640px;
     height:480px;
     margin:10px;
-    background-color: red;
 }
 
 /*Team Cam Camera*/
@@ -56,5 +54,4 @@ video{
     width:720px;
     height:540px;
     margin:10px;
-    background-color: red;
 }

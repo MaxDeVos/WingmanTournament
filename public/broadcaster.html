@@ -24,18 +24,21 @@
                         <h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
                         <h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
                         <h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
+                        <h4 style="text-align: center;color:black">OBS Status: <span id="obs-status" style="color:red">Disconnected</span></h4>
                         <h4 style="text-align: center;color:black">Player #1 Status: <span id="player1-status" style="color:red">Disconnected</span></h4>
                         <h4 style="text-align: center;color:black">Player #2 Status: <span id="player2-status" style="color:red">Disconnected</span></h4>
                         <h4 style="text-align: center;color:black">Player #3 Status: <span id="player3-status" style="color:red">Disconnected</span></h4>
                         <h4 style="text-align: center;color:black">Player #4 Status: <span id="player4-status" style="color:red">Disconnected</span></h4>
+                        <h4 style="text-align: center;color:black">Remote Console Status: <span id="rcon-status" style="color:red">Disconnected</span></h4>
                     </div>
                 </div>
                 <div class="box-cell box2">
                     <div id="main-controls" class="controls">
                         <button id="start-map-selection" style="visibility: visible" class="settings" onclick="startMapSelection()">Start Map Selection</button>
+                        <button id="connect-RCON" style="visibility: visible" class="settings" onclick="connectRCON()">Connect RCON</button>
                         <button id="muteButton" style="visibility: visible" class="settings" onclick="toggleMute()">Unmuted</button>
-                        <button id="start-record" style="visibility: visible" class="settings" onclick="sendStartRecording()">Start Recording</button>
-                        <button id="stop-record" style="visibility: visible" class="settings" onclick="sendStopRecording()">Stop Recording</button>
+                        <button id="start-game" style="visibility: visible" class="settings" onclick="sendStartGame()">Start Game</button>
+                        <button id="restart-game" style="visibility: visible" class="settings" onclick="sendRestartGame()">Restart Game</button>
                         <button id="pauseGame" class="settings" onclick="pauseGame()">Pause Game</button>
                         <button id="unpauseGame" class="settings" onclick="unpauseGame()">Unpause Game</button>
                         <button id="populateNames" class="settings" onclick="updatePlayers(populatePlayerNames)">Populate Names</button>
@@ -49,11 +52,12 @@
                     </div>
                 </div>
                 <div class="box-cell box4">
-                    <div id="scene-controls" class="controls">
+                    <div id="camera-controls" class="controls">
                         <button id="active-player-cam" class="settings" onclick="setActivePlayersCam()">Active Player Cam</button>
                         <button id="teams-cam" class="settings" onclick="setAllPlayersCam()">All Player Cameras</button>
-                        <button id="teams-cam" class="settings" onclick="setAllPlayersCam()">All Player Cameras</button>
                         <button id="casters-cam" class="settings" onclick="setCasterCam()">Caster Cameras</button>
+                    </div>
+                    <div id="scene-controls" class="controls">
                     </div>
                 </div>
             </div>
