@@ -4,3 +4,4 @@ certificate.pem
 private.pem
 .idea/workspace.xml
 .xml
+localEnviroment.json
