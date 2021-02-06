@@ -114,6 +114,10 @@ function configUser(socket){
             disableCurrentCam();
             enableTeamCam(data.payload);
         }
+        else if(data.type === "no-cam"){
+            console.log("Switching to No Cam");
+            disableCurrentCam();
+        }
     })
 
     socket.on('obs-get', req =>{

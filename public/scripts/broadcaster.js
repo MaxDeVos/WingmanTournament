@@ -11,6 +11,7 @@ let localSocket;
 let scenes;
 let activePlayers;
 let teams = {};
+let obsLatch = true;
 
 
 //====================== User Listeners ============================
@@ -113,7 +114,11 @@ function configUser(socket){
 
     socket.on('updateSceneButtons', data=>{
         scenes = data.scenes;
-        createSceneButtons(scenes);
+        if(obsLatch){
+            createSceneButtons(scenes);
+            obsLatch = false;
+        }
+
     })
 
     socket.on('obs-ws-disconnected', data => {
@@ -200,6 +205,12 @@ function createTeamCamButton(team){
 
 function setPlayerName(socket, name){
     document.getElementById(`${socket}_title`).innerText = name;
+}
+
+function setNoCam(){
+    console.log("emit no-cam");
+    updateStatus("In No Cam");
+    transmitSceneSwitch("no-cam")
 }
 
 function setActivePlayersCam(){
