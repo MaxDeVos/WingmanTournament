@@ -79,16 +79,15 @@ function configUser(socket){
             try{
                 for(let socket in playerVideos){
                     if(socket === playerSocket){
-                        playerVideos[playerSocket].style.visibility = "visible";
+                        document.getElementById(`${socket}_feed`).style.visibility = "visible";
                     }
                     else{
-                        playerVideos[playerSocket].style.visibility = "hidden";
+                        document.getElementById(`${socket}_feed`).style.visibility = "hidden";
                     }
                 }
 
 
             }catch (e){
-                document.getElementById("active-player").srcObject = undefined;
                 console.log("Error Handling Player Camera Switch: ", playerSocket);
             }
         }
