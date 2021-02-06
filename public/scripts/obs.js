@@ -15,6 +15,7 @@ let obs;
 let broadcasterConnected = false;
 let wsConnected = false;
 let localSocket;
+let castersMuted = true;
 
 function configUser(socket){
     localSocket = socket;
@@ -42,6 +43,8 @@ function configUser(socket){
         console.log("NodeJS Connected!");
         socket.emit("obs-con", function(data) {
             console.log(data);
+            castersMuted = data.muted;
+            handleCasterMute(castersMuted);
         });
     });
 
@@ -91,6 +94,11 @@ function configUser(socket){
                 console.log("Error Handling Player Camera Switch: ", playerSocket);
             }
         }
+    })
+
+    socket.on('handle-mute', muted =>{
+        console.log("muted:", muted);
+        handleCasterMute(muted);
     })
 
     socket.on('to-obs', (data) =>{
@@ -155,6 +163,7 @@ function handleNewFeed(newVid, socket_id, type){
     else if(type === "caster"){
         console.log("Appending new player to playerVideos")
         casterVideos[socket_id] = (newVid);
+        casterVideos[socket_id].muted = castersMuted;
     }
 }
 
@@ -176,6 +185,12 @@ function enableActivePlayerCamera(){
 function disableActivePlayerCamera() {
     let activePlayer = document.getElementById("activePlayer");
     activePlayer.remove();
+}
+
+function handleCasterMute(muted){
+    for(let socket in casterVideos){
+        casterVideos[socket].muted = muted;
+    }
 }
 
 function enableCasterCamera(){

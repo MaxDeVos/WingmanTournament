@@ -225,6 +225,10 @@ function setAllPlayersCam(){
     transmitSceneSwitch("all-players-cam");
 }
 
+function updateCasterMute(muted){
+    localSocket.emit("caster-mute", muted);
+}
+
 function setCasterCam(){
     console.log("Emit caster-cam");
     updateStatus("In Caster Cam");

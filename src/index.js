@@ -25,6 +25,8 @@ const csgoIP = localEnvironment.csgoIP;
 // AWS IP
 // const publicIP = '13.58.40.89';
 
+let casterMuted = true;
+
 const options = {
     key: fs.readFileSync('private.pem'),
     cert: fs.readFileSync('certificate.pem'),
@@ -82,7 +84,7 @@ function informAboutElders(socket){
         socket.emit("broadcaster-con", {socket: socket.id});
     }
     if(obsSocket !== undefined){
-        socket.emit("obs-con", {socket: socket.id});
+        socket.emit("obs-con", {socket: socket.id, muted:casterMuted});
     }
     for(let i in activePlayers){
         if(activePlayers[i].socketId !== "none"){
@@ -218,6 +220,7 @@ function handleObserverDC(socket){
 // Caster
 let casterSocket1 = undefined;
 let casterSocket2 = undefined;
+
 app.get('/caster', (req, res) => {
     res.sendFile(path.resolve('public/caster.html'));
 })
@@ -225,7 +228,6 @@ app.get('/caster', (req, res) => {
 function handleCasterRoutes(socket){
 
     socket.on('caster-con', () => {
-
         console.log("Caster " + socket.id + " Attempting To Connect");
         if (casterSocket1 === undefined) {
             console.log("Registered New Caster 1!");
@@ -233,6 +235,7 @@ function handleCasterRoutes(socket){
             casterSocket1 = socket.id;
             informAboutElders(socket);
             socket.broadcast.emit('caster1-con', {socket: socket.id});
+            socket.emit("handle-mute", casterMuted);
 
         } else if (casterSocket2 === undefined) {
             console.log("Registered New Caster 2!");
@@ -240,6 +243,7 @@ function handleCasterRoutes(socket){
             casterSocket2 = socket.id;
             informAboutElders(socket);
             socket.broadcast.emit('caster2-con', {socket: socket.id});
+            socket.emit("handle-mute", casterMuted);
 
         } else {
             console.log("Rejected New Caster!");
@@ -346,6 +350,18 @@ function handleBroadcasterRoutes(socket){
             console.log("NO NEXT MAP PRESENT!!");
         }
     })
+    socket.on("caster-mute", muted => {
+        casterMuted = muted;
+        if(casterSocket1 !== undefined){
+            peers[casterSocket1].emit("handle-mute", muted);
+        }
+        if(casterSocket2 !== undefined){
+            peers[casterSocket2].emit("handle-mute", muted);
+        }
+        if(obsSocket !== undefined){
+            peers[obsSocket].emit("handle-mute", muted);
+        }
+    })
 }
 
 function handleBroadcasterDC(socket){
@@ -374,6 +390,7 @@ function handleOBSRoutes(socket){
             informAboutElders(socket);
             socket.emit('broadcaster-status', broadcasterSocket);
             socket.broadcast.emit('obs-con', {socket: socket.id});
+            socket.emit("handle-mute", casterMuted);
         }
     });
     socket.on('to-broadcaster', (data) => {

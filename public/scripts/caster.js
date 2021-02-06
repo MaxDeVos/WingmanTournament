@@ -44,6 +44,9 @@ function configUser(socket){
         handlePeer(remoteData.socket_id, remoteData.type, false);
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "caster"})
     })
+    socket.on('handle-mute', muted =>{
+        handleMute(muted);
+    })
 
     configSockets(socket);
 
@@ -51,6 +54,17 @@ function configUser(socket){
     createUserListener('broadcaster', socket);
     createUserListener('caster1', socket);
     createUserListener('caster2', socket);
+}
+
+function handleMute(muted){
+    if(muted){
+        document.getElementById("status").innerText = "Muted";
+        document.getElementById("status").style.color = "red";
+    }
+    else{
+        document.getElementById("status").innerText = "LIVE";
+        document.getElementById("status").style.color = "green";
+    }
 }
 
 function handlePeer(socketId, type, initiator){
