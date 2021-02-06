@@ -21,7 +21,7 @@ async function connectToRCON(address, informed_socket){
         port: 27015,                // Port
         maximumPacketSize: 0,       // Maximum packet bytes (0 = no limit)
         encoding: 'ascii',          // Packet encoding (ascii, utf8)
-        timeout: 10000               // in ms
+        timeout: 1000               // in ms
     })
 
     await server.authenticate('godie');
