@@ -174,7 +174,7 @@ function enableActivePlayerCamera(){
 }
 
 function disableActivePlayerCamera() {
-    let activePlayer = document.getElementById("active-player");
+    let activePlayer = document.getElementById("activePlayer");
     activePlayer.remove();
 }
 
