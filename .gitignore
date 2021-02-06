@@ -5,3 +5,4 @@ private.pem
 .idea/workspace.xml
 .xml
 localEnviroment.json
+!node_modules/rcon-srcds
