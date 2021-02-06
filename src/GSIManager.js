@@ -50,6 +50,8 @@ function sendRCONStatus(socket){
 async function sendCommandRCON(command){
     if(rconStatus !== "connected"){
         console.log("RCON isn't connected!  Can't send command: ", command);
+    }
+    else{
         await rcon.send(command);
     }
 }
