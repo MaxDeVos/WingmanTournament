@@ -31,6 +31,9 @@ async function connectToRCON(address, informed_socket){
         rconStatus = "disconnected";
         informed_socket.emit("rcon-dc");
     })
+    rcon.on('error', (e) =>{
+        console.log(e);
+    })
 
     await rcon.connect()
 }
