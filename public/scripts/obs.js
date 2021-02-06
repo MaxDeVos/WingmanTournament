@@ -75,11 +75,22 @@ function configUser(socket){
 
     socket.on('new-observed-player', playerSocket => {
         console.log("Showing Player", playerSocket);
-        try{
-            document.getElementById("active-player").srcObject = playerVideos[playerSocket].srcObject;
-        }catch (e){
-            document.getElementById("active-player").srcObject = undefined;
-            console.log("Error Handling Player Camera Switch: ", playerSocket);
+        if(cameraState === "active-player"){
+            try{
+                for(let socket in playerVideos){
+                    if(socket === playerSocket){
+                        playerVideos[playerSocket].style.visibility = "visible";
+                    }
+                    else{
+                        playerVideos[playerSocket].style.visibility = "hidden";
+                    }
+                }
+
+
+            }catch (e){
+                document.getElementById("active-player").srcObject = undefined;
+                console.log("Error Handling Player Camera Switch: ", playerSocket);
+            }
         }
     })
 
@@ -145,10 +156,18 @@ function handleNewFeed(newVid, socket_id, type){
 }
 
 function enableActivePlayerCamera(){
-    let activePlayer = createVideoObject("active-player", true);
-    activePlayer.id = "active-player";
-    document.body.appendChild(activePlayer);
+    let activePlayer = document.createElement('div');
+    activePlayer.id = "activePlayer";
+    for(let socket in playerVideos){
+        let p = createVideoObject("active-player", true);
+        p.srcObject = playerVideos[socket].srcObject;
+        p.id = `${socket}_feed`;
+        p.class = "active-player-video";
+        activePlayer.appendChild(p);
+    }
     cameraState = "active-player";
+    document.body.appendChild(activePlayer);
+
 }
 
 function disableActivePlayerCamera() {

@@ -13,6 +13,10 @@ video{
     left:1440px;
     top:200px;
 }
+.active-player-video{
+    width:100%;
+    height:100%;
+}
 
 /*Caster Camera*/
 #casterCamContainer{

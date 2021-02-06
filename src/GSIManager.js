@@ -133,7 +133,9 @@ async function startGame(map, stage){
 
 async function startDemoRecording(map, stage){
     let command = "tv_record ";
-    command += `"${map.ct}_vs_${map.t}_${map.name}_${stage}"`
+    let name = map.name;
+    name = name.replace("de_","");
+    command += `"${map.ct}_vs_${map.t}_${name}_${stage}"`
     await sendCommandRCON(command);
 }
 
