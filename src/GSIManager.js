@@ -27,7 +27,6 @@ async function connectToRCON(address, informed_socket){
     await server.authenticate('godie');
     console.log('authenticated');
     await server.execute('status'); // You can read `status` reponse
-    await server.execute('mp_autokick 0'); // no need to read the response
     rconStatus = "connected";
     informed_socket.emit("rcon-con");
 }
