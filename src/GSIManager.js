@@ -46,7 +46,7 @@ async function sendCommandRCON(command){
         console.log("RCON isn't connected!  Can't send command: ", command);
     }
     else{
-        await rcon.send(command);
+        await server.execute(command);
     }
 }
 
