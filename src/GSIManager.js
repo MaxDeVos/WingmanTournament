@@ -1,12 +1,14 @@
-const Rcon = require('rcon-client').Rcon;
+const Rcon = require('rcon-srcds');
 const gsiDatabase = require('../public/hudmanagerdb.json')
 const APIManager = require('./APIManager');
+
+console.log(Rcon);
 
 let totalRounds = 16;
 let halftimeLatch = true;
 let gameoverLatch = true;
 let gameStartLatch = true;
-let rcon;
+let server;
 let rconStatus = "disconnected";
 let broadcasterSocket;
 
@@ -14,28 +16,20 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 
 async function connectToRCON(address, informed_socket){
     broadcasterSocket = informed_socket;
-    rcon = new Rcon({
-        host: address,
-        port: 27015,
-        password: "godie"
+    server = new Rcon.RCON({
+        host: address,          // Host
+        port: 27015,                // Port
+        maximumPacketSize: 0,       // Maximum packet bytes (0 = no limit)
+        encoding: 'ascii',          // Packet encoding (ascii, utf8)
+        timeout: 10000               // in ms
     })
 
-    rcon.on("connect", () => {
-        console.log("RCON Connected!");
-        rconStatus = "connected";
-        informed_socket.emit("rcon-con");
-    })
-    rcon.on("authenticated", () => console.log("RCON Authenticated!"))
-    rcon.on("end", () => {
-        console.log("RCON Disconnected!!")
-        rconStatus = "disconnected";
-        informed_socket.emit("rcon-dc");
-    })
-    rcon.on('error', (e) =>{
-        console.log(e);
-    })
-
-    await rcon.connect()
+    await server.authenticate('godie');
+    console.log('authenticated');
+    await server.execute('status'); // You can read `status` reponse
+    await server.execute('mp_autokick 0'); // no need to read the response
+    rconStatus = "connected";
+    informed_socket.emit("rcon-con");
 }
 
 function sendRCONStatus(socket){
