@@ -26,6 +26,16 @@ const csgoIP = localEnvironment.csgoIP;
 // const publicIP = '13.58.40.89';
 
 let casterMuted = true;
+/**
+ * OKAY SO BASICALLY, this is one big JSON object that everyone sees and is handled here and it has a whole bunch of shit
+ * in it. (this is for light data storage only (nothing big please)
+ */
+let sharedJSON = {};
+sharedJSON.queueCountdown = false;
+sharedJSON.obsCountdownStart = 100;
+sharedJSON.obsCountdownActive = false;
+sharedJSON.obsCountdown = 0;
+sharedJSON.RMQ = [];
 
 const options = {
     key: fs.readFileSync('private.pem'),
@@ -47,6 +57,7 @@ let handleRoutes;
         handleBroadcasterRoutes(socket);
         handleOBSRoutes(socket);
         configureSocketForRTC(socket);
+        sharedJSONListeners(socket);
 
         socket.on('disconnect', function() {
 
@@ -475,7 +486,35 @@ function addRTCListeners(socket){
         }
     })
 }
+function sharedJSONListeners(socket){
+    socket.emit("json-update", sharedJSON);
+    socket.on("update-json", async (json) =>{
+        sharedJSON = json;
+        await new Promise(r => setTimeout(r, 1000));
+        socket.broadcast.emit("json-update", sharedJSON);
 
+        //functions? sort of
+        //This is for the countdown
+        if(sharedJSON.queueCountdown === true){
+            sharedJSON.queueCountdown = false;
+            sharedJSON.obsCountdown = sharedJSON.obsCountdownStart;
+            sharedJSON.obsCountdownActive = true;
+            socket.broadcast.emit("json-update", sharedJSON);
+            while(sharedJSON.obsCountdownActive === true){
+                await new Promise(r => setTimeout(r, 1000));
+                sharedJSON.obsCountdown -= 1;
+                console.log(sharedJSON.obsCountdown);
+                socket.broadcast.emit("json-update", sharedJSON);
+                if(sharedJSON.obsCountdown === 0){
+                    sharedJSON.obsCountdownActive = false;
+                    socket.broadcast.emit("json-update", sharedJSON);
+                }
+            }
+        }
+
+
+    })
+}
 function startRecording(){
     for(let i in activePlayers){
         if(activePlayers[i]["socketId"] !== "none"){

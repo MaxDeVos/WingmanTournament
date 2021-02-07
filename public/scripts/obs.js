@@ -16,6 +16,8 @@ let broadcasterConnected = false;
 let wsConnected = false;
 let localSocket;
 let castersMuted = true;
+let localJSON;
+let jsonLatch = true;
 
 function configUser(socket){
     localSocket = socket;
@@ -141,6 +143,13 @@ function configUser(socket){
 
     socket.on("response-team-players", (data)=>{
         handleEnableTeamCam(data);
+    })
+    socket.on("json-update", (data)=>{
+        localJSON = data;
+        // if(jsonLatch){
+        //     socket.emit("update-json", localJSON);
+        //     jsonLatch = false;
+        // }
     })
 }
 

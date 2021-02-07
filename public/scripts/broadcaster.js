@@ -12,6 +12,7 @@ let scenes;
 let activePlayers;
 let teams = {};
 let obsLatch = true;
+let localJSON;
 
 
 //====================== User Listeners ============================
@@ -57,6 +58,7 @@ function connectRCON(){
 function rconCommand(command){
     localSocket.emit('rcon-command', command);
 }
+
 
 function configUser(socket){
 
@@ -135,6 +137,15 @@ function configUser(socket){
         socket.emit('map-selection-confirm', (maps));
     })
 
+    socket.on("json-update", (jsondata) =>{
+        localJSON = jsondata;
+        console.log("json update bitch");
+        //page updates
+        document.getElementById("countdown").innerHTML = localJSON.obsCountdown;
+        document.getElementById("countdown").style.visibility = ((localJSON.obsCountdownActive) ? "visible" : "hidden");
+        document.getElementById("initiateCountdown").style.visibility = ((localJSON.obsCountdownActive) ? "hidden" : "visible");
+    })
+
     configSockets(socket);
 
     createUserListener('observer', socket);
@@ -163,6 +174,13 @@ function populatePlayerNames(data){
         }
     }
 
+}
+
+function countdownStart(){
+    tempJSON = localJSON;
+    tempJSON.queueCountdown = true;
+    document.getElementById("initiateCountdown").style.visibility = "hidden";
+    localSocket.emit("update-json", tempJSON);
 }
 
 function updatePlayers(callback){

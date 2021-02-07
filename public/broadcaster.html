@@ -44,6 +44,7 @@
                         <button id="populateNames" class="settings" onclick="updatePlayers(populatePlayerNames)">Populate Names</button>
                         <button id="muteCasters" class="settings" onclick="updateCasterMute(true)">Mute Casters</button>
                         <button id="unmuteCasters" class="settings" onclick="updateCasterMute(false)">Unmute Casters</button>
+                        <button id="initiateCountdown" class="settings" onclick="countdownStart()">Initiate Start Countdown</button>
                     </div>
                 </div>
         </div>
@@ -59,6 +60,7 @@
                         <button id="teams-cam" class="settings" onclick="setAllPlayersCam()">All Player Cameras</button>
                         <button id="casters-cam" class="settings" onclick="setCasterCam()">Caster Cameras</button>
                         <button id="no-cam" class="settings" onclick="setNoCam()">No Cameras</button>
+                        <p id="countdown"></p>
                     </div>
                     <div id="scene-controls" class="controls">
                     </div>
