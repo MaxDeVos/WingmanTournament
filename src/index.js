@@ -490,7 +490,6 @@ function sharedJSONListeners(socket){
     socket.emit("json-update", sharedJSON);
     socket.on("push-to-json", async (json) =>{
         sharedJSON = json;
-        await new Promise(r => setTimeout(r, 1000));
         socket.broadcast.emit("json-update", sharedJSON);
 
         //functions? sort of
