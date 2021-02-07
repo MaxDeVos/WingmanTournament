@@ -488,9 +488,11 @@ function addRTCListeners(socket){
 }
 function sharedJSONListeners(socket){
     socket.emit("json-update", sharedJSON);
+
     socket.on("push-to-json", async (json) =>{
         sharedJSON = json;
         socket.broadcast.emit("json-update", sharedJSON);
+        socket.emit("json-update", sharedJSON);
 
         //functions? sort of
         //This is for the countdown
@@ -499,14 +501,17 @@ function sharedJSONListeners(socket){
             sharedJSON.obsCountdown = sharedJSON.obsCountdownStart;
             sharedJSON.obsCountdownActive = true;
             socket.broadcast.emit("json-update", sharedJSON);
+            socket.emit("json-update", sharedJSON);
             while(sharedJSON.obsCountdownActive === true){
                 await new Promise(r => setTimeout(r, 1000));
                 sharedJSON.obsCountdown -= 1;
                 console.log(sharedJSON.obsCountdown);
                 socket.broadcast.emit("json-update", sharedJSON);
+                socket.emit("json-update", sharedJSON);
                 if(sharedJSON.obsCountdown === 0){
                     sharedJSON.obsCountdownActive = false;
                     socket.broadcast.emit("json-update", sharedJSON);
+                    socket.emit("json-update", sharedJSON);
                 }
             }
         }
