@@ -36,6 +36,7 @@ sharedJSON.obsCountdownStart = 100;
 sharedJSON.obsCountdownActive = false;
 sharedJSON.obsCountdown = 0;
 sharedJSON.RMQ = [];
+sharedJSON.obsDesiredScene = "WAITING";
 
 const options = {
     key: fs.readFileSync('private.pem'),
