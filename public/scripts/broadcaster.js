@@ -180,7 +180,7 @@ function countdownStart(){
     tempJSON = localJSON;
     tempJSON.queueCountdown = true;
     document.getElementById("initiateCountdown").style.visibility = "hidden";
-    localSocket.emit("update-json", tempJSON);
+    localSocket.emit("push-to-json", tempJSON);
 }
 
 function updatePlayers(callback){

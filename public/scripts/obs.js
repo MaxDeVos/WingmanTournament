@@ -146,6 +146,7 @@ function configUser(socket){
     })
     socket.on("json-update", (data)=>{
         localJSON = data;
+        console.log("json update bitch");
         // if(jsonLatch){
         //     socket.emit("update-json", localJSON);
         //     jsonLatch = false;
