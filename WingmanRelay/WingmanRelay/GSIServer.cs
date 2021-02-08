@@ -42,7 +42,7 @@ namespace WingmanRelay {
             // While a user hasn't visited the `shutdown` url, keep on handling requests
             while (true) {
                 // Will wait here until we hear from a connection
-                HttpListenerContext ctx = listener.GetContext();
+                HttpListenerContext ctx = await listener.GetContextAsync();
 
                 // Peel out the requests and response objects
                 HttpListenerRequest req = ctx.Request;
