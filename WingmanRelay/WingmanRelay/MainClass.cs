@@ -4,7 +4,7 @@
         
         public static void Main(string[] args)
         {
-            var server = new GSIServer();
+            var server = new GsiServer();
             server.start();
         }
 
