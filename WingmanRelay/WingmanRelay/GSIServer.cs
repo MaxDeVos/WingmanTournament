@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 
 namespace WingmanRelay
 {
-class HttpServer
-    {
-
-        public static HttpListener listener;
-        public static HttpClient client;
-        public static string url = "http://localhost:3000/";
-        public static string serverUrl = "http://13.58.40.89:3254/";
+class GSIServer {
+    
+        private HttpListener listener;
+        private HttpClient client;
+        private string url = "http://localhost:3000/";
+        private string serverUrl = "http://13.58.40.89:3254/";
+        
         // public static string serverUrl = "http://localhost:3254/";
-        private static string latestData = "";
-        private static bool debugMode = false;
-        public static string getRequestData(HttpListenerRequest request)
+        private string latestData = "";
+        private bool debugMode = false;
+
+        private string getRequestData(HttpListenerRequest request)
         {
             if (!request.HasEntityBody)
             {
@@ -38,20 +39,20 @@ class HttpServer
             return s;
         }
 
-        private static async Task handleIncomingConnections()
+        private async Task handleIncomingConnections()
         {
             // While a user hasn't visited the `shutdown` url, keep on handling requests
             while (true)
             {
                 // Will wait here until we hear from a connection
-                HttpListenerContext ctx = listener.GetContext();
+                var ctx = listener.GetContext();
 
                 // Peel out the requests and response objects
-                HttpListenerRequest req = ctx.Request;
-                HttpListenerResponse resp = ctx.Response;
+                var req = ctx.Request;
+                var resp = ctx.Response;
 
                 // If it starts with this, it is a request from the server
-                string response = getRequestData(req);
+                var response = getRequestData(req);
                 latestData = response;
                 await client.PostAsync(serverUrl, new StringContent(latestData));
                 if (debugMode)
@@ -63,8 +64,7 @@ class HttpServer
             }
         }
 
-
-        public static void Main(string[] args)
+        public void start()
         {
             // Create a Http server and start listening for incoming connections
             listener = new HttpListener();
@@ -74,7 +74,7 @@ class HttpServer
             client = new HttpClient();
 
             // Handle requests
-            Task listenTask = handleIncomingConnections();
+            var listenTask = handleIncomingConnections();
             listenTask.GetAwaiter().GetResult();
 
             // Close the listener
