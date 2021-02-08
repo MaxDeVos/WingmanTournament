@@ -1,4 +1,5 @@
 const http = require('http')
+var fs = require('fs');
 
 async function apiCaller(url) {
 
@@ -49,6 +50,15 @@ async function getTeamByID(id){
     return await apiCaller(`teams/${id}`);
 }
 
+async function getTeamID(name){
+    let teams = await apiCaller(`teams/`);
+    for(let team in teams){
+        if(teams[team].name === name){
+            return teams[team]._id;
+        }
+    }
+}
+
 async function getCurrentTeams(){
     let currentMatch = await getCurrentMatch();
     let left = await getTeamByID(currentMatch.left.id)
@@ -56,8 +66,44 @@ async function getCurrentTeams(){
     return {left: left.name, right: right.name};
 }
 
-function handleVetos(match){
+async function constructMatchDatabaseFile(match, maps){
+    for(let map in maps){
+        match.left = {"id": await getTeamID(maps[map].ct), "wins": 0};
+        match.right = {"id": await getTeamID(maps[map].t), "wins": 0};
+    }
 
+    match.matchType = "bo3";
+
+    match.vetos = [];
+
+    for(let i = 0; i <= 2; i++){
+        console.log(maps[i]);
+        match.vetos[i] = await mapToVeto(maps[i]);
+    }
+
+    let jsonMatch = JSON.stringify(match);
+    console.log(jsonMatch);
+    fs.writeFile(`${__dirname}/matches`, jsonMatch, function(err, result) {
+        if(err) console.log('error', err);
+    });
 }
 
-module.exports = {getCurrentMatch, getTeamByID, getCurrentTeams};
+// Side = Opponent Selection.  Don't ask why, it's just how Lexogrine does it.
+// Those people are batshit crazy.
+async function mapToVeto(map){
+    let veto = {};
+    veto.teamId = await getTeamID(map.selector);
+    veto.mapName = map.name;
+    if(map.selector === map.t){
+        veto.side = "CT";
+    }
+    else{
+        veto.side = "T";
+    }
+    veto.type = "pick";
+    veto.mapEnd = false;
+    veto.reverseSide = false;
+    return veto;
+}
+
+module.exports = {getCurrentMatch, getTeamByID, getCurrentTeams, getTeamID, constructMatchDatabaseFile};

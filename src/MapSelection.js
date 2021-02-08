@@ -105,8 +105,7 @@ function onPlayerUpdate(updatedActivePlayers, socket){
         if(pickRound === 6){
             console.log("Map Selection Completed");
             broadcasterSocket.broadcast.emit("map-selection-complete", maps);
-            broadcasterSocket.emit("map-selection-complete", maps);
-            console.log(mapOrder);
+            broadcasterSocket.emit("map-selection-complete", mapOrder);
             await GSIManager.changeMap(mapOrder[0]);
         }
 

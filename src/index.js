@@ -348,6 +348,7 @@ function handleBroadcasterRoutes(socket){
         await GSIManager.sendCommandRCON(command);
     })
     socket.on('map-selection-confirm', async (maps) =>{
+        await APIManager.constructMatchDatabaseFile(await APIManager.getCurrentMatch(), maps);
         await GSIManager.changeMap(MapSelection.getCurrentMap());
         state = "gameStart";
     })
