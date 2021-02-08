@@ -1,4 +1,4 @@
-const Rcon = require('rcon-srcds');
+const Rcon = require('rcon-client').Rcon;
 const gsiDatabase = require('../public/hudmanagerdb.json')
 const APIManager = require('./APIManager');
 
@@ -8,7 +8,7 @@ let totalRounds = 16;
 let halftimeLatch = true;
 let gameoverLatch = true;
 let gameStartLatch = true;
-let server;
+let rcon;
 let rconStatus = "disconnected";
 let broadcasterSocket;
 
@@ -16,19 +16,28 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 
 async function connectToRCON(address, informed_socket){
     broadcasterSocket = informed_socket;
-    server = new Rcon.RCON({
-        host: address,          // Host
-        port: 27015,                // Port
-        maximumPacketSize: 0,       // Maximum packet bytes (0 = no limit)
-        encoding: 'ascii',          // Packet encoding (ascii, utf8)
-        timeout: 1000               // in ms
+    rcon = new Rcon({
+        host: address,
+        port: 27015,
+        password: "godie"
     })
 
-    await server.authenticate('godie');
-    console.log('authenticated');
-    await server.execute('status'); // You can read `status` reponse
-    rconStatus = "connected";
-    informed_socket.emit("rcon-con");
+    rcon.on("connect", () => {
+        console.log("RCON Connected!");
+        rconStatus = "connected";
+        informed_socket.emit("rcon-con");
+    })
+    rcon.on("authenticated", () => console.log("RCON Authenticated!"))
+    rcon.on("end", () => {
+        console.log("RCON Disconnected!!")
+        rconStatus = "disconnected";
+        informed_socket.emit("rcon-dc");
+    })
+    rcon.on('error', (e) =>{
+        console.log(e);
+    })
+
+    await rcon.connect()
 }
 
 function sendRCONStatus(socket){
@@ -45,7 +54,12 @@ async function sendCommandRCON(command){
         console.log("RCON isn't connected!  Can't send command: ", command);
     }
     else{
-        await server.execute(command);
+        try{
+            await rcon.send(command);
+        }catch(e){
+            console.log("Didn't get immediate reply from server.  " +
+                "CSGO Servers are unbelievably shitty, so this isn't surprising.  Likely changing maps.");
+        }
     }
 }
 
