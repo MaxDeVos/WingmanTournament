@@ -248,7 +248,8 @@ function setAllPlayersCam(){
 }
 
 function updateCasterMute(muted){
-    localSocket.emit("caster-mute", muted);
+    localJSON.castersMuted = muted
+    localSocket.emit("push-to-json", localJSON);
 }
 
 function setCasterCam(){

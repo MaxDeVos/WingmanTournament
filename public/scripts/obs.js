@@ -151,6 +151,10 @@ function configUser(socket){
     })
     socket.on("json-update", (data)=>{
         localJSON = data;
+        if(castersMuted ===! localJSON.castersMuted) {
+            castersMuted = localJSON.castersMuted;
+            handleCasterMute(localJSON.castersMuted);
+        }
         if(wsConnected){
             obs.send("SetCurrentScene", {
                 "scene-name": localJSON.obsDesiredScene
