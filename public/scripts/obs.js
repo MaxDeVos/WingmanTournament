@@ -179,7 +179,6 @@ function configUser(socket){
     })
 
     socket.on('map-selection-complete', (maps) => {
-        // alert("Map Selection Complete");
     });
 
 }

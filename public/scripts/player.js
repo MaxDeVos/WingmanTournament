@@ -166,15 +166,11 @@ function configUser(socket){
     socket.on('coin-toss', (result) => {
         console.log(result);
         if(result === "won"){
-            // alert(`You won the coin toss!  Select either "Pick Side First" or
-            // "Pick Map First" to proceed.`)
-            updateInfo("Please choose an starting option below");
+            updateInfo("You won the toss! Please choose an starting option below");
             createStartPicker();
         }
         else{
-            updateInfo("Waiting on opponents");
-            // alert("Your opponents won the coin toss.  They are selecting between " +
-            //     "\"Pick Side First\" and \"Pick Map First\"")
+            updateInfo("Opponents won coin toss!");
         }
     });
 
@@ -183,11 +179,9 @@ function configUser(socket){
         console.log(result);
         if(result === "map"){
             updateInfo("Opponents are banning a map");
-            // alert(`Your opponents have chosen to choose a map first.`)
         }
         else{
             updateInfo("Please ban a map");
-            // alert(`Your opponents have chosen to choose a side first.  Please select a map.`)
         }
     });
 
