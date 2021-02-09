@@ -193,19 +193,23 @@ function updatePlayers(callback){
 
 function createSceneButtons(scenes){
     let controls = document.getElementById("scene-controls");
-    for(let scene in scenes){
+    for(let scene in scenes) {
         console.log(scenes[scene]);
         let sceneName = scenes[scene].name;
-        let button = document.createElement("button");
-        button.className = "settings";
-        button.id = `${sceneName}_button`;
-        button.innerText = sceneName;
-        button.addEventListener("click", ()=>{
-            obsCommand('SetCurrentScene', {
-                'scene-name': sceneName
-            });
-        })
-        controls.appendChild(button);
+        if(!sceneName.endsWith("OVERLAY")){
+            let button = document.createElement("button");
+            button.className = "settings";
+            button.id = `${sceneName}_button`;
+            button.innerText = sceneName;
+            button.addEventListener("click", () => {
+                localJSON.obsDesiredScene = sceneName
+                localSocket.emit("push-to-json", localJSON);
+                // obsCommand('SetCurrentScene', {
+                //     'scene-name': sceneName
+                // });
+            })
+            controls.appendChild(button);
+        }
     }
 }
 

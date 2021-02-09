@@ -516,6 +516,9 @@ function sharedJSONListeners(socket){
                     socket.emit("json-update", sharedJSON);
                 }
             }
+            sharedJSON.obsDesiredScene = "MAIN_NO_CS_INTRO"
+            socket.broadcast.emit("json-update", sharedJSON)
+            socket.emit("json-update", sharedJSON)
         }
 
 
