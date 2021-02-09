@@ -11,8 +11,8 @@ namespace WingmanRelay {
         private HttpClient client;
         
         private const string url = "http://localhost:3000/";
-        private const string serverUrl = "http://13.58.40.89:3254/";
-        // public static string serverUrl = "http://localhost:3254/";
+        // private const string serverUrl = "http://13.58.40.89:3254/";
+        public static string serverUrl = "http://localhost:3254/";
         
         private string latestData = "";
 
@@ -51,7 +51,8 @@ namespace WingmanRelay {
                 // If it starts with this, it is a request from the server
                 var response = getRequestData(req);
                 latestData = response;
-                await client.PostAsync(serverUrl, new StringContent(latestData));
+                Console.Write((latestData));
+                    await client.PostAsync(serverUrl, new StringContent(latestData));
                 resp.Close();
             }
         }

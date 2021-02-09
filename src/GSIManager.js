@@ -7,6 +7,7 @@ let totalRounds = 16;
 let halftimeLatch = true;
 let gameoverLatch = true;
 let gameStartLatch = true;
+let timeoutActive = false;
 let rcon;
 let rconStatus = "disconnected";
 let broadcasterSocket;
@@ -83,6 +84,17 @@ async function update(data) {
             await handleGameOver();
         } else if (!gameoverLatch && data["map"]["phase"] === "live") {
             gameoverLatch = true;
+        }
+
+        if(data["phase_countdowns"] !== undefined){
+            if(data["phase_countdowns"]["phase"] === "timeout_ct" || data["phase_countdowns"]["phase"] === "timeout_t") {
+                broadcastEvent(data["phase_countdowns"]["phase"], data["phase_countdowns"]["phase_ends_in"]);
+                timeoutActive = true;
+            }
+            else if(timeoutActive) {
+                timeoutActive = false;
+                broadcastEvent("timeout-over");
+            }
         }
     }
 }
@@ -161,6 +173,11 @@ async function handleGameOver(){
 
     broadcasterSocket.emit("game-over");
     await stopDemoRecording();
+}
+
+function broadcastEvent(event, payload) {
+    broadcasterSocket.broadcast.emit(event, payload);
+    broadcasterSocket.emit(event, payload);
 }
 
 module.exports = {update,connectToRCON, sendCommandRCON,

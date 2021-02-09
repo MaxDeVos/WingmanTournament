@@ -181,6 +181,18 @@ function configUser(socket){
     socket.on('map-selection-complete', (maps) => {
     });
 
+    socket.on('timeout_t', (secondsRemaining)=>{
+        console.log("Terrorist Timeout!", secondsRemaining);
+    })
+
+    socket.on('timeout_ct', (secondsRemaining)=>{
+        console.log("Counter-Terrorist Timeout!", secondsRemaining);
+    })
+
+    socket.on('timeout-over', ()=>{
+        console.log("Timeout Over!")
+    })
+
 }
 
 function handlePeer(socketId, type, initiator){
