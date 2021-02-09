@@ -6,7 +6,6 @@
  * Video Out: Yes
  */
 
-const all_maps = ['de_cobblestone', 'de_elysion', 'de_lake', 'de_shortnuke', 'de_guard', 'de_overpass', 'de_vertigo'];
 let playerDatabase = {};
 let number;
 let nameAppendLatch = true;

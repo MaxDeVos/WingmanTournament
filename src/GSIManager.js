@@ -1,5 +1,4 @@
 const Rcon = require('rcon-client').Rcon;
-const gsiDatabase = require('../public/hudmanagerdb.json')
 const APIManager = require('./APIManager');
 
 console.log(Rcon);
@@ -27,7 +26,7 @@ async function connectToRCON(address, informed_socket){
         rconStatus = "connected";
         informed_socket.emit("rcon-con");
     })
-    rcon.on("authenticated", () => console.log("RCON Authenticated!"))
+    rcon.on("authenticated", () => console.log("RCON Authenticated!"));
     rcon.on("end", () => {
         console.log("RCON Disconnected!!")
         rconStatus = "disconnected";

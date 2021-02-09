@@ -8,6 +8,8 @@
 
 // ======================== RTC Bullshit Starts Here ============================
 
+let map_list = ['de_cobblestone', 'de_elysion', 'de_lake', 'de_shortnuke', 'de_guard', 'de_overpass', 'de_vertigo'];
+let queuePositions = [];
 let playerVideos = {};
 let casterVideos = {};
 let cameraState = "none";
@@ -20,6 +22,9 @@ let localJSON;
 let jsonLatch = true;
 
 function configUser(socket){
+
+    generateQueuePositions();
+
     localSocket = socket;
 
     try{
@@ -152,6 +157,31 @@ function configUser(socket){
         //     jsonLatch = false;
         // }
     })
+
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    socket.on("start-map-selection", async ()=>{
+        createMapSelectionObject();
+        await delay(100);
+        deployMaps();
+    })
+
+    socket.on('ban-spec', (maps) => {
+        updateMapList(maps);
+    })
+
+    socket.on('pick-spec', (maps) => {
+        updateMapList(maps);
+    })
+
+    socket.on('side-pick-spec', (maps) => {
+        updateMapList(maps);
+    })
+
+    socket.on('map-selection-complete', (maps) => {
+        // alert("Map Selection Complete");
+    });
+
 }
 
 function handlePeer(socketId, type, initiator){
@@ -238,6 +268,7 @@ function disableCasterCamera() {
 }
 
 function enableAllPlayersCam(){
+
     let allPlayersContainer = document.createElement("div");
     allPlayersContainer.id = "allPlayersContainer";
 
@@ -357,6 +388,138 @@ function createVideoObject(className, muted){
     return videoObject;
 }
 
+function createMapSelectionObject(){
+    let container = document.createElement('div');
+    container.id = "mapSelectionContainer";
+
+    let unpickedMaps = document.createElement('div');
+    unpickedMaps.id = "unpickedMapsContainer";
+
+    for(let map in map_list){
+        let sName = map_list[map].replace("de_", "");
+        container.appendChild(createMap(map_list[map], "Unpicked", `/media/maps/${sName}.jpg`));
+    }
+
+    container.appendChild(unpickedMaps);
+    document.body.appendChild(container);
+
+}
+
+function createMap(map, status, image){
+
+    let mapContainer = document.createElement('div');
+    mapContainer.id = `${map}_container`;
+    mapContainer.classList.add("mapContainer");
+
+    let mapStatus = document.createElement('p');
+    mapStatus.id = `${map}_status`;
+    mapStatus.className = "mapStatus";
+    mapStatus.innerText = status;
+    mapContainer.appendChild(mapStatus);
+
+    let mapTitle = document.createElement('p');
+    mapTitle.id = `${map}_title`;
+    mapTitle.className = "mapTitle";
+    mapTitle.innerText = convertMapToName(map);
+    mapContainer.appendChild(mapTitle);
+
+    let mapImageGrid = document.createElement('div');
+    mapImageGrid.id = `${map}_imageGrid`;
+    mapImageGrid.className = "mapImageGrid";
+
+        let mapImage = document.createElement('img');
+        mapImage.id = `${map}_image`;
+        mapImage.className = "mapImage";
+        mapImage.src = image;
+        mapImageGrid.appendChild(mapImage);
+
+        let logo = document.createElement('img');
+        logo.id = `${map}_logo`;
+        logo.className = "mapLogo";
+        mapImageGrid.appendChild(logo);
+
+    mapContainer.appendChild(mapImageGrid);
+    return mapContainer;
+}
+
+function convertMapToName(name){
+    let string;
+    if(name === "de_shortnuke"){
+        string = "Nuke"
+    }
+    else{
+        string = name.replace("de_","");
+        string = string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    return string;
+}
+
 function relayToBroadcaster(event, payload){
     localSocket.emit("to-broadcaster", {event: event, payload: payload});
+}
+
+function moveMapToPosition(map, position){
+    console.log(`${map}_container`, position);
+    document.getElementById(`${map}_container`).style.left = `${position}px`;
+}
+
+function generateQueuePositions(){
+    for(let i = 0; i < 7; i++){
+        queuePositions[i] = (i * 271);
+    }
+}
+
+function deployMaps(){
+    for(let map in map_list){
+        moveMapToPosition(map_list[map], queuePositions[map]);
+    }
+}
+
+function updateMapList(maps){
+    let sortedMaps = sortMapsByRound(maps);
+    let unsortedMaps = map_list;
+    let finalOrder = [];
+    for(let m in sortedMaps){
+        let map = sortedMaps[m];
+
+        let mapElement = document.getElementById(`${map.name}_container`);
+        if(map.status === "picked"){
+            mapElement.classList.add("pickedCont");
+            document.getElementById(`${map.name}_status`).innerText = "Picked";
+            $(`#${map.name}_container`).find('*').addClass('picked');
+        }
+        else if(map.status === "banned"){
+            document.getElementById(`${map.name}_status`).innerText = "Banned";
+            mapElement.classList.add("bannedCont");
+            $(`#${map.name}_container`).find('*').addClass('banned');
+        }
+
+        let logo = document.getElementById(`${map.name}_logo`);
+        logo.src = `/media/logos/${map.selector}.png`
+        logo.style.visibility = "visible";
+
+        finalOrder.push(map.name);
+        for(let um in unsortedMaps){
+            if(unsortedMaps[um] === map.name){
+                delete unsortedMaps[um];
+            }
+        }
+    }
+    for(let m in unsortedMaps){
+        finalOrder.push(unsortedMaps[m]);
+    }
+    map_list = finalOrder;
+    deployMaps();
+}
+
+function sortMapsByRound(maps){
+    let tempMaps = [];
+    for(let i = 0; i < 7; i++){
+        for(let m in maps){
+            if(maps[m]["round"] === i){
+                tempMaps[i] = maps[m];
+            }
+        }
+    }
+    return tempMaps;
 }

@@ -1,5 +1,17 @@
+@font-face {
+    font-family: 'roboto';
+    src: url('fonts/roboto-condensed.bold-webfont.woff2') format('woff2'),
+    url('fonts/roboto-condensed.bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
 body{
     max-width: 1920px;
+    max-height: 1080px;
+    font-family: 'roboto';
+    background-image: url('/media/misc/materialBackground.jpg');
+    background-size: 1920px 1080px;
 }
 video{
     width:100%;
@@ -21,15 +33,24 @@ video{
 /*Caster Camera*/
 #casterCamContainer{
     position:absolute;
-    width:1480px;
+    width:100%;
     height:560px;
-    left:220px;
-    top:260px;
+    left:0px;
+    top:50px;
+    transition: all 0.25s linear;
 }
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 .casterVideo{
-    width:720px;
-    height:540px;
-    margin:10px;
+    width:900px;
+    height:675px;
+    margin:30px;
+    transition: all 0.25s linear;
+    animation: fadein .5s;
 }
 
 /*All Players Cameras*/
@@ -44,6 +65,7 @@ video{
     width:640px;
     height:480px;
     margin:10px;
+    animation: fadein .5s;
 }
 
 /*Team Cam Camera*/
@@ -58,4 +80,108 @@ video{
     width:720px;
     height:540px;
     margin:10px;
+    animation: fadein .5s;
+}
+
+/*Map Selection*/
+#mapSelectionContainer{
+    position: absolute;
+    height:250px;
+    bottom:30px;
+    left:0;
+    right:0;
+    width:100%;
+    margin: 0;
+}
+
+#unpickedMapsContainer{
+    position:absolute;
+    height:250px;
+    bottom:0;
+    right:0;
+    background-color: grey;
+}
+
+@keyframes example {
+    0%   {left:0;}
+    25%  {left:200px;}
+    100% {left:0;}
+}
+
+.mapContainer{
+    border:4px solid gray;
+    left:0px;
+    position:absolute;
+    height:250px;
+    width:235px;
+    bottom:0;
+    margin-left:24px;
+    margin-right:24px;
+    background-color: darkgray;
+    transition: all 0.25s linear;
+}
+
+.mapStatus{
+    background-color: #ff8530;
+    color:#3b3b3b;
+    width:100%;
+    height:40px;
+    line-height:40px;
+    margin:0;
+    font-size:25px;
+    text-align:center;
+}
+
+.pickedCont{
+    background-color: #ff8530;
+    color:#3b3b3b;
+    border: solid 4px forestgreen;
+}
+
+.bannedCont{
+    background-color: #ff8530;
+    color:#3b3b3b;
+    border: solid 4px #3b3b3b;
+    opacity: .5;
+}
+
+.banned{
+    background-color: #ff8530;
+}
+
+.mapTitle{
+    background-color: #3b3b3b;
+    color:#ff9e3d;
+    width:100%;
+    height:40px;
+    line-height:40px;
+    margin:0;
+    font-size:25px;
+    text-align:center;
+}
+
+.mapImage{
+    grid-area: 1 / 1 / 4 / 4;
+    text-align: center;
+    width:100%;
+    height: 170px;
+    bottom:0;
+    opacity: 1;
+}
+.mapLogo{
+    background-color: transparent;
+    visibility: hidden;
+    border: 0;
+    grid-area: 2 / 2 / 3 / 3;
+    width:100%;
+    height:100%;
+    opacity: 1;
+    z-index:1;
+}
+.mapImageGrid {
+    display: grid;
+    grid-template-columns: 1fr 110px 1fr;
+    grid-template-rows: 1fr 110px 1fr;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
 }

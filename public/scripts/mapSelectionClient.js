@@ -49,8 +49,8 @@ function specStartMapSelection(maps){
             mapBox.appendChild(image);
 
             let data = document.createElement("div");
-            data.className = "mapData";
-            data.id = `${m.name}_data`
+            data.classList.add("mapData");
+            data.id = `${m.name}_data`;
             mapBox.appendChild(data);
 
                 let selectedByTitle = document.createElement("p");
@@ -59,7 +59,7 @@ function specStartMapSelection(maps){
                 data.appendChild(selectedByTitle);
 
                 let selectedBy = document.createElement("p");
-                selectedBy.className = "data";
+                selectedBy.classList.add("data");
                 selectedBy.id = `${m.name}_selectedBy`;
                 data.appendChild(selectedBy);
 
