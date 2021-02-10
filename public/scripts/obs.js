@@ -151,11 +151,15 @@ function configUser(socket){
     })
     socket.on("json-update", (data)=>{
         localJSON = data;
-        console.log("json update bitch");
-        // if(jsonLatch){
-        //     socket.emit("update-json", localJSON);
-        //     jsonLatch = false;
-        // }
+        if(castersMuted ===! localJSON.castersMuted) {
+            castersMuted = localJSON.castersMuted;
+            handleCasterMute(localJSON.castersMuted);
+        }
+        if(wsConnected){
+            obs.send("SetCurrentScene", {
+                "scene-name": localJSON.obsDesiredScene
+            });
+        }
     })
 
     const delay = ms => new Promise(res => setTimeout(res, ms));

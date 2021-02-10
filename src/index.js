@@ -38,6 +38,7 @@ sharedJSON.obsCountdownActive = false;
 sharedJSON.obsCountdown = 0;
 sharedJSON.RMQ = [];
 sharedJSON.obsDesiredScene = "WAITING";
+sharedJSON.castersMuted = true;
 
 const options = {
     key: fs.readFileSync('private.pem'),
@@ -517,6 +518,9 @@ function sharedJSONListeners(socket){
                     socket.emit("json-update", sharedJSON);
                 }
             }
+            sharedJSON.obsDesiredScene = "MAIN_NO_CS_INTRO"
+            socket.broadcast.emit("json-update", sharedJSON)
+            socket.emit("json-update", sharedJSON)
         }
 
 

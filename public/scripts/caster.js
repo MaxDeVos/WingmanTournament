@@ -6,7 +6,7 @@
  * Audio Out: Yes
  * Video Out: No
  */
-
+let localJSON;
 //====================== User Listeners ============================
 
 function createUserListener(name, socket){
@@ -46,6 +46,10 @@ function configUser(socket){
     })
     socket.on('handle-mute', muted =>{
         handleMute(muted);
+    })
+    socket.on('json-update', (data)=>{
+        localJSON = data;
+        handleMute(localJSON.castersMuted);
     })
 
     configSockets(socket);
