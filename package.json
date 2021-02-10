@@ -23,6 +23,7 @@
     "rtcmulticonnection-server": "^1.3.2",
     "simple-peer": "^9.9.3",
     "socket.io": "^3.1.0",
-    "socket.io-client": "^3.1.0"
+    "socket.io-client": "^3.1.0",
+    "websocket": "^1.0.33"
   }
 }

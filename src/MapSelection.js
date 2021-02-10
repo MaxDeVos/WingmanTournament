@@ -1,4 +1,5 @@
 let GSIManager = require("./GSIManager");
+const APIManager = require("./APIManager");
 let maps = {};
 let mapSelectionActive = false;
 let activePlayers = {};
@@ -13,6 +14,8 @@ let mapOrder = [];
 let pickConfig = ["ban","ban","pick","pick","ban","ban", "auto"];
 let pickRound = 0;
 let currentMap = 0;
+let selectionComplete = false;
+let mapSelectionExport = "";
 
 function initMapSelection(){
     maps = getEmptyMapList();
@@ -105,8 +108,10 @@ function onPlayerUpdate(updatedActivePlayers, socket){
         if(pickRound === 6){
             console.log("Map Selection Completed");
             broadcasterSocket.broadcast.emit("map-selection-complete", maps);
+            mapSelectionExport = await APIManager.constructMatchDatabaseFile(await APIManager.getCurrentMatch(), mapOrder);
+            console.log(mapSelectionExport);
             broadcasterSocket.emit("map-selection-complete", mapOrder);
-            await GSIManager.changeMap(mapOrder[0]);
+            selectionComplete = true;
         }
 
     })
@@ -285,5 +290,25 @@ function getNextMap(){
     }
 }
 
+function getConfigExport(){
+    if(!selectionComplete){
+        return "";
+    }
+    else{
+
+    }
+}
+
+function getSelectionExport(){
+    if(mapSelectionExport !== ""){
+        let out = mapSelectionExport;
+        mapSelectionExport = "";
+        return out;
+    }
+    else{
+        return "";
+    }
+}
+
 module.exports = {handlePlayerMapSelection, handleSpectatorMapSelection, onBroadcasterConnect, onPlayerUpdate,
-    handleBroadcasterMapSelection, updatePeers, getCurrentMap, getNextMap};
+    handleBroadcasterMapSelection, updatePeers, getCurrentMap, getNextMap, getSelectionExport};

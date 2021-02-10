@@ -11,6 +11,7 @@ const APIManager = require('./APIManager');
 const MapSelection = require('./MapSelection');
 const http = require("http");
 const localEnvironment = require('../localEnviroment.json');
+var WebSocketServer = require('websocket').server;
 
 let state = "init";
 
@@ -348,7 +349,7 @@ function handleBroadcasterRoutes(socket){
         await GSIManager.sendCommandRCON(command);
     })
     socket.on('map-selection-confirm', async (maps) =>{
-        await APIManager.constructMatchDatabaseFile(await APIManager.getCurrentMatch(), maps);
+        console.log("Generating mapSelectionExport");
         await GSIManager.changeMap(MapSelection.getCurrentMap());
         state = "gameStart";
     })
@@ -680,7 +681,9 @@ let GSIServer = http.createServer((req, res) => {
     })
 
     req.on("end", async () => {
-        res.end("")
+
+        let mapSelectionExport = MapSelection.getSelectionExport();
+        res.end("map-info;"+mapSelectionExport);
 
         let game = JSON.parse(body)
         let currentPlayer = game.player["steamid"];
@@ -694,15 +697,12 @@ let GSIServer = http.createServer((req, res) => {
             }
             lastPlayer = currentPlayer;
         }
-
         await GSIManager.update(game);
-
     })
 });
 
 GSIServer.listen(3254);
-console.log("Started GSI Server!")
-
+console.log("Started GSI Server!");
 
 server.listen(port, () => {
     console.log('========== Public IPs ============');

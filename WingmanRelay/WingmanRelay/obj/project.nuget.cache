@@ -1,8 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "rwyOp8XMVqTtPr1huf+Q2ITXhriwa1hFtJon1mNHBUkrzKuBhiVTWbdM+xtyX4oc47a4EMTLWC7WeojY0g/thQ==",
+  "dgSpecHash": "QgIuLlPtcqUZkNLm/4H1AC4uR5hs9bVYtluIq4oltQOPtIn0mGWoidPg06ktQA6v35gePaOKA4il0V+AE9cOww==",
   "success": true,
   "projectFilePath": "M:\\Workspace\\Javascript\\WingmanTournament\\WingmanRelay\\WingmanRelay\\WingmanRelay.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "expectedPackageFiles": [
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\websocketsharp\\1.0.3-rc11\\websocketsharp.1.0.3-rc11.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'WebSocketSharp 1.0.3-rc11' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "libraryId": "WebSocketSharp",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
 }

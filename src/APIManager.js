@@ -77,20 +77,20 @@ async function constructMatchDatabaseFile(match, maps){
     match.vetos = [];
 
     for(let i = 0; i <= 2; i++){
-        console.log(maps[i]);
         match.vetos[i] = await mapToVeto(maps[i]);
     }
 
     let jsonMatch = JSON.stringify(match);
-    console.log(jsonMatch);
-    fs.writeFile(`${__dirname}/matches`, jsonMatch, function(err, result) {
-        if(err) console.log('error', err);
-    });
+    // fs.writeFile(`${__dirname}/matches`, jsonMatch, function(err, result) {
+    //     if(err) console.log('error', err);
+    // });
+    return jsonMatch;
 }
 
 // Side = Opponent Selection.  Don't ask why, it's just how Lexogrine does it.
 // Those people are batshit crazy.
 async function mapToVeto(map){
+    console.log(map);
     let veto = {};
     veto.teamId = await getTeamID(map.selector);
     veto.mapName = map.name;

@@ -7,26 +7,25 @@ using System.Threading.Tasks;
 
 namespace WingmanRelay {
     internal class GsiServer {
+        
         private HttpListener listener;
         private HttpClient client;
         
-        private const string url = "http://localhost:3000/";
-        // private const string serverUrl = "http://13.58.40.89:3254/";
-        public static string serverUrl = "http://localhost:3254/";
+        private readonly string url;
+        private readonly string serverUrl;
+
+        public GsiServer(string url, string serverUrl) {
+            this.url = url;
+            this.serverUrl = serverUrl;
+        }
         
         private string latestData = "";
+        
 
-        private static string getRequestData(HttpListenerRequest request) {
-            if (!request.HasEntityBody) {
-                Console.WriteLine("No client data was sent with the request.");
-                return "";
-            }
-
-            Stream body = request.InputStream;
-            Encoding encoding = request.ContentEncoding;
-            var reader = new StreamReader(body, encoding);
-            if (request.ContentType != null) {
-            }
+        private static string getRequestData(Stream body) {
+            
+            // Encoding encoding = request.ContentEncoding;
+            var reader = new StreamReader(body);
 
             // Convert the data to a string and display it on the console.
             var s = reader.ReadToEnd();
@@ -49,10 +48,15 @@ namespace WingmanRelay {
                 HttpListenerResponse resp = ctx.Response;
 
                 // If it starts with this, it is a request from the server
-                var response = getRequestData(req);
+                var response = getRequestData(req.InputStream);
                 latestData = response;
-                Console.Write((latestData));
-                    await client.PostAsync(serverUrl, new StringContent(latestData));
+                // Console.Write((latestData));
+                    HttpResponseMessage r = await client.PostAsync(serverUrl, new StringContent(latestData));
+                    var res = getRequestData(await r.Content.ReadAsStreamAsync());
+                    if (res.StartsWith("map-info")) {
+                        res = res.Replace("map-info;", "");
+                        Console.Write(res);
+                    }
                 resp.Close();
             }
         }

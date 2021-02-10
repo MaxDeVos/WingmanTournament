@@ -14,3 +14,5 @@ M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Debug\ne
 M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Debug\net5.0\ref\WingmanRelay.dll
 M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Debug\net5.0\WingmanRelay.pdb
 M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Debug\net5.0\WingmanRelay.genruntimeconfig.cache
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Debug\net5.0\websocket-sharp.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Debug\net5.0\WingmanRelay.csproj.CopyComplete
