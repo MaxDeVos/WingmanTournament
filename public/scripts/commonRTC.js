@@ -145,6 +145,10 @@ function removePeer(socket_id) {
         console.log("REMOVING AS BROADCASTER");
         document.getElementById(socket_id).parentElement.remove();
     }
+    else if(localType === "caster"){
+        console.log("REMOVING AS CASTER");
+        document.getElementById(socket_id).remove();
+    }
 
     delete peers[socket_id]
 }

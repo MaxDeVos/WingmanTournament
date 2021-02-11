@@ -86,7 +86,8 @@ video{
 .teamCamVideo{
     width:720px;
     height:540px;
-    margin:10px;
+    margin:9px;
+    border: 1px solid black;
     transition: all 0.25s linear;
     animation: fadein .5s;
 }
@@ -196,14 +197,33 @@ video{
     grid-row-gap: 0;
 }
 
+@keyframes slide-timeout-down {
+    0% {
+        transform: translateY(-150px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes slide-timeout-up {
+    0% {
+        transform: translateY(0px);
+    }
+    100% {
+        transform: translateY(-300px);
+    }
+}
+
 #timeoutContainer{
     position: absolute;
     left:830px;
-    top:25px;
+    top:50px;
     width:250px;
     height:150px;
     background-color: #3b3b3b;
-    border:5px solid #ff9e3d
+    border:5px solid #ff9e3d;
+    animation: slide-timeout-down .5s ease;
 }
 
 #timeoutTitle{
@@ -238,4 +258,24 @@ video{
     font-size:75px;
     text-align:center;
     top:0;
+}
+
+/* On the fly animations */
+@keyframes slide-team-video-up {
+    0% {
+        transform: translateY(1000px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* On the fly animations */
+@keyframes slide-team-video-down {
+    0% {
+        transform: translateY(0px);
+    }
+    100% {
+        transform: translateY(1000px);
+    }
 }

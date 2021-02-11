@@ -20,7 +20,6 @@ let localSocket;
 let castersMuted = true;
 let localJSON;
 let activeScene;
-let jsonLatch = true;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -111,30 +110,30 @@ function configUser(socket){
         handleCasterMute(muted);
     })
 
-    socket.on('to-obs', (data) =>{
+    socket.on('to-obs', async (data) =>{
         if(data.type === "active-player-cam"){
             console.log("Switching to Active Player Cam");
-            disableCurrentCam();
+            await disableCurrentCam();
             enableActivePlayerCamera();
         }
         else if(data.type === "all-players-cam"){
             console.log("Switching to All Players Cam");
-            disableCurrentCam();
+            await disableCurrentCam();
             enableAllPlayersCam();
         }
         else if(data.type === "caster-cam"){
             console.log("Switching to Caster Cam");
-            disableCurrentCam();
+            await disableCurrentCam();
             enableCasterCamera();
         }
         else if(data.type === "team-cam"){
             console.log("Switching to Team Cam");
-            disableCurrentCam();
-            enableTeamCam(data.payload);
+            await disableCurrentCam();
+            enableTeamCam(data.payload, false);
         }
         else if(data.type === "no-cam"){
             console.log("Switching to No Cam");
-            disableCurrentCam();
+            await disableCurrentCam();
         }
     })
 
@@ -193,19 +192,19 @@ function configUser(socket){
     socket.on('map-selection-complete', (maps) => {
     });
 
-    socket.on('timeout_t', (timeoutTeam)=>{
+    socket.on('timeout_t', async (timeoutTeam)=>{
         console.log("T-side Timeout called from: " + timeoutTeam);
         console.log(`Switching to ${timeoutTeam} Cam`);
-        disableCurrentCam();
-        enableTeamCam(timeoutTeam);
+        await disableCurrentCam();
+        enableTeamCam(timeoutTeam, true);
         createTimeoutTimer(timeoutTeam);
     })
 
-    socket.on('timeout_ct', (timeoutTeam)=>{
+    socket.on('timeout_ct', async (timeoutTeam)=>{
         console.log("CT-side Timeout called from: " + timeoutTeam);
         console.log(`Switching to ${timeoutTeam} Cam`);
-        disableCurrentCam();
-        enableTeamCam(timeoutTeam);
+        await disableCurrentCam();
+        enableTeamCam(timeoutTeam, true);
         createTimeoutTimer(timeoutTeam);
     })
 
@@ -214,9 +213,11 @@ function configUser(socket){
         updateTimeoutTimer(secondsRemaining);
     })
 
-    socket.on('timeout-over', ()=>{
-        console.log("Timeout Over!")
-        destroyTimeoutTimer();
+    socket.on('timeout-over',async ()=>{
+        console.log("Timeout Over!");
+        await destroyTimeoutTimer();
+        await disableCurrentCam();
+        setActivePlayersCam();
     })
 
     socket.on('hide-map-selection', async ()=>{
@@ -256,8 +257,11 @@ function updateTimeoutTimer(time){
     document.getElementById("timeoutClock").innerText = time;
 }
 
-function destroyTimeoutTimer(){
-    document.getElementById("timeoutContainer").remove();
+async function destroyTimeoutTimer(){
+    let container = document.getElementById("timeoutContainer");
+    container.style.animation = "slide-timeout-up .5s ease";
+    await delay(500);
+    container.remove();
 }
 
 function handlePeer(socketId, type, initiator){
@@ -386,7 +390,7 @@ function disableAllPlayersCam() {
     allPlayersContainer.remove();
 }
 
-function enableTeamCam(team){
+function enableTeamCam(team, slide){
     socket.emit("request-team-players", team);
 
     console.log("STARTING TEAM CAM");
@@ -396,13 +400,20 @@ function enableTeamCam(team){
 
     let player1Cam = createVideoObject("teamCamVideo", false);
     player1Cam.id = "player1Cam";
+    if(slide){
+        player1Cam.style.animation = "slide-team-video-up .5s ease";
+    }
     teamCamContainer.appendChild(player1Cam);
 
     let player2Cam = createVideoObject("teamCamVideo", false);
     player2Cam.id = "player2Cam";
-    teamCamContainer.appendChild(player2Cam);
+    if(slide){
+        player2Cam.style.animation = "slide-team-video-up .5s ease";
+    }
 
+    teamCamContainer.appendChild(player2Cam);
     document.body.appendChild(teamCamContainer);
+
     cameraState = "teamCam";
 }
 
@@ -428,12 +439,22 @@ function handleEnableTeamCam(players){
     }
 }
 
-function disableTeamCam(){
+async function disableTeamCam(){
+
+    let player1Cam = document.getElementById("player1Cam")
+    let player2Cam = document.getElementById("player2Cam")
+    if(player1Cam.style.animation !== undefined){
+        player1Cam.style.animation = "slide-team-video-down .5s ease";
+        player2Cam.style.animation = "slide-team-video-down .5s ease";
+        await delay(500);
+    }
+
+
     let allPlayersContainer = document.getElementById("teamCamContainer");
     allPlayersContainer.remove();
 }
 
-function disableCurrentCam(){
+async function disableCurrentCam(){
     switch(cameraState){
         case "active-player":
             disableActivePlayerCamera();
@@ -445,7 +466,7 @@ function disableCurrentCam(){
             disableAllPlayersCam();
             break;
         case "teamCam":
-            disableTeamCam();
+            await disableTeamCam();
             break;
         case "none":
             break;
