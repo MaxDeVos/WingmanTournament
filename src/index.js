@@ -20,6 +20,7 @@ peers = {};
 // Max's PC
 const publicIP = localEnvironment.publicIP;
 const csgoIP = localEnvironment.csgoIP;
+const lexogrineIP = localEnvironment.lexogrineIP;
 // AWS IP
 // const publicIP = '13.58.40.89';
 

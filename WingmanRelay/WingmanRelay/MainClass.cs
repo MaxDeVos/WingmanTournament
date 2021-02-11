@@ -8,7 +8,7 @@ namespace WingmanRelay {
 
         public static void Main(string[] args) {
             const string url = "http://localhost:3000/";
-            const string serverUrl = "http://localhost:3254/";
+            const string serverUrl = "http://13.58.40.89:3254/";
             
             Process[] processes = Process.GetProcessesByName("Lexogrine HUD Manager");
             if (processes.Length == 0) {

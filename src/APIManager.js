@@ -1,12 +1,13 @@
 const http = require('http')
 var fs = require('fs');
+const localEnvironment = require('../localEnviroment.json');
 
 async function apiCaller(url) {
 
     return new Promise(function (resolve, reject) {
         try {
             const options = {
-                hostname: 'localhost',
+                hostname: localEnvironment.lexogrineIP,
                 port: 1348,
                 path: `/api/${url}`,
                 method: 'GET'
