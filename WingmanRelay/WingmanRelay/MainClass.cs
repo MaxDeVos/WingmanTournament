@@ -19,7 +19,6 @@ namespace WingmanRelay {
             Process[] csgo = Process.GetProcessesByName("csgo.exe");
             if (processes.Length == 0) {
                 Console.Write("WARNING: CSGO is not running!");
-                Environment.Exit(0);
             }
             
             var gsiServer = new GsiServer(url, serverUrl);
