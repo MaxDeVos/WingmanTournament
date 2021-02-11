@@ -195,3 +195,47 @@ video{
     grid-column-gap: 0;
     grid-row-gap: 0;
 }
+
+#timeoutContainer{
+    position: absolute;
+    left:830px;
+    top:25px;
+    width:250px;
+    height:150px;
+    background-color: #3b3b3b;
+    border:5px solid #ff9e3d
+}
+
+#timeoutTitle{
+    color:#ff9e3d;
+    width:100%;
+    height:40px;
+    line-height:40px;
+    margin:0;
+    font-size:30px;
+    text-align:center;
+    top:0;
+}
+
+#timeoutTeam{
+    background-color: #ff9e3d;
+    color:#3b3b3b;
+    width:100%;
+    height:30px;
+    line-height:30px;
+    margin:0;
+    font-size:20px;
+    text-align:center;
+    top:0;
+}
+
+#timeoutClock{
+    color:#ff9e3d;
+    width:100%;
+    height:80px;
+    line-height:80px;
+    margin:0;
+    font-size:75px;
+    text-align:center;
+    top:0;
+}

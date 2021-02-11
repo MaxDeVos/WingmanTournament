@@ -52,7 +52,7 @@ namespace WingmanRelay {
                 // If it starts with this, it is a request from the server
                 var response = getRequestData(req.InputStream);
                 latestData = response;
-                // Console.Write((latestData));
+                Console.Write((latestData));
                     HttpResponseMessage r = await client.PostAsync(serverUrl, new StringContent(latestData));
                     var res = getRequestData(await r.Content.ReadAsStreamAsync());
                     if (res.StartsWith("map-info")) {

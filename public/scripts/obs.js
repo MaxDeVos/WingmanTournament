@@ -186,27 +186,71 @@ function configUser(socket){
     socket.on('map-selection-complete', (maps) => {
     });
 
-    socket.on('timeout_t', (secondsRemaining)=>{
-        console.log("Terrorist Timeout!", secondsRemaining);
+    socket.on('timeout_t', (timeoutTeam)=>{
+        console.log("T-side Timeout called from: " + timeoutTeam);
+        console.log(`Switching to ${timeoutTeam} Cam`);
+        disableCurrentCam();
+        enableTeamCam(timeoutTeam);
+        createTimeoutTimer(timeoutTeam);
     })
 
-    socket.on('timeout_ct', (secondsRemaining)=>{
-        console.log("Counter-Terrorist Timeout!", secondsRemaining);
+    socket.on('timeout_ct', (timeoutTeam)=>{
+        console.log("CT-side Timeout called from: " + timeoutTeam);
+        console.log(`Switching to ${timeoutTeam} Cam`);
+        disableCurrentCam();
+        enableTeamCam(timeoutTeam);
+        createTimeoutTimer(timeoutTeam);
+    })
+
+    socket.on('timeout-update', (secondsRemaining)=>{
+        console.log("Timeout Clock:", secondsRemaining);
+        updateTimeoutTimer(secondsRemaining);
     })
 
     socket.on('timeout-over', ()=>{
         console.log("Timeout Over!")
+        destroyTimeoutTimer();
     })
 
-    socket.on('hide-map-selection', ()=>{
+    socket.on('hide-map-selection', async ()=>{
         console.log("Hiding map selection");
         try{
-            hideMapSelection();
+            await hideMapSelection();
         }catch (e){
             console.warn("No map selection window to hide!");
         }
     })
+}
 
+function createTimeoutTimer(team){
+    let timerContainer = document.createElement('div');
+    timerContainer.id = "timeoutContainer";
+
+    let timerTitle = document.createElement('p');
+    timerTitle.id = "timeoutTitle";
+    timerTitle.innerText = "Timeout";
+    timerContainer.appendChild(timerTitle);
+
+    let timerTeam = document.createElement('p');
+    timerTeam.id = "timeoutTeam";
+    timerTeam.innerText = team;
+    timerContainer.appendChild(timerTeam);
+
+    let timerClock = document.createElement('p');
+    timerClock.id = "timeoutClock";
+    timerClock.innerText = "00.0";
+    timerContainer.appendChild(timerClock);
+
+    document.body.appendChild(timerContainer)
+
+}
+
+function updateTimeoutTimer(time){
+    document.getElementById("timeoutClock").innerText = time;
+}
+
+function destroyTimeoutTimer(){
+    document.getElementById("timeoutContainer").remove();
 }
 
 function handlePeer(socketId, type, initiator){

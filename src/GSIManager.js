@@ -87,9 +87,26 @@ async function update(data) {
         }
 
         if(data["phase_countdowns"] !== undefined){
-            if(data["phase_countdowns"]["phase"] === "timeout_ct" || data["phase_countdowns"]["phase"] === "timeout_t") {
-                broadcastEvent(data["phase_countdowns"]["phase"], data["phase_countdowns"]["phase_ends_in"]);
-                timeoutActive = true;
+            if(data["phase_countdowns"]["phase"] === "timeout_ct"){
+
+                if(!timeoutActive){
+                    broadcastEvent("timeout_ct", data["map"]["team_ct"]["name"]);
+                    timeoutActive = true;
+                }
+                else{
+                    broadcastEvent("timeout-update", data["phase_countdowns"]["phase_ends_in"]);
+                }
+
+            } else if(data["phase_countdowns"]["phase"] === "timeout_t"){
+
+                if(!timeoutActive){
+                    broadcastEvent("timeout_t", data["map"]["team_t"]["name"]);
+                    timeoutActive = true;
+                }
+                else{
+                    broadcastEvent("timeout-update", data["phase_countdowns"]["phase_ends_in"]);
+                }
+
             }
             else if(timeoutActive) {
                 timeoutActive = false;
