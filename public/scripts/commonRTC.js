@@ -139,7 +139,9 @@ function removePeer(socket_id) {
 
         delete videos[socket_id];
     }
-    if (peers[socket_id]) peers[socket_id].destroy()
+    if (peers[socket_id]){
+        delete peers[socket_id]
+    }
 
     if(localType === "broadcaster"){
         console.log("REMOVING AS BROADCASTER");
