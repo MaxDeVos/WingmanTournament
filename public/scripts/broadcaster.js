@@ -13,6 +13,7 @@ let activePlayers;
 let teams = {};
 let obsLatch = true;
 let localJSON;
+let mapSelectionStarted = false;
 
 
 //====================== User Listeners ============================
@@ -40,7 +41,24 @@ function sendRestartGame(){
 }
 
 function startMapSelection(){
-    localSocket.emit("start-map-selection");
+    if(!mapSelectionStarted){
+        localSocket.emit("start-map-selection");
+        let button = document.getElementById("start-map-selection");
+        button.style.backgroundColor = "lightcoral";
+        button.innerText = "Hide Map Selection";
+        mapSelectionStarted = true;
+    }
+    else{
+        hideMapSelection();
+        let button = document.getElementById("start-map-selection");
+        button.style.backgroundColor = "gray";
+        button.innerText = "Sequence Complete";
+    }
+}
+
+function hideMapSelection(){
+    console.log("Requesting hide map selection")
+    relayToOBS("hide-map-selection");
 }
 
 function pauseGame(){
@@ -249,6 +267,14 @@ function setAllPlayersCam(){
 
 function updateCasterMute(muted){
     localJSON.castersMuted = muted
+    if(muted){
+        document.getElementById("muteCasters").style.backgroundColor = "gray";
+        document.getElementById("unmuteCasters").style.backgroundColor = "#FCFCFC";
+    }
+    else{
+        document.getElementById("muteCasters").style.backgroundColor = "#FCFCFC";
+        document.getElementById("unmuteCasters").style.backgroundColor = "gray";
+    }
     localSocket.emit("push-to-json", localJSON);
 }
 
@@ -287,7 +313,7 @@ function obsCommand(event, payload){
 }
 
 function relayToOBS(event, payload){
-    localSocket.emit("to-obs", {event: event, payload: payload});
+    localSocket.emit("to-obs-as-socket", {event: event, payload: payload});
 }
 
 function getFromOBS(request, response, payload){

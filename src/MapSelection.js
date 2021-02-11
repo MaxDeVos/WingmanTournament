@@ -11,7 +11,7 @@ let tossLoser;
 let pickOrder = [];
 let inversePickOrder = [];
 let mapOrder = [];
-let pickConfig = ["ban","ban","pick","pick","ban","ban", "auto"];
+let pickConfig = ["ban","ban","pick","pick","ban","ban","auto"];
 let pickRound = 0;
 let currentMap = 0;
 let selectionComplete = false;
@@ -153,6 +153,7 @@ function handleRequestPick(){
 }
 
 function handlePlayerMapSelection(socket){
+    console.log("Line 156")
     if(mapSelectionActive) {
         console.log("Adding new player to map selection")
         socket.emit("start-map-selection", maps);

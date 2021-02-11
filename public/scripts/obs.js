@@ -21,6 +21,8 @@ let castersMuted = true;
 let localJSON;
 let jsonLatch = true;
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 function configUser(socket){
 
     generateQueuePositions();
@@ -162,7 +164,6 @@ function configUser(socket){
         }
     })
 
-    const delay = ms => new Promise(res => setTimeout(res, ms));
 
     socket.on("start-map-selection", async ()=>{
         createMapSelectionObject();
@@ -195,6 +196,15 @@ function configUser(socket){
 
     socket.on('timeout-over', ()=>{
         console.log("Timeout Over!")
+    })
+
+    socket.on('hide-map-selection', ()=>{
+        console.log("Hiding map selection");
+        try{
+            hideMapSelection();
+        }catch (e){
+            console.warn("No map selection window to hide!");
+        }
     })
 
 }
@@ -420,6 +430,13 @@ function createMapSelectionObject(){
 
 }
 
+async function hideMapSelection(){
+    console.log("Hiding Map Selection");
+    retractMaps();
+    await delay(1000);
+    document.getElementById("mapSelectionContainer").style.visibility = "hidden";
+}
+
 function createMap(map, status, image){
 
     let mapContainer = document.createElement('div');
@@ -487,6 +504,12 @@ function generateQueuePositions(){
 function deployMaps(){
     for(let map in map_list){
         moveMapToPosition(map_list[map], queuePositions[map]);
+    }
+}
+
+function retractMaps(){
+    for(let map in map_list){
+        moveMapToPosition(map_list[map], -300);
     }
 }
 
