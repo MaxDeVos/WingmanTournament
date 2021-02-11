@@ -118,4 +118,4 @@ async function mapToVeto(map){
     return veto;
 }
 
-module.exports = {getCurrentMatch, getTeamByID, getCurrentTeams, getTeamID, constructMatchDatabaseFile};
+module.exports = {constructMatchDatabaseFile};
