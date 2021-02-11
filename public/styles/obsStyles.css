@@ -10,9 +10,10 @@ body{
     max-width: 1920px;
     max-height: 1080px;
     font-family: 'roboto', sans-serif;
-    background-image: url("/media/misc/materialBackground.jpg");
-    background-size: 1920px 1080px;
+    /*background-image: url("/media/misc/materialBackground.jpg");*/
+    /*background-size: 1920px 1080px;*/
 }
+
 video{
     width:100%;
 }
