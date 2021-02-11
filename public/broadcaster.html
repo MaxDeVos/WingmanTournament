@@ -33,23 +33,27 @@
                     </div>
                 </div>
                 <div class="box-cell box2">
-                    <div id="main-controls" class="controls">
-                        <button id="start-map-selection" style="visibility: visible" class="settings" onclick="startMapSelection()">Start Map Selection</button>
-                        <button id="connect-RCON" style="visibility: visible" class="settings" onclick="connectRCON()">Connect RCON</button>
-                        <button id="muteButton" style="visibility: visible" class="settings" onclick="toggleMute()">Unmuted</button>
+                    <div id="no" style="border: solid 2px black;" class="controls">
                         <button id="start-game" style="visibility: visible" class="settings" onclick="sendStartGame()">Start Game</button>
                         <button id="restart-game" style="visibility: visible" class="settings" onclick="sendRestartGame()">Restart Game</button>
                         <button id="pauseGame" class="settings" onclick="pauseGame()">Pause Game</button>
                         <button id="unpauseGame" class="settings" onclick="unpauseGame()">Unpause Game</button>
-                        <button id="populateNames" class="settings" onclick="updatePlayers(populatePlayerNames)">Populate Names</button>
+                    </div>
+                    <div id="main-controls" style="border: solid 2px black;margin-top: 20px" class="controls">
+                        <button id="start-map-selection" style="visibility: visible;" class="settings" onclick="startMapSelection()">Start Map Selection</button>
+                        <button id="connect-RCON" style="visibility: visible" class="settings" onclick="connectRCON()">Connect RCON</button>
                         <button id="muteCasters" class="settings" onclick="updateCasterMute(true)">Mute Casters</button>
                         <button id="unmuteCasters" class="settings" onclick="updateCasterMute(false)">Unmute Casters</button>
-                        <button id="initiateCountdown" class="settings" onclick="countdownStart()">Initiate Start Countdown</button>
+                        <button id="initiateCountdown" class="settings" onclick="countdownStart()">Start Countdown</button>
+                        <button id="muteButton" style="visibility: visible" class="settings" onclick="toggleMute()">Unmuted</button>
                     </div>
                 </div>
         </div>
             <div class="box-row">
                 <div class="box-cell box3">
+                    <div class="controls">
+                        <button id="populateNames" style="width:70%" class="settings" onclick="updatePlayers(populatePlayerNames)">Populate Names</button>
+                    </div>
                     <div id="videos" class="grid-container">
                         <video style="visibility: hidden;width:0;float:left" id="localVideo" class="vid" autoplay muted></video>
                     </div>
