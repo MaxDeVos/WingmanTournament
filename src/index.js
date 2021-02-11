@@ -11,14 +11,11 @@ const APIManager = require('./APIManager');
 const MapSelection = require('./MapSelection');
 const http = require("http");
 const localEnvironment = require('../localEnviroment.json');
-var WebSocketServer = require('websocket').server;
 
 let state = "init";
-
 const stage = "D";
-
-peers = {};
 let port = 443;
+peers = {};
 
 // Max's PC
 const publicIP = localEnvironment.publicIP;
@@ -687,7 +684,7 @@ let GSIServer = http.createServer((req, res) => {
     req.on("end", async () => {
 
         let mapSelectionExport = MapSelection.getSelectionExport();
-        res.end("map-info;"+mapSelectionExport);
+        res.end(mapSelectionExport);
 
         let game = JSON.parse(body)
         let currentPlayer = game.player["steamid"];

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using WebSocketSharp;
 
 namespace WingmanRelay {
@@ -8,6 +9,12 @@ namespace WingmanRelay {
         public static void Main(string[] args) {
             const string url = "http://localhost:3000/";
             const string serverUrl = "http://localhost:3254/";
+            
+            Process[] processes = Process.GetProcessesByName("Lexogrine HUD Manager");
+            if (processes.Length == 0) {
+                Console.Write("Lexogrine is not running!");
+                Environment.Exit(0);
+            }
             
             var gsiServer = new GsiServer(url, serverUrl);
             gsiServer.start();

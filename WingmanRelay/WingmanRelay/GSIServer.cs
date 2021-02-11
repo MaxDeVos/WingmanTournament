@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WingmanRelay {
@@ -13,6 +14,7 @@ namespace WingmanRelay {
         
         private readonly string url;
         private readonly string serverUrl;
+        private readonly string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
         public GsiServer(string url, string serverUrl) {
             this.url = url;
@@ -55,9 +57,20 @@ namespace WingmanRelay {
                     var res = getRequestData(await r.Content.ReadAsStreamAsync());
                     if (res.StartsWith("map-info")) {
                         res = res.Replace("map-info;", "");
-                        Console.Write(res);
+                        var thread = new Thread(saveFile);
+                        thread.Start(res);
                     }
                 resp.Close();
+            }
+        }
+
+        private void saveFile(object o) {
+            string path = (appDataPath) + @"\hud-manager\databases\matches";
+            string currentText = File.ReadAllText(path);
+            Console.Write(currentText);
+            using (StreamWriter writer = new StreamWriter(path, false)){
+                Console.WriteLine("WRITING TO MATCH FILE");
+                writer.Write((string)o);
             }
         }
 
