@@ -8,7 +8,7 @@ async function apiCaller(url) {
         try {
             const options = {
                 hostname: localEnvironment.lexogrineIP,
-                port: 1348,
+                port: localEnvironment.lexogrinePort,
                 path: `/api/${url}`,
                 method: 'GET'
             }
