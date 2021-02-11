@@ -31,8 +31,8 @@ async function apiCaller(url) {
 
             req.end()
         } catch (e){
-            console.log(e)
             reject()
+            throw new Error("No Matches Registered in Lexogrine!")
         }
     })
 }
@@ -43,6 +43,12 @@ async function getCurrentMatch(){
         if(matches[i].current === true){
             return matches[i];
         }
+    }
+    if(Object.keys(matches).length > 0){
+        return matches[0];
+    }
+    else{
+        throw new Error("No Matches Registered in Lexogrine!")
     }
 }
 
@@ -66,14 +72,19 @@ async function getCurrentTeams(){
     return {left: left.name, right: right.name};
 }
 
-async function constructMatchDatabaseFile(match, maps){
+async function constructMatchDatabaseFile(maps){
+
+    let match = await getCurrentMatch();
+
+    console.log(match);
+
     for(let map in maps){
         match.left = {"id": await getTeamID(maps[map].ct), "wins": 0};
         match.right = {"id": await getTeamID(maps[map].t), "wins": 0};
     }
 
     match.matchType = "bo3";
-
+    match.current = true;
     match.vetos = [];
 
     for(let i = 0; i <= 2; i++){
