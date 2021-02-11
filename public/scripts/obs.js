@@ -19,6 +19,7 @@ let wsConnected = false;
 let localSocket;
 let castersMuted = true;
 let localJSON;
+let activeScene;
 let jsonLatch = true;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -158,9 +159,15 @@ function configUser(socket){
             handleCasterMute(localJSON.castersMuted);
         }
         if(wsConnected){
-            obs.send("SetCurrentScene", {
-                "scene-name": localJSON.obsDesiredScene
+            obs.send("GetCurrentScene").then(scene =>{
+                activeScene = scene.name;
+                if(!(activeScene === localJSON.obsDesiredScene)) {
+                    obs.send("SetCurrentScene", {
+                        "scene-name": localJSON.obsDesiredScene
+                    });
+                }
             });
+
         }
     })
 

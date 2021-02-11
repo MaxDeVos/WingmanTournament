@@ -30,7 +30,7 @@ let casterMuted = true;
  */
 let sharedJSON = {};
 sharedJSON.queueCountdown = false;
-sharedJSON.obsCountdownStart = 100;
+sharedJSON.obsCountdownStart = 30;
 sharedJSON.obsCountdownActive = false;
 sharedJSON.obsCountdown = 0;
 sharedJSON.RMQ = [];
@@ -512,7 +512,9 @@ function sharedJSONListeners(socket){
             while(sharedJSON.obsCountdownActive === true){
                 await new Promise(r => setTimeout(r, 1000));
                 sharedJSON.obsCountdown -= 1;
-                // console.log(sharedJSON.obsCountdown);
+                if(sharedJSON.obsCountdown <= 25){
+                    sharedJSON.obsDesiredScene = "INTRO_NO_CS";
+                }
                 socket.broadcast.emit("json-update", sharedJSON);
                 socket.emit("json-update", sharedJSON);
                 if(sharedJSON.obsCountdown === 0){
@@ -521,9 +523,9 @@ function sharedJSONListeners(socket){
                     socket.emit("json-update", sharedJSON);
                 }
             }
-            sharedJSON.obsDesiredScene = "MAIN_NO_CS_INTRO"
-            socket.broadcast.emit("json-update", sharedJSON)
-            socket.emit("json-update", sharedJSON)
+            sharedJSON.castersMuted = false;
+            socket.broadcast.emit("json-update", sharedJSON);
+            socket.emit("json-update", sharedJSON);
         }
 
 

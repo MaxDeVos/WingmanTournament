@@ -159,9 +159,21 @@ function configUser(socket){
         localJSON = jsondata;
         console.log("json update bitch");
         //page updates
-        document.getElementById("countdown").innerHTML = localJSON.obsCountdown;
+        updateCasterMuteVisuals(localJSON.castersMuted);
+
+        try {
+            let obsSceneButtons = document.getElementsByClassName("scene_button");
+            for (var i = 0; i < obsSceneButtons.length; i++) {
+                obsSceneButtons[i].style.visibility = ((localJSON.obsCountdownActive) ? "hidden" : "visible");
+            }
+        } catch(e) {
+            console.log(e)
+        }
+        document.getElementById("countdown").innerHTML = "COUNTDOWN TO END OF INTRO SEQUENCE: " + localJSON.obsCountdown;
+        document.getElementById("activeScene").innerHTML = "Active OBS Scene: " + localJSON.obsDesiredScene;
+        document.getElementById("casterAudioLive").innerHTML = "Caster audio: " + ((localJSON.castersMuted) ? "NOT LIVE" : "ON AIR");
         document.getElementById("countdown").style.visibility = ((localJSON.obsCountdownActive) ? "visible" : "hidden");
-        document.getElementById("initiateCountdown").style.visibility = ((localJSON.obsCountdownActive) ? "hidden" : "visible");
+        document.getElementById("initiateCountdown").style.visibility = ((localJSON.obsCountdownActive || localJSON.obsDesiredScene !== "WAITING") ? "hidden" : "visible");
     })
 
     configSockets(socket);
@@ -214,9 +226,9 @@ function createSceneButtons(scenes){
     for(let scene in scenes) {
         console.log(scenes[scene]);
         let sceneName = scenes[scene].name;
-        if(!sceneName.endsWith("OVERLAY")){
+        if(!sceneName.endsWith("OVERLAY") && !sceneName.startsWith("REPLAY")){
             let button = document.createElement("button");
-            button.className = "settings";
+            button.className = "scene_button";
             button.id = `${sceneName}_button`;
             button.innerText = sceneName;
             button.addEventListener("click", () => {
@@ -265,8 +277,7 @@ function setAllPlayersCam(){
     transmitSceneSwitch("all-players-cam");
 }
 
-function updateCasterMute(muted){
-    localJSON.castersMuted = muted
+function updateCasterMuteVisuals(muted){
     if(muted){
         document.getElementById("muteCasters").style.backgroundColor = "gray";
         document.getElementById("unmuteCasters").style.backgroundColor = "#FCFCFC";
@@ -275,6 +286,11 @@ function updateCasterMute(muted){
         document.getElementById("muteCasters").style.backgroundColor = "#FCFCFC";
         document.getElementById("unmuteCasters").style.backgroundColor = "gray";
     }
+}
+
+function updateCasterMute(muted){
+    localJSON.castersMuted = muted;
+    updateCasterMuteVisuals(muted);
     localSocket.emit("push-to-json", localJSON);
 }
 
