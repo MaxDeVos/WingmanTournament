@@ -50,6 +50,7 @@ function configUser(socket){
     socket.on('json-update', (data)=>{
         localJSON = data;
         handleMute(localJSON.castersMuted);
+        handleCountDown(localJSON);
     })
 
     configSockets(socket);
@@ -58,6 +59,12 @@ function configUser(socket){
     createUserListener('broadcaster', socket);
     createUserListener('caster1', socket);
     createUserListener('caster2', socket);
+}
+
+function handleCountDown(json){
+    document.getElementById("countDownTimer").style.visibility = ((json.obsCountdownActive) ? "visible" : "hidden");
+    document.getElementById("countDownTimer").innerHTML = "TIME UNTIL ON AIR: " + json.obsCountdown;
+
 }
 
 function handleMute(muted){
