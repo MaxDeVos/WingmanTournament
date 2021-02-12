@@ -58,6 +58,8 @@ function startMapSelection(){
 
 function hideMapSelection(){
     console.log("Requesting hide map selection")
+    localJSON.obsDesiredScene = "CS";
+    socket.emit("push-to-json", localJSON);
     relayToOBS("hide-map-selection");
 }
 
