@@ -317,10 +317,10 @@ function enableCasterCamera(){
     let casterCamContainer = document.createElement("div");
     casterCamContainer.id = "casterCamContainer";
 
-    let caster1Cam = createVideoObject("casterVideo", false);
+    let caster1Cam = createVideoObject("casterVideo", true);
     casterCamContainer.appendChild(caster1Cam);
 
-    let caster2Cam = createVideoObject("casterVideo", false);
+    let caster2Cam = createVideoObject("casterVideo", true);
     casterCamContainer.appendChild(caster2Cam);
 
     let i = 0;
