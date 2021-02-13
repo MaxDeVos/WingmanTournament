@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -14,6 +15,7 @@ namespace WingmanRelay {
         
         private readonly string url;
         private readonly string serverUrl;
+        private readonly string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private readonly string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
         public GsiServer(string url, string serverUrl) {
@@ -38,6 +40,7 @@ namespace WingmanRelay {
             return s;
         }
 
+        private bool firstLatch = true;
         private async Task handleIncomingConnections() {
             
             // While a user hasn't visited the `shutdown` url, keep on handling requests
@@ -52,8 +55,12 @@ namespace WingmanRelay {
                 // If it starts with this, it is a request from the server
                 var response = getRequestData(req.InputStream);
                 latestData = response;
-                Console.Write((latestData));
+                // Console.Write((latestData));
                     HttpResponseMessage r = await client.PostAsync(serverUrl, new StringContent(latestData));
+                    if (firstLatch) {
+                        Console.WriteLine("Connected to Wingman Tournament Server!");
+                        firstLatch = false;
+                    }
                     var res = getRequestData(await r.Content.ReadAsStreamAsync());
                     if (res.StartsWith("map-info")) {
                         res = res.Replace("map-info;", "");
@@ -71,9 +78,29 @@ namespace WingmanRelay {
             using (StreamWriter writer = new StreamWriter(path, false)){
                 Console.WriteLine("WRITING TO MATCH FILE");
                 writer.Write((string)o);
+                Console.WriteLine("WROTE TO MATCH FILE");
             }
+            Process[] processes = Process.GetProcessesByName("Lexogrine HUD Manager");
+            Console.WriteLine("Closing Lexogrine");
+            foreach (Process p in processes) {
+                p.Kill();
+                Console.WriteLine("Closed Lexogrine Instance");
+            }
+            Console.WriteLine("Successfully Closed Lexogrine");
+
+            while (Process.GetProcessesByName("Lexogrine HUD Manager").Length != 0) {
+                Console.WriteLine("Waiting For Lexogrine to close!");
+                Thread.Sleep(500);
+            }
+            
+            startLexogrine();
         }
 
+        public void startLexogrine() {
+            Process.Start(localAppDataPath +@"\Programs\hud-manager\Lexogrine HUD Manager.exe");
+            Console.WriteLine("Successfully Started Lexogrine");
+        }
+        
         public void start() {
             // Create a Http server and start listening for incoming connections
             listener = new HttpListener();
