@@ -190,6 +190,7 @@ function configUser(socket){
     createUserListener('player3', socket);
     createUserListener('player4', socket);
     createUserListener('rcon', socket);
+    createUserListener('lexo', socket);
 
 }
 

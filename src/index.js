@@ -678,6 +678,7 @@ function determineTeammate(player){
 // Game-State Integration
 
 let lastPlayer = "";
+let firstLatch = true;
 let GSIServer = http.createServer((req, res) => {
     if (req.method !== "POST") {
         res.writeHead(405)
@@ -691,22 +692,38 @@ let GSIServer = http.createServer((req, res) => {
 
     req.on("end", async () => {
 
-        let mapSelectionExport = MapSelection.getSelectionExport();
-        res.end(mapSelectionExport);
-
-        let game = JSON.parse(body)
-        let currentPlayer = game.player["steamid"];
-        if(currentPlayer !== lastPlayer && currentPlayer !== undefined){
-            console.log("Now Observing: ", currentPlayer);
-            if(peers[broadcasterSocket] !== undefined){
-                peers[broadcasterSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
-            }
-            if(peers[obsSocket] !== undefined){
-                peers[obsSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
-            }
-            lastPlayer = currentPlayer;
+        if(firstLatch){
+            console.log("first latch idiot")
+            res.end("first");
+            firstLatch = false;
         }
-        await GSIManager.update(game);
+        if(body.startsWith("ip;")){
+            console.log(body.replace("ip;",""))
+            APIManager.setLexogrineNetwork(body.replace("ip;",""), "1348");
+            res.end("confirmed");
+            console.log("GOT LEXOGRINE!");
+            if(broadcasterSocket !== undefined){
+                peers[broadcasterSocket].emit("lexo-con");
+            }
+        }
+        else {
+            let mapSelectionExport = MapSelection.getSelectionExport();
+            res.end(mapSelectionExport);
+
+            let game = JSON.parse(body)
+            let currentPlayer = game.player["steamid"];
+            if (currentPlayer !== lastPlayer && currentPlayer !== undefined) {
+                console.log("Now Observing: ", currentPlayer);
+                if (peers[broadcasterSocket] !== undefined) {
+                    peers[broadcasterSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
+                }
+                if (peers[obsSocket] !== undefined) {
+                    peers[obsSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
+                }
+                lastPlayer = currentPlayer;
+            }
+            await GSIManager.update(game);
+        }
     })
 });
 

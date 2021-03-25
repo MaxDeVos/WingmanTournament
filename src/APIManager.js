@@ -2,6 +2,18 @@ const http = require('http')
 var fs = require('fs');
 const localEnvironment = require('../localEnviroment.json');
 
+let ip = "localhost";
+let port = "1348";
+
+function setLexogrineNetwork(ip_, port_){
+
+    console.log("GOT LEXOGRINE NETWORK DATA")
+
+    ip = ip_;
+    port = port_;
+
+}
+
 async function apiCaller(url) {
 
     return new Promise(function (resolve, reject) {
@@ -118,4 +130,4 @@ async function mapToVeto(map){
     return veto;
 }
 
-module.exports = {constructMatchDatabaseFile};
+module.exports = {constructMatchDatabaseFile, setLexogrineNetwork};

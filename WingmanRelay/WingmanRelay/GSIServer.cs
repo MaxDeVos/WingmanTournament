@@ -45,29 +45,48 @@ namespace WingmanRelay {
             
             // While a user hasn't visited the `shutdown` url, keep on handling requests
             while (true) {
-                // Will wait here until we hear from a connection
-                HttpListenerContext ctx = await listener.GetContextAsync();
+                try {
+                    // Will wait here until we hear from a connection
+                    HttpListenerContext ctx = await listener.GetContextAsync();
 
-                // Peel out the requests and response objects
-                HttpListenerRequest req = ctx.Request;
-                HttpListenerResponse resp = ctx.Response;
+                    // Peel out the requests and response objects
+                    HttpListenerRequest req = ctx.Request;
+                    HttpListenerResponse resp = ctx.Response;
 
-                // If it starts with this, it is a request from the server
-                var response = getRequestData(req.InputStream);
-                latestData = response;
-                // Console.Write((latestData));
-                    HttpResponseMessage r = await client.PostAsync(serverUrl, new StringContent(latestData));
+                    // If it starts with this, it is a request from the server
+                    var response = getRequestData(req.InputStream);
+                    latestData = response;
+                    // Console.Write((latestData));
+                    HttpResponseMessage r;
                     if (firstLatch) {
+                        string externalip = new WebClient().DownloadString("http://icanhazip.com");
+                        r = await client.PostAsync(serverUrl, new StringContent("ip;" + externalip));
                         Console.WriteLine("Connected to Wingman Tournament Server!");
                         firstLatch = false;
                     }
+                    else {
+                        r = await client.PostAsync(serverUrl, new StringContent(latestData));
+                    }
+
                     var res = getRequestData(await r.Content.ReadAsStreamAsync());
-                    if (res.StartsWith("map-info")) {
+                    Console.WriteLine(res);
+                    if (res.Equals("first")) {
+                        // Console.WriteLine("FIRST RECIEVED");
+                        firstLatch = true;
+                    }
+                    else if (res.StartsWith("map-info")) {
                         res = res.Replace("map-info;", "");
                         var thread = new Thread(saveFile);
                         thread.Start(res);
                     }
-                resp.Close();
+                    resp.Close();
+                }
+                catch (HttpRequestException e) {
+                    if (!firstLatch) {
+                        Console.WriteLine("Server Disconnected!");
+                        firstLatch = true;
+                    }
+                }
             }
         }
 
@@ -97,6 +116,11 @@ namespace WingmanRelay {
         }
 
         public void startLexogrine() {
+            var thread = new Thread(lexogrineStarter);
+            thread.Start();
+        }
+
+        private void lexogrineStarter() {
             Process.Start(localAppDataPath +@"\Programs\hud-manager\Lexogrine HUD Manager.exe");
             Console.WriteLine("Successfully Started Lexogrine");
         }
