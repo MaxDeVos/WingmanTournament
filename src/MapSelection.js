@@ -108,9 +108,6 @@ function onPlayerUpdate(updatedActivePlayers, socket){
         if(pickRound === 6){
             console.log("Map Selection Completed");
             broadcasterSocket.broadcast.emit("map-selection-complete", maps);
-            console.log("===============");
-            console.log(mapOrder);
-            console.log("===============");
             mapSelectionExport = await APIManager.constructMatchDatabaseFile(mapOrder);
             // console.log(mapSelectionExport);
             broadcasterSocket.emit("map-selection-complete", mapOrder);

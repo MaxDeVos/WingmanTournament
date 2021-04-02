@@ -6,8 +6,8 @@ const path = require('path');
 const fs = require("fs");
 const playerDatabase = require('../public/playerDatabase.json')
 const Player = require('./Player');
-const GSIManager = require('./GSIManager');
 const APIManager = require('./APIManager');
+const GSIManager = require('./GSIManager');
 const MapSelection = require('./MapSelection');
 const http = require("http");
 const localEnvironment = require('../localEnviroment.json');
@@ -700,6 +700,7 @@ async function processRequest(req, res, body){
     if(body.startsWith("url:")){
         clientIP = body.replace("url:","");
         console.log("[RELAY] Connected To Wingman Relay @ " + clientIP)
+        APIManager.setLexogrineNetwork(clientIP, "1349");
         res.end("connected");
     }
     else{

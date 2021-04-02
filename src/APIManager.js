@@ -19,8 +19,8 @@ async function apiCaller(url) {
     return new Promise(function (resolve, reject) {
         try {
             const options = {
-                hostname: localEnvironment.lexogrineIP,
-                port: localEnvironment.lexogrinePort,
+                hostname: ip,
+                port: "1349",
                 path: `/api/${url}`,
                 method: 'GET'
             }
@@ -44,6 +44,7 @@ async function apiCaller(url) {
 
             req.end()
         } catch (e){
+            console.log(e.toString())
             reject()
             throw new Error("No Matches Registered in Lexogrine!")
         }
@@ -89,7 +90,7 @@ async function constructMatchDatabaseFile(maps){
 
     let match = await getCurrentMatch();
 
-    console.log(match);
+    // console.log(match);
 
     for(let map in maps){
         match.left = {"id": await getTeamID(maps[map].ct), "wins": 0};
@@ -114,7 +115,7 @@ async function constructMatchDatabaseFile(maps){
 // Side = Opponent Selection.  Don't ask why, it's just how Lexogrine does it.
 // Those people are batshit crazy.
 async function mapToVeto(map){
-    console.log(map);
+    // console.log(map);
     let veto = {};
     veto.teamId = await getTeamID(map.selector);
     veto.mapName = map.name;

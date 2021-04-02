@@ -1,9 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "GOW4x7qFS4ClWn88hzOeD2zsSBon/l0CP2dSYntDdoTjl6gN/if1zjHkcm6zJjIHAoTQgvLz+tV95/iNvS4ffA==",
+  "dgSpecHash": "8hLyFBejZHz7d9BRlWMJnBqXHQbVb+JJmplEWdPasZmoH+aSPRe0J5fLfpzJ0z5Mo1kVjPppa52b3r0l9S2+oA==",
   "success": true,
   "projectFilePath": "M:\\Workspace\\Javascript\\WingmanTournament\\WingmanRelay\\WingmanRelay\\WingmanRelay.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\system.configuration.configurationmanager\\5.0.0\\system.configuration.configurationmanager.5.0.0.nupkg.sha512",
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\system.drawing.common\\5.0.0\\system.drawing.common.5.0.0.nupkg.sha512",
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\system.security.cryptography.protecteddata\\5.0.0\\system.security.cryptography.protecteddata.5.0.0.nupkg.sha512",
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\system.security.permissions\\5.0.0\\system.security.permissions.5.0.0.nupkg.sha512",
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
+    "C:\\Users\\Max DeVos\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
     "C:\\Users\\Max DeVos\\.nuget\\packages\\websocketsharp\\1.0.3-rc11\\websocketsharp.1.0.3-rc11.nupkg.sha512"
   ],
   "logs": [

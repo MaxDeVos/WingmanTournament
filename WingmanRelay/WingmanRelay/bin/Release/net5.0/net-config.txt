@@ -1,0 +1,8 @@
+﻿gsi-port:3000
+server-ip:134.129.53.252
+server-port:3255
+
+gsi-port:3000
+server-ip:localhost
+server-port:3255
+

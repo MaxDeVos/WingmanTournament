@@ -16,3 +16,14 @@ M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Release\
 M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Release\net5.0\ref\WingmanRelay.dll
 M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Release\net5.0\WingmanRelay.pdb
 M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\obj\Release\net5.0\WingmanRelay.genruntimeconfig.cache
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\Microsoft.Win32.SystemEvents.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\System.Configuration.ConfigurationManager.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\System.Drawing.Common.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\System.Security.Cryptography.ProtectedData.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\System.Security.Permissions.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\System.Windows.Extensions.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+M:\Workspace\Javascript\WingmanTournament\WingmanRelay\WingmanRelay\bin\Release\net5.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll

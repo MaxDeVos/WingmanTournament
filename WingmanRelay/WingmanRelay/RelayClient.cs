@@ -23,7 +23,7 @@ namespace WingmanRelay {
         public RelayClient(string url) {
             this.url = url;
             // Collect our external IP for use with lexogrine.
-            externalIP = new WebClient().DownloadString("http://icanhazip.com");
+            externalIP = new WebClient().DownloadString("https://whatismyip.host/ip4");
         }
         
         private async void handleInitialConnection() {
