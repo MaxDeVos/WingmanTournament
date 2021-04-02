@@ -108,8 +108,11 @@ function onPlayerUpdate(updatedActivePlayers, socket){
         if(pickRound === 6){
             console.log("Map Selection Completed");
             broadcasterSocket.broadcast.emit("map-selection-complete", maps);
+            console.log("===============");
+            console.log(mapOrder);
+            console.log("===============");
             mapSelectionExport = await APIManager.constructMatchDatabaseFile(mapOrder);
-            console.log(mapSelectionExport);
+            // console.log(mapSelectionExport);
             broadcasterSocket.emit("map-selection-complete", mapOrder);
             selectionComplete = true;
         }
@@ -153,7 +156,6 @@ function handleRequestPick(){
 }
 
 function handlePlayerMapSelection(socket){
-    console.log("Line 156")
     if(mapSelectionActive) {
         console.log("Adding new player to map selection")
         socket.emit("start-map-selection", maps);
@@ -300,6 +302,40 @@ function getConfigExport(){
     }
 }
 
+async function outputTestData(){
+    fakeData = [
+        {
+            name: 'de_lake',
+            status: 'picked',
+            selector: 'Fish Terrorists',
+            t: 'Fish Terrorists',
+            ct: 'Bimbois',
+            round: 2,
+            order: 1
+        },
+        {
+            name: 'de_elysion',
+            status: 'picked',
+            selector: 'Bimbois',
+            t: 'Fish Terrorists',
+            ct: 'Bimbois',
+            round: 3,
+            order: 2
+        },
+        {
+            name: 'de_cobblestone',
+            status: 'picked',
+            selector: 'Bimbois',
+            t: 'Bimbois',
+            ct: 'Fish Terrorists',
+            round: 6,
+            order: 3
+        }
+    ]
+
+    mapSelectionExport = await APIManager.constructMatchDatabaseFile(fakeData);
+}
+
 function getSelectionExport(){
     if(mapSelectionExport !== ""){
         let out = mapSelectionExport;
@@ -312,4 +348,4 @@ function getSelectionExport(){
 }
 
 module.exports = {handlePlayerMapSelection, handleSpectatorMapSelection, onBroadcasterConnect, onPlayerUpdate,
-    handleBroadcasterMapSelection, updatePeers, getCurrentMap, getNextMap, getSelectionExport};
+    handleBroadcasterMapSelection, updatePeers, getCurrentMap, getNextMap, getSelectionExport, outputTestData};

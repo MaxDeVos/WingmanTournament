@@ -1,29 +1,21 @@
-﻿using System;
-using System.Diagnostics;
-using WebSocketSharp;
+﻿using System.Threading;
+
+// This is *really bad* code.
 
 namespace WingmanRelay {
-    
     public class MainClass {
 
         public static void Main(string[] args) {
             const string url = "http://localhost:3000/";
-            const string serverUrl = "http://localhost:3254/";
-            
-            var gsiServer = new GsiServer(url, serverUrl);
-            
-            Process[] processes = Process.GetProcessesByName("Lexogrine HUD Manager");
-            if (processes.Length == 0) {
-                Console.Write("Lexogrine is not running!  Starting it now!");
-                gsiServer.startLexogrine();
-            }
-            
-            Process[] csgo = Process.GetProcessesByName("csgo");
-            if (csgo.Length == 0) {
-                Console.Write("WARNING: CSGO is not running!");
-            }
-            
-            gsiServer.start();
+            const string serverUrl = "http://localhost:3255/";
+
+            // This thread constantly loops and updated GSIThread.latestData with GSI data.
+            new GSIThread("3000");
+            Thread gsi = new Thread(GSIThread.start);
+            gsi.Start();
+
+            RelayClient client = new RelayClient(serverUrl);
+            client.start();
         }
     }
 }

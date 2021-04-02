@@ -297,7 +297,8 @@ function handleBroadcasterRoutes(socket){
             socket.emit("update-players", {players:activePlayers});
             MapSelection.onBroadcasterConnect(socket);
             socket.on('start-map-selection', () => {
-                MapSelection.handleBroadcasterMapSelection(activePlayers, socket);
+                // MapSelection.handleBroadcasterMapSelection(activePlayers, socket);
+                MapSelection.outputTestData();
             });
             informAboutElders(socket);
             await GSIManager.connectToRCON(csgoIP, socket);
@@ -675,60 +676,66 @@ function determineTeammate(player){
     return Player.generateEmptyPlayer();
 }
 
-// Game-State Integration
 
-let lastPlayer = "";
-let firstLatch = true;
-let GSIServer = http.createServer((req, res) => {
+let clientIP = undefined;
+let lastPlayer = undefined;
+
+let relayServer = http.createServer((req, res) => {
     if (req.method !== "POST") {
         res.writeHead(405)
         return res.end("Only POST requests are allowed")
     }
-    let body = ""
 
+    let body = ""
     req.on("data", data => {
         body += data
     })
 
     req.on("end", async () => {
-
-        if(firstLatch){
-            console.log("first latch idiot")
-            res.end("first");
-            firstLatch = false;
-        }
-        if(body.startsWith("ip;")){
-            console.log(body.replace("ip;",""))
-            APIManager.setLexogrineNetwork(body.replace("ip;",""), "1348");
-            res.end("confirmed");
-            console.log("GOT LEXOGRINE!");
-            if(broadcasterSocket !== undefined){
-                peers[broadcasterSocket].emit("lexo-con");
-            }
-        }
-        else {
-            let mapSelectionExport = MapSelection.getSelectionExport();
-            res.end(mapSelectionExport);
-
-            let game = JSON.parse(body)
-            let currentPlayer = game.player["steamid"];
-            if (currentPlayer !== lastPlayer && currentPlayer !== undefined) {
-                console.log("Now Observing: ", currentPlayer);
-                if (peers[broadcasterSocket] !== undefined) {
-                    peers[broadcasterSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
-                }
-                if (peers[obsSocket] !== undefined) {
-                    peers[obsSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
-                }
-                lastPlayer = currentPlayer;
-            }
-            await GSIManager.update(game);
-        }
+        await processRequest(req, res, body)
     })
 });
 
-GSIServer.listen(3254);
-console.log("Started GSI Server!");
+async function processRequest(req, res, body){
+    if(body.startsWith("url:")){
+        clientIP = body.replace("url:","");
+        console.log("[RELAY] Connected To Wingman Relay @ " + clientIP)
+        res.end("connected");
+    }
+    else{
+        let mapSelectionExport = MapSelection.getSelectionExport();
+        if(mapSelectionExport !== ""){
+            console.log("FOUND MAP SELECTION DATA: ", mapSelectionExport);
+        }
+        res.end(mapSelectionExport);
+        await handleGSIData(body);
+    }
+}
+
+async function handleGSIData(body){
+    if(body !== ""){
+        let game = JSON.parse(body)
+        let currentPlayer = game.player["steamid"];
+        if (currentPlayer !== lastPlayer && currentPlayer !== undefined) {
+            console.log("Now Observing: ", currentPlayer);
+            if (peers[broadcasterSocket] !== undefined) {
+                peers[broadcasterSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
+            }
+            if (peers[obsSocket] !== undefined) {
+                peers[obsSocket].emit("new-observed-player", getPlayerBySteamID(currentPlayer).socketId);
+            }
+            lastPlayer = currentPlayer;
+        }
+        await GSIManager.update(game);
+    }
+}
+
+function startRelayServer(port){
+    relayServer.listen(port);
+    console.log("Started GSI Server!");
+}
+
+startRelayServer(3255);
 
 server.listen(port, () => {
     console.log('========== Public IPs ============');
