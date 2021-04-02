@@ -297,8 +297,8 @@ function handleBroadcasterRoutes(socket){
             socket.emit("update-players", {players:activePlayers});
             MapSelection.onBroadcasterConnect(socket);
             socket.on('start-map-selection', () => {
-                // MapSelection.handleBroadcasterMapSelection(activePlayers, socket);
-                MapSelection.outputTestData();
+                MapSelection.handleBroadcasterMapSelection(activePlayers, socket);
+                // MapSelection.outputTestData();
             });
             informAboutElders(socket);
             await GSIManager.connectToRCON(csgoIP, socket);
