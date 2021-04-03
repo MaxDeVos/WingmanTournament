@@ -1,13 +1,13 @@
 {
-  "Max": {
-    "name": "Max",
-    "steamID64": "76561198291283116",
-    "team": "The Yardents"
-  },
   "Gavin": {
     "name": "Gavin",
     "steamID64": "76561198104671626",
-    "team": "The Yardents"
+    "team": "Clean Clap Crew"
+  },
+  "Ashton": {
+    "name": "Ashton",
+    "steamID64": "76561198330492295",
+    "team": "Clean Clap Crew"
   },
   "Owen": {
     "name": "Owen",
@@ -19,45 +19,15 @@
     "steamID64": "76561198161667713",
     "team": "Knife Fight Up Top"
   },
-  "Tanner": {
-    "name": "Tanner",
-    "steamID64": "76561198378241338",
-    "team": "The Football Team"
-  },
-  "Isaac": {
-    "name": "Isaac",
-    "steamID64": "76561198095390268",
-    "team": "Below Average Gaming"
-  },
-  "Madisen": {
-    "name": "Madisen",
-    "steamID64": "76561198398963636",
-    "team": "Fish Terrorists"
-  },
   "Eli": {
     "name": "Eli",
     "steamID64": "76561198070844774",
-    "team": "Fish Terrorists"
+    "team": "The Home Owner's Association"
   },
-  "Ricky": {
-    "name": "Ricky",
-    "steamID64": "76561198066464381",
-    "team": "Bimbois"
-  },
-  "Colton": {
-    "name": "Colton",
-    "steamID64": "76561198142491811",
-    "team": "Bimbois"
-  },
-  "Ashton": {
-    "name": "Ashton",
-    "steamID64": "76561198330492295",
-    "team": "The Football Team"
-  },
-  "Peter": {
-    "name": "Peter",
-    "steamID64": "76561198969346528",
-    "team": "The Football Team"
+  "Abby": {
+    "name": "Abby",
+    "steamID64": "76561198443491950",
+    "team": "The Home Owner's Association"
   },
   "Liam": {
     "name": "Liam",
@@ -72,37 +42,66 @@
   "Tim": {
     "name": "Tim",
     "steamID64": "76561198094330605",
-    "team": "The Power Bottoms"
+    "team": "Fat Bottom Boys"
   },
   "Joe": {
     "name": "Joe",
     "steamID64": "76561198201559519",
-    "team": "The Power Bottoms"
+    "team": "Fat Bottom Boys"
+  },
+  "Madisen": {
+    "name": "Madisen",
+    "steamID64": "76561198398963636",
+    "team": "Diablos de Leo"
+  },
+  "Ricky": {
+    "name": "Ricky",
+    "steamID64": "76561198066464381",
+    "team": "Diablos de Leo"
+  },
+  "Colton": {
+    "name": "Colton",
+    "steamID64": "76561198142491811",
+    "team": "Team 7"
+  },
+  "Peter": {
+    "name": "Peter",
+    "steamID64": "76561198969346528",
+    "team": "Team 7"
+  },
+  "Izzy": {
+    "name": "Izzy",
+    "steamID64": "76561198151783486",
+    "team": "Team 8"
+  },
+  "Zander": {
+    "name": "Zander",
+    "steamID64": "76561198400580958",
+    "team": "Team 8"
+  },
+  "Luke": {
+    "name": "Luke",
+    "steamID64": "76561199039007716",
+    "team": "No Team"
   },
   "Avery": {
     "name": "Avery",
     "steamID64": "76561198085488224",
     "team": "No Team"
   },
-  "Luke": {
-  "name": "Luke",
-  "steamID64": "76561199039007716",
-  "team": "No Team"
-  },
-  "Abby": {
-    "name": "Abby",
-    "steamID64": "76561198443491950",
+  "Tanner": {
+    "name": "Tanner",
+    "steamID64": "76561198378241338",
     "team": "No Team"
   },
-  "Izzy": {
-    "name": "Izzy",
-    "steamID64": "76561198151783486",
+  "Isaac": {
+    "name": "Isaac",
+    "steamID64": "76561198095390268",
     "team": "No Team"
   },
-  "Zander": {
-    "name": "Zander",
-    "steamID64": "76561198400580958",
+  "Max": {
+    "name": "Max",
+    "steamID64": "76561198291283116",
     "team": "No Team"
   }
-
 }
