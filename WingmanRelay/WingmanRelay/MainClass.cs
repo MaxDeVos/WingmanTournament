@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading;
-using System.Configuration;
-using System.Collections.Specialized;
 
 // This is *really bad* code.
 
@@ -9,7 +8,9 @@ namespace WingmanRelay {
     public class MainClass {
 
         public static void Main(string[] args) {
-            
+
+            SidesManager sidesManager = new SidesManager();
+
             string[] text = System.IO.File.ReadAllLines("net-config.txt");
             
             // Read a particular key from the config file 
@@ -26,10 +27,10 @@ namespace WingmanRelay {
 
             // This thread constantly loops and updated GSIThread.latestData with GSI data.
             new GSIThread(gsiPort);
-            Thread gsi = new Thread(GSIThread.start);
+            var gsi = new Thread(GSIThread.start);
             gsi.Start();
 
-            RelayClient client = new RelayClient(serverUrl);
+            var client = new RelayClient(serverUrl);
             client.start();
         }
     }

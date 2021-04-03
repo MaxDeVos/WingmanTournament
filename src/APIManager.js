@@ -20,7 +20,7 @@ async function apiCaller(url) {
         try {
             const options = {
                 hostname: ip,
-                port: "1349",
+                port: "1348",
                 path: `/api/${url}`,
                 method: 'GET'
             }

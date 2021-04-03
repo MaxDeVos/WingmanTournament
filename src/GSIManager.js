@@ -7,6 +7,7 @@ let totalRounds = 16;
 let halftimeLatch = true;
 let gameoverLatch = true;
 let gameStartLatch = true;
+let teamSwitch = false;
 let timeoutActive = false;
 let rcon;
 let rconStatus = "disconnected";
@@ -74,7 +75,8 @@ async function update(data) {
             gameStartLatch = true;
         }
         if (data["round"]["phase"] === "freezetime" && data["map"]["round"] === totalRounds / 2 && halftimeLatch) {
-            console.log("HALFTIME!")
+            console.log("HALFTIME!");
+            teamSwitch = true;
             halftimeLatch = false;
         } else if (!halftimeLatch && data["round"]["phase"] !== "freezetime") {
             halftimeLatch = true;
@@ -195,6 +197,14 @@ async function handleGameOver(){
 function broadcastEvent(event, payload) {
     broadcasterSocket.broadcast.emit(event, payload);
     broadcasterSocket.emit(event, payload);
+}
+
+function getTeamSwitch(){
+    if(teamSwitch){
+        teamSwitch = false;
+        return true;
+    }
+    return false;
 }
 
 module.exports = {update,connectToRCON, sendCommandRCON,
