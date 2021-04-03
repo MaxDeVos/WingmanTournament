@@ -88,5 +88,21 @@
   "name": "Luke",
   "steamID64": "76561199039007716",
   "team": "No Team"
+  },
+  "Abby": {
+    "name": "Abby",
+    "steamID64": "76561198443491950",
+    "team": "No Team"
+  },
+  "Izzy": {
+    "name": "Izzy",
+    "steamID64": "76561198151783486",
+    "team": "No Team"
+  },
+  "Zander": {
+    "name": "Zander",
+    "steamID64": "76561198400580958",
+    "team": "No Team"
   }
+
 }
