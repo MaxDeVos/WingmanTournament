@@ -53,7 +53,13 @@ namespace WingmanRelay {
 
         public void checkForSwap() {
             while (true) {
-                Console.WriteLine(getCurrentGSITerrorist());
+                var request = new System.Net.Http.HttpClient();
+                var response = request.GetStringAsync(@"http://localhost:1348/get-terrorist/").Result;
+                if (response != getCurrentGSITerrorist()) {
+                    Console.WriteLine("Swapping Teams!");
+                    var swapRequest = new System.Net.Http.HttpClient();
+                    request.GetStringAsync(@"http://localhost:1348/switch-teams/");
+                }
                 Thread.Sleep(100);
             }
         }
