@@ -31,8 +31,7 @@ namespace WingmanRelay {
             
             var client = new RelayClient(serverUrl);
             client.start();
-            
-            //TODO This thing only works on localhost currently
+
             var sidesManager = new SidesManager();
         }
     }

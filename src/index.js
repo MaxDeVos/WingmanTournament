@@ -579,11 +579,11 @@ function determinePeerCompatibility(local, remote){
         if (local.type === "observer") {
             r = (remote.type === "caster");
         } else if (local.type === "caster") {
-            r = (remote.type !== "player");
+            r = true;
         } else if (local.type === "broadcaster") {
             r = (remote.type !== "observer");
         } else if (local.type === "player") {
-            r = (remote.type === "broadcaster" || remote.type === "obs");
+            r = (remote.type === "broadcaster" || remote.type === "obs" || remote.type === "caster");
         } else if(local.type === "obs"){
             r = (remote.type !== "observer");
         }

@@ -7,6 +7,7 @@
  * Video Out: No
  */
 let localJSON;
+let playerVideos = [];
 //====================== User Listeners ============================
 
 function createUserListener(name, socket){
@@ -53,6 +54,25 @@ function configUser(socket){
         handleCountDown(localJSON);
     })
 
+    socket.on('timeout_t', async (timeoutTeam)=>{
+        console.log("T-side Timeout called from: " + timeoutTeam);
+        socket.emit("request-team-players", timeoutTeam);
+    })
+
+    socket.on('timeout_ct', async (timeoutTeam)=>{
+        console.log("CT-side Timeout called from: " + timeoutTeam);
+        socket.emit("request-team-players", timeoutTeam);
+    })
+    socket.on('timeout-over',async ()=>{
+        console.log("Timeout Over!");
+        console.log("Switching to Active Player Cam");
+        muteAllPlayers();
+    })
+
+    socket.on('response-team-players', (players) => {
+        handleUnmuteTeam(players);
+    })
+
     configSockets(socket);
 
     createUserListener('observer', socket);
@@ -87,8 +107,26 @@ function handleNewFeed(newVid, socket_id, type){
     let videosDiv = document.getElementById('videos');
     newVid.className = "vid"
     if (!noVideoInput) {
-        if(type !== "broadcaster"){
+        if(type !== "broadcaster" && type !== "player"){
             videosDiv.appendChild(newVid)
         }
+        else if(type === "player"){
+            newVid.muted = true;
+            playerVideos[socket_id] = newVid;
+        }
+    }
+}
+
+function handleUnmuteTeam(players){
+    console.log("PLAYERS TO UNMUTE", players);
+    for(let p in players){
+        playerVideos[players[p].socketId].muted = false;
+    }
+}
+
+function muteAllPlayers(){
+    console.log("MUTING ALL PLAYERS");
+    for(let p in playerVideos){
+        playerVideos[p].muted = true;
     }
 }

@@ -215,9 +215,10 @@ function configUser(socket){
 
     socket.on('timeout-over',async ()=>{
         console.log("Timeout Over!");
+        console.log("Switching to Active Player Cam");
         await destroyTimeoutTimer();
         await disableCurrentCam();
-        setActivePlayersCam();
+        enableActivePlayerCamera();
     })
 
     socket.on('hide-map-selection', async ()=>{
