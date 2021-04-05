@@ -10,6 +10,7 @@ let playerDatabase = {};
 let number;
 let nameAppendLatch = true;
 let broadcasterPeer;
+let broadcasterVideo;
 let obsPeer;
 let mapSelectionRunning = false;
 let localSocket = undefined;
@@ -250,6 +251,11 @@ function configUser(socket){
         updateInfo("Map Selection Complete");
         updateMapList(data.maps);
     })
+
+    socket.on('update-broadcaster-mute-status', (mute)=>{
+        handleBroadcasterMute(mute);
+    })
+
 
     initPlayerHandler(socket);
 }
@@ -613,5 +619,13 @@ function handleNewFeed(newVid, socket_id, type){
             videosDiv.appendChild(newVid)
         }
     }
+    if(type === "broadcaster"){
+        broadcasterVideo = newVid;
+    }
+}
 
+function handleBroadcasterMute(mute){
+    if(broadcasterVideo !== undefined){
+        broadcasterVideo.muted = mute;
+    }
 }

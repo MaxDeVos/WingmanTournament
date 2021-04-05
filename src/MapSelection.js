@@ -132,7 +132,7 @@ function handlePlayerBan(data){
     else if(pickConfig[pickRound] === "auto"){
         pickRound--;
         let map = getAvailableMap();
-        pickMap(getAvailableMap(), pickOrder[pickRound], pickRound);
+        pickMap(getAvailableMap(), inversePickOrder[pickRound], pickRound);
         maps[map].round = 6;
         emitToTeam(pickOrder[pickRound], "pick-confirm", {maps: maps, round: pickRound})
         emitToTeam(inversePickOrder[pickRound], "side-pick-request", {map: map, maps: maps, round: 6})

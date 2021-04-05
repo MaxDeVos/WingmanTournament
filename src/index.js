@@ -381,6 +381,14 @@ function handleBroadcasterRoutes(socket){
             peers[obsSocket].emit("handle-mute", muted);
         }
     })
+    socket.on("update-broadcaster-mute-status", (mute)=>{
+        for(let p in activePlayers){
+            let playerPeer = peers[activePlayers[p].socketId];
+            if(playerPeer !== undefined){
+                peers[activePlayers[p].socketId].emit("update-broadcaster-mute-status", mute);
+            }
+        }
+    })
 }
 
 function handleBroadcasterDC(socket){

@@ -6,11 +6,10 @@
  * Video Out: No
  */
 
-let lastObservedPlayer = "";
 let localSocket;
 let scenes;
-let activePlayers;
 let teams = {};
+let playerVideos = [];
 let obsLatch = true;
 let localJSON;
 let mapSelectionStarted = false;
@@ -190,7 +189,6 @@ function configUser(socket){
     createUserListener('player3', socket);
     createUserListener('player4', socket);
     createUserListener('rcon', socket);
-    createUserListener('lexo', socket);
 
 }
 
@@ -303,6 +301,22 @@ function setCasterCam(){
     transmitSceneSwitch("caster-cam");
 }
 
+function talkToPlayers(mute){
+    localSocket.emit("update-broadcaster-mute-status", mute);
+    for(let p in playerVideos){
+        playerVideos[p].muted = mute;
+    }
+
+    if(mute){
+        document.getElementById("talkToPlayers").style.backgroundColor = "white";
+        document.getElementById("stopTalkToPlayers").style.backgroundColor = "gray";
+    }
+    else{
+        document.getElementById("talkToPlayers").style.backgroundColor = "gray";
+        document.getElementById("stopTalkToPlayers").style.backgroundColor = "white";
+    }
+}
+
 function handlePeer(socketId, type, initiator){
     if(type === "player"){
         addPeer(socketId, initiator, true, type);
@@ -313,6 +327,7 @@ function handlePeer(socketId, type, initiator){
 }
 
 function handleNewFeed(newVid, socket_id, type){
+
     let videosDiv = document.getElementById('videos');
     console.log("YOU ARE DA BROADCASTER")
     let vidDiv = document.createElement("div");
@@ -325,6 +340,11 @@ function handleNewFeed(newVid, socket_id, type){
     vidDiv.appendChild(newVid);
     newVid.className = "broadcasterVid"
     videosDiv.appendChild(vidDiv);
+
+    if(type === "player"){
+        playerVideos[socket_id] = newVid;
+    }
+
 }
 
 function obsCommand(event, payload){
