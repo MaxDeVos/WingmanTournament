@@ -151,6 +151,7 @@ function configUser(socket){
     socket.on("response-team-players", (data)=>{
         handleEnableTeamCam(data);
     })
+
     socket.on("json-update", (data)=>{
         localJSON = data;
         if(castersMuted ===! localJSON.castersMuted) {
@@ -169,7 +170,6 @@ function configUser(socket){
 
         }
     })
-
 
     socket.on("start-map-selection", async ()=>{
         createMapSelectionObject();
@@ -229,6 +229,8 @@ function configUser(socket){
             console.warn("No map selection window to hide!");
         }
     })
+
+    socket.on('obs-scenes', getCurrentScenes());
 }
 
 function createTimeoutTimer(team){
@@ -621,6 +623,12 @@ function updateMapList(maps){
     }
     map_list = finalOrder;
     deployMaps();
+}
+
+function getCurrentScenes(){
+    obs.send("GetSceneList").then(scenes =>{
+        console.log(scenes);
+    });
 }
 
 function sortMapsByRound(maps){

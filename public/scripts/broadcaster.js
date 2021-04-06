@@ -235,11 +235,22 @@ function createSceneButtons(scenes){
             button.addEventListener("click", () => {
                 localJSON.obsDesiredScene = sceneName
                 localSocket.emit("push-to-json", localJSON);
+                processCameraChange(scenes[scene]);
                 // obsCommand('SetCurrentScene', {
                 //     'scene-name': sceneName
                 // });
             })
             controls.appendChild(button);
+        }
+    }
+}
+
+function processCameraChange(scene){
+    console.log("PROCESSING CAMERA CHANGE FOR", scene.name);
+    for(let source in scene.sources){
+        if(scene.sources[source].name.startsWith("CameraChange-")){
+            transmitCameraSwitch(scene.sources[source].name.replace("CameraChange-",""));
+            return;
         }
     }
 }
@@ -251,7 +262,7 @@ function createTeamCamButton(team){
     button.id = `${team}_button`;
     button.innerText = `${team} Cam`;
     button.addEventListener("click", ()=>{
-        transmitSceneSwitch("team-cam", team);
+        transmitCameraSwitch("team-cam", team);
     })
     scenes.appendChild(button);
 }
@@ -263,19 +274,19 @@ function setPlayerName(socket, name){
 function setNoCam(){
     console.log("emit no-cam");
     updateStatus("In No Cam");
-    transmitSceneSwitch("no-cam")
+    transmitCameraSwitch("no-cam")
 }
 
 function setActivePlayersCam(){
     console.log("emit active-player-cam");
     updateStatus("In Active Player Cam");
-    transmitSceneSwitch("active-player-cam");
+    transmitCameraSwitch("active-player-cam");
 }
 
 function setAllPlayersCam(){
     console.log("all-players-cam");
     updateStatus("In All Player Cam");
-    transmitSceneSwitch("all-players-cam");
+    transmitCameraSwitch("all-players-cam");
 }
 
 function updateCasterMuteVisuals(muted){
@@ -298,7 +309,7 @@ function updateCasterMute(muted){
 function setCasterCam(){
     console.log("Emit caster-cam");
     updateStatus("In Caster Cam");
-    transmitSceneSwitch("caster-cam");
+    transmitCameraSwitch("caster-cam");
 }
 
 function talkToPlayers(mute){
@@ -359,7 +370,7 @@ function getFromOBS(request, response, payload){
     localSocket.emit("obs-get", {event: request, response: response, payload: payload});
 }
 
-function transmitSceneSwitch(type, payload){
+function transmitCameraSwitch(type, payload){
     localSocket.emit("to-obs", {type: type, payload: payload});
 }
 
