@@ -8,7 +8,7 @@
 
 // ======================== RTC Bullshit Starts Here ============================
 
-let map_list = ['de_cobblestone', 'de_elysion', 'de_lake', 'de_shortnuke', 'de_guard', 'de_overpass', 'de_vertigo'];
+let map_list = ['de_cbble', 'de_elysion', 'de_lake', 'de_shortnuke', 'de_guard', 'de_overpass', 'de_vertigo'];
 let queuePositions = [];
 let playerVideos = {};
 let casterVideos = {};
@@ -219,6 +219,10 @@ function configUser(socket){
         await destroyTimeoutTimer();
         await disableCurrentCam();
         enableActivePlayerCamera();
+        console.log("ENDING TIMEOUT")
+        obs.send("SetCurrentScene", {
+            "scene-name": "Gameplay"
+        });
     })
 
     socket.on('hide-map-selection', async ()=>{
@@ -234,6 +238,13 @@ function configUser(socket){
 }
 
 function createTimeoutTimer(team){
+
+    //TODO SWITCH THESE OUT FROM HARDCODING
+    console.log("STARTING TIMEOUT")
+    obs.send("SetCurrentScene", {
+        "scene-name": "Timeout"
+    });
+
     let timerContainer = document.createElement('div');
     timerContainer.id = "timeoutContainer";
 

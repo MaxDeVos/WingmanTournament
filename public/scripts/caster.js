@@ -8,6 +8,7 @@
  */
 let localJSON;
 let playerVideos = [];
+let broadcasterVideo = undefined;
 //====================== User Listeners ============================
 
 function createUserListener(name, socket){
@@ -73,6 +74,16 @@ function configUser(socket){
         handleUnmuteTeam(players);
     })
 
+    socket.on('update-broadcaster-mute-status', muted =>{
+        console.log("BROADCASTER MUTED: " + muted);
+        if(muted){
+            broadcasterVideo.muted = true;
+        }
+        else{
+            broadcasterVideo.muted = false;
+        }
+    })
+
     configSockets(socket);
 
     createUserListener('observer', socket);
@@ -109,6 +120,10 @@ function handleNewFeed(newVid, socket_id, type){
     if (!noVideoInput) {
         if(type !== "broadcaster" && type !== "player"){
             videosDiv.appendChild(newVid)
+        }
+        else if(type == "broadcaster"){
+            newVid.muted = true;
+            broadcasterVideo = newVid;
         }
         else if(type === "player"){
             newVid.muted = true;

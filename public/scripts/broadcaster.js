@@ -10,6 +10,7 @@ let localSocket;
 let scenes;
 let teams = {};
 let playerVideos = [];
+let casterVideos = [];
 let obsLatch = true;
 let localJSON;
 let mapSelectionStarted = false;
@@ -328,6 +329,35 @@ function talkToPlayers(mute){
     }
 }
 
+function talkToCasters(mute){
+    localSocket.emit("update-broadcaster-caster-mute-status", mute);
+
+    if(mute){
+        document.getElementById("talkToCasters").style.backgroundColor = "white";
+        document.getElementById("stopTalkToCasters").style.backgroundColor = "gray";
+    }
+    else{
+        document.getElementById("talkToCasters").style.backgroundColor = "gray";
+        document.getElementById("stopTalkToCasters").style.backgroundColor = "white";
+    }
+}
+
+function muteCasters(mute){
+    for(let c in casterVideos){
+        casterVideos[c].muted = mute;
+    }
+
+    if(mute){
+        document.getElementById("locallyUnmuteCasters").style.backgroundColor = "white";
+        document.getElementById("locallyMuteCasters").style.backgroundColor = "gray";
+    }
+    else{
+        document.getElementById("locallyUnmuteCasters").style.backgroundColor = "gray";
+        document.getElementById("locallyMuteCasters").style.backgroundColor = "white";
+    }
+}
+
+
 function handlePeer(socketId, type, initiator){
     if(type === "player"){
         addPeer(socketId, initiator, true, type);
@@ -354,6 +384,10 @@ function handleNewFeed(newVid, socket_id, type){
 
     if(type === "player"){
         playerVideos[socket_id] = newVid;
+    }
+
+    else if(type === "caster"){
+        casterVideos[socket_id] = newVid;
     }
 
 }

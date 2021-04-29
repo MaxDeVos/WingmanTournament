@@ -14,12 +14,12 @@
     <h1 style="text-align: center;margin-bottom:5px;">Welcome, Max!</h1>
     <h5 style="text-align: center;margin-top: 0px;">If you work hard enough, maybe your friends will like you</h5>
     <h3 style="text-align:center;visibility: visible">Status: <span id="status" style="color:red">Loading Camera Before Connecting To Peers</span></h3>
-
     <div class="container">
         <div class="box">
             <div class="box-row">
                 <div class="box-cell box1">
                     <div id="statusContainer">
+
                         <h4 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h4>
                         <h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
                         <h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
@@ -48,6 +48,10 @@
                         <button id="muteButton" style="visibility: visible" class="settings" onclick="toggleMute()">Unmuted</button>
                         <button id="talkToPlayers" style="visibility: visible" class="settings" onclick="talkToPlayers(false)">Unmute for Players</button>
                         <button id="stopTalkToPlayers" style="visibility: visible" class="settings" onclick="talkToPlayers(true)">Mute for Players</button>
+                        <button id="talkToCasters" style="visibility: visible" class="settings" onclick="talkToCasters(false)">Unmute for Casters</button>
+                        <button id="stopTalkToCasters" style="visibility: visible" class="settings" onclick="talkToCasters(true)">Mute for Casters</button>
+                        <button id="locallyMuteCasters" style="visibility: visible" class="settings" onclick="muteCasters(true)">Local Mute Casters</button>
+                        <button id="locallyUnmuteCasters" style="visibility: visible" class="settings" onclick="muteCasters(false)">Local Unmute Casters</button>
                     </div>
                 </div>
         </div>

@@ -27,6 +27,7 @@ let casterMuted = true;
 /**
  * OKAY SO BASICALLY, this is one big JSON object that everyone sees and is handled here and it has a whole bunch of shit
  * in it. (this is for light data storage only (nothing big please)
+ * - Isaac
  */
 let sharedJSON = {};
 sharedJSON.queueCountdown = false;
@@ -43,6 +44,7 @@ const options = {
 }
 
 const server = https.createServer(options, app);
+// const server = http.createServer(app)
 const io = socket(server);
 
 app.use(express.static(path.join(__dirname, "../public")));
@@ -388,6 +390,17 @@ function handleBroadcasterRoutes(socket){
                 peers[activePlayers[p].socketId].emit("update-broadcaster-mute-status", mute);
             }
         }
+    })
+
+    socket.on("update-broadcaster-caster-mute-status", (mute)=>{
+
+        if(casterSocket1 !== undefined){
+            peers[casterSocket1].emit("update-broadcaster-mute-status", mute);
+        }
+        if(casterSocket2 !== undefined){
+            peers[casterSocket2].emit("update-broadcaster-mute-status", mute);
+        }
+
     })
 }
 

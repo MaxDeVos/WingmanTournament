@@ -32,7 +32,7 @@ namespace WingmanRelay {
             var client = new RelayClient(serverUrl);
             client.start();
 
-            var sidesManager = new SidesManager();
+            // var sidesManager = new SidesManager();
         }
     }
 }

@@ -238,7 +238,7 @@ function endMapSelection(){
 function getEmptyMapList(){
     console.log("Generating Map List!")
     let mapList = {};
-    mapList["de_cobblestone"] = generateMap("de_cobblestone");
+    mapList["de_cbble"] = generateMap("de_cbble");
     mapList["de_elysion"] = generateMap("de_elysion");
     mapList["de_lake"] = generateMap('de_lake');
     mapList["de_shortnuke"] = generateMap('de_shortnuke');
@@ -320,7 +320,7 @@ async function outputTestData(){
             order: 2
         },
         {
-            name: 'de_cobblestone',
+            name: 'de_cbble',
             status: 'picked',
             selector: 'Bimbois',
             t: 'Bimbois',

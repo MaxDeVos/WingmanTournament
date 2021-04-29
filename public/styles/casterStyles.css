@@ -75,4 +75,12 @@ label > input {
     margin:5px;
 }
 
+.inputSelector{
+    width:480px;
+    margin: 0 auto;
+    height:auto;
+    border:2px solid black;
+    text-align: center;
+    padding: 0 10px 10px;
+}
 

@@ -17,33 +17,6 @@ let cameraStatus = false;
 var recorder;
 
 //////////// CONFIGURATION //////////////////
-
-/**
- * RTCPeerConnection configuration
- */
-const configuration = {
-    "iceServers": [        {
-        url: 'stun:wingmantournament.tk:3478?transport=tcp',
-        credential: 'fuck',
-        username: 'max'
-    },
-        // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
-        // set your own servers here
-        {
-            url: 'turn:wingmantournament.tk:3478?transport=tcp',
-            credential: 'fuck',
-            username: 'max'
-        }
-    ]
-}
-
-/**
- * UserMedia constraints
- */
-
-
-/////////////////////////////////////////////////////////
-
 if(!noInput) {
 // enabling the camera at startup
     navigator.mediaDevices.getUserMedia(constraints).then(stream => {
