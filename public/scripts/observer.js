@@ -6,6 +6,10 @@
  * Video Out: No
  */
 
+let playerVideoFeeds = [];
+let observerSlots = [];
+let playerVidDisplays = [];
+
 //====================== User Listeners ============================
 
 function createUserListener(name, socket){
@@ -45,6 +49,26 @@ function configUser(socket){
         socket.emit('initSend', {socket_id: remoteData.socket_id, type: "observer"})
     })
 
+    socket.on("observer-slots", (slots) =>{
+        observerSlots = slots;
+        updateCameras()
+    })
+
+    socket.on('new-observed-player', (slot) =>{
+        console.log("UPDATED SLOT: ", slot)
+        for(let p = 1; p <= 4; p++){
+            console.log("UPDATING SLOT ", p)
+            if(p === slot){
+                console.log("OBSERVED FOUND ON SLOT", p)
+                document.getElementById("slot" + p).style.outline = "2px solid red";
+            }
+            else{
+                document.getElementById("slot" + p).style.outline = "2px solid black";
+            }
+        }
+
+    })
+
 
     createUserListener('observer', socket);
     createUserListener('broadcaster', socket);
@@ -56,6 +80,39 @@ let s = io.connect("https://localhost:2000")
 s.on("connect", () => {
     console.log("GAMING");
 })
+
+function updateCameras(){
+    console.log("OBSERVER SLOTS: ", observerSlots)
+    attemptSetPlayerCam(1, observerSlots);
+    attemptSetPlayerCam(2, observerSlots);
+    attemptSetPlayerCam(3, observerSlots);
+    attemptSetPlayerCam(4, observerSlots);
+}
+
+function attemptSetPlayerCam(number, slots){
+    if(playerVideoFeeds[slots[number]] !== undefined){
+        playerVidDisplays[number].srcObject = playerVideoFeeds[slots[number]].srcObject;
+    }
+    else{
+        playerVidDisplays[number].srcObject = undefined;
+    }
+}
+
+function createVideoObject(className, muted){
+    let videoObject = document.createElement("video");
+    videoObject.className = className;
+    videoObject.playsinline = false
+    videoObject.autoplay = true
+    videoObject.muted = muted;
+    return videoObject;
+}
+
+for(let p = 1; p <= 4;p++){
+    playerVidDisplays[p] = createVideoObject("player-vid", true)
+    playerVidDisplays[p].id = p;
+    let id = `slot` + p;
+    document.getElementById(id).appendChild(playerVidDisplays[p])
+}
 
 function handlePeer(socketId, type, initiator){
     addPeer(socketId, initiator, false, type);
@@ -69,6 +126,14 @@ function handleNewFeed(newVid, socket_id, type){
         if(type === "caster"){
             videosDiv.appendChild(newVid)
         }
+    }
+    if(type === "player"){
+        newVid.muted = true;
+        newVid.autoplay = true;
+        newVid.playsinline = true;
+        playerVideoFeeds[socket_id] = newVid;
+        updateCameras()
+        console.log("NEW PLAYER CONNECTED: ", playerVideoFeeds)
     }
 
 }

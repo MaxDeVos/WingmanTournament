@@ -6,7 +6,7 @@
  * Video Out: Yes
  */
 
-let playerDatabase = {};
+let playerVideoFeeds = {};
 let number;
 let nameAppendLatch = true;
 let broadcasterPeer;
@@ -42,7 +42,7 @@ function initPlayerHandler(socket){
 
     socket.on('player-data', (data) => {
         player.socketId = socket.id;
-        playerDatabase = data.playerDatabase;
+        playerVideos = data.playerDatabase;
         number = data.number;
         console.log("Loaded Player Data!");
         if(nameAppendLatch){
@@ -111,9 +111,9 @@ function updateShownPlayerData(player){
 }
 
 function findPlayer(name){
-    for(let i in playerDatabase){
+    for(let i in playerVideos){
         if(i.valueOf() === name){
-            let tempPlayer = playerDatabase[i];
+            let tempPlayer = playerVideos[i];
             return new Player(socket.id, tempPlayer.name, tempPlayer.team, tempPlayer.steamID64);
         }
     }
@@ -554,7 +554,7 @@ function createPlayerList(){
     defaultOption.innerHTML = "Please Select Your Name";
     selection.add(defaultOption);
 
-    for(let i in playerDatabase){
+    for(let i in playerVideos){
         let option = document.createElement('option')
         option.value = i;
         option.innerHTML = i;
@@ -620,6 +620,8 @@ function handleNewFeed(newVid, socket_id, type){
         }
     }
     if(type === "broadcaster"){
+        newVid.className = "zeroVid";
+        videosDiv.appendChild(newVid)
         broadcasterVideo = newVid;
     }
 }

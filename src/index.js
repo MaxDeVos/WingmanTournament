@@ -92,6 +92,7 @@ function informAboutElders(socket){
     }
     if(observerSocket !== undefined){
         socket.emit("observer-con", {socket: socket.id});
+        socket.emit("observer-slots", observerSlots)
     }
     if(broadcasterSocket !== undefined){
         socket.emit("broadcaster-con", {socket: socket.id});
@@ -598,13 +599,13 @@ function determinePeerCompatibility(local, remote){
     }
     else {
         if (local.type === "observer") {
-            r = (remote.type === "caster");
+            r = (remote.type === "caster") || (remote.type === "player");
         } else if (local.type === "caster") {
             r = true;
         } else if (local.type === "broadcaster") {
             r = (remote.type !== "observer");
         } else if (local.type === "player") {
-            r = (remote.type === "broadcaster" || remote.type === "obs" || remote.type === "caster");
+            r = true;
         } else if(local.type === "obs"){
             r = (remote.type !== "observer");
         }
@@ -734,6 +735,16 @@ async function processRequest(req, res, body){
     }
 }
 
+function arrayEquals(a, b) {
+    return Array.isArray(a) &&
+        Array.isArray(b) &&
+        a.length === b.length &&
+        a.every((val, index) => val === b[index]);
+}
+
+let observerSlots = ["emptyforever", "none", "none", "none", "none"];
+let observerSlot = 0;
+
 async function handleGSIData(body){
     if(body !== ""){
         let game = JSON.parse(body)
@@ -748,6 +759,28 @@ async function handleGSIData(body){
             }
             lastPlayer = currentPlayer;
         }
+
+        let tempObserverSlot = game.player["observer_slot"];
+        if(observerSlot !== tempObserverSlot){
+            peers[observerSocket].emit("new-observed-player", (tempObserverSlot));
+            observerSlot = tempObserverSlot;
+        }
+
+        let tempObserverSlots = []
+        if(game["allplayers"] !== undefined){
+            for(let p in game["allplayers"]){
+                tempObserverSlots[game["allplayers"][p]["observer_slot"]] = getPlayerBySteamID(p).socketId;
+            }
+        }
+
+        if(!arrayEquals(tempObserverSlots, observerSlots)){
+            if(peers[observerSocket] !== undefined){
+                console.log("CHANGE IN PLAYER SLOTS");
+                peers[observerSocket].emit("observer-slots", tempObserverSlots)
+                observerSlots = tempObserverSlots;
+            }
+        }
+
         await GSIManager.update(game);
     }
 }

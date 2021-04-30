@@ -178,6 +178,16 @@ function configUser(socket){
         document.getElementById("initiateCountdown").style.visibility = ((localJSON.obsCountdownActive || localJSON.obsDesiredScene !== "WAITING") ? "hidden" : "visible");
     })
 
+    socket.on('timeout_t', async ()=>{
+        updateCasterMute(true)
+    })
+    socket.on('timeout_ct', async ()=>{
+        updateCasterMute(true)
+    })
+    socket.on('timeout-over',async ()=>{
+        updateCasterMute(false)
+    })
+
     configSockets(socket);
 
     createUserListener('observer', socket);

@@ -1,0 +1,21 @@
+.player-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 5px 5px;
+    grid-template-areas:
+    "slot1 slot2"
+    "slot3 slot4";
+}
+.slot1 { grid-area: slot1; }
+.slot2 { grid-area: slot2; }
+.slot3 { grid-area: slot3; }
+.slot4 { grid-area: slot4; }
+.vid {
+    outline: solid 2px black;
+}
+
+.player-vid{
+    width:100%;
+    height:100%;
+}

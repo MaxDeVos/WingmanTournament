@@ -58,16 +58,20 @@ function configUser(socket){
     socket.on('timeout_t', async (timeoutTeam)=>{
         console.log("T-side Timeout called from: " + timeoutTeam);
         socket.emit("request-team-players", timeoutTeam);
+        document.getElementById("status").innerText = "TERRORIST TIMEOUT"
     })
 
     socket.on('timeout_ct', async (timeoutTeam)=>{
         console.log("CT-side Timeout called from: " + timeoutTeam);
         socket.emit("request-team-players", timeoutTeam);
+        document.getElementById("status").innerText = "COUNTER-TERRORIST TIMEOUT"
     })
     socket.on('timeout-over',async ()=>{
         console.log("Timeout Over!");
         console.log("Switching to Active Player Cam");
         muteAllPlayers();
+        document.getElementById("status").color = "green"
+        document.getElementById("status").innerText = "Unmuted"
     })
 
     socket.on('response-team-players', (players) => {
@@ -107,7 +111,7 @@ function handleMute(muted){
         document.getElementById("status").innerText = "LIVE";
         document.getElementById("status").style.color = "green";
     }
-}
+}tim
 
 function handlePeer(socketId, type, initiator){
     addPeer(socketId, initiator, false, type);
@@ -121,11 +125,15 @@ function handleNewFeed(newVid, socket_id, type){
         if(type !== "broadcaster" && type !== "player"){
             videosDiv.appendChild(newVid)
         }
-        else if(type == "broadcaster"){
+        else if(type === "broadcaster"){
+            newVid.className = "zeroVid"
+            videosDiv.appendChild(newVid)
             newVid.muted = true;
             broadcasterVideo = newVid;
         }
         else if(type === "player"){
+            newVid.className = "zeroVid"
+            videosDiv.appendChild(newVid)
             newVid.muted = true;
             playerVideos[socket_id] = newVid;
         }

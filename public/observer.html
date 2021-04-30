@@ -5,6 +5,7 @@
     <title>Observer</title>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/simple-peer/simplepeer.min.js"></script>
+    <link rel="stylesheet" href="styles/observerStyles.css">
     <link rel="stylesheet" href="styles/playerStyles.css">
 </head>
 <body>
@@ -15,6 +16,12 @@
 <h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
 <h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
 <h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
+<div class="player-grid">
+    <div id="slot1" class="slot1 vid"></div>
+    <div id="slot2" class="slot2 vid"></div>
+    <div id="slot3" class="slot3 vid"></div>
+    <div id="slot4" class="slot4 vid"></div>
+</div>
 <div id="videos" class="container"></div>
 </body>
 <script>
