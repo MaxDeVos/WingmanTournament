@@ -97,7 +97,7 @@
   "Isaac": {
     "name": "Isaac",
     "steamID64": "76561198095390268",
-    "team": "No Team"
+    "team": "The Rusty Spoons"
   },
   "Max": {
     "name": "Max",
@@ -108,5 +108,10 @@
     "name": "Max",
     "steamID64": "76561199125455830",
     "team": "Fat Bottom Boys"
+  },
+  "Nolan": {
+    "name": "Nolan",
+    "steamID64": "76561198048493703",
+    "team": "Knife Fight Up Top"
   }
 }

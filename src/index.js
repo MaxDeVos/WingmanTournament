@@ -605,7 +605,7 @@ function determinePeerCompatibility(local, remote){
         } else if (local.type === "broadcaster") {
             r = (remote.type !== "observer");
         } else if (local.type === "player") {
-            r = true;
+            r = (remote.type !== "player");
         } else if(local.type === "obs"){
             r = (remote.type !== "observer");
         }
@@ -762,7 +762,9 @@ async function handleGSIData(body){
 
         let tempObserverSlot = game.player["observer_slot"];
         if(observerSlot !== tempObserverSlot){
-            peers[observerSocket].emit("new-observed-player", (tempObserverSlot));
+            if(observerSocket !== undefined){
+                peers[observerSocket].emit("new-observed-player", (tempObserverSlot));
+            }
             observerSlot = tempObserverSlot;
         }
 

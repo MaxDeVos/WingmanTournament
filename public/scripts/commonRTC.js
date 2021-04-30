@@ -26,12 +26,12 @@ if(!noInput) {
         localStream = stream;
         cameraStatus = true;
         if(localType === "player"){
-            recorder = RecordRTC(stream,  {
-                bitsPerSecond: 300000,
-                bufferSize: 16384,
-                numberOfAudioChannels: 1,
-                type: 'video'
-            })
+            // recorder = RecordRTC(stream,  {
+            //     bitsPerSecond: 300000,
+            //     bufferSize: 16384,
+            //     numberOfAudioChannels: 1,
+            //     type: 'video'
+            // })
             console.log("Defined Recorder!")
         }
 
@@ -218,38 +218,38 @@ function addPeer(socket_id, am_initiator, muted, type) {
 // Recording Shenanigans
 
 function startRecording(){
-    recorder.startRecording();
+    // recorder.startRecording();
 }
 
 function stopRecording(){
 
-    recorder.stopRecording(function(){
-        var blob = this.getBlob();
-        console.log(bytesToSize(blob.size));
-        var file = new File([blob], getFileName('webm'), {
-            type: 'video/webm'
-        });
-        invokeSaveAsDialog(file);
-    });
+    // recorder.stopRecording(function(){
+    //     var blob = this.getBlob();
+    //     console.log(bytesToSize(blob.size));
+    //     var file = new File([blob], getFileName('webm'), {
+    //         type: 'video/webm'
+    //     });
+    //     invokeSaveAsDialog(file);
+    // });
 }
 
 function getFileName(fileExtension) {
-    var d = new Date();
-    var year = d.getFullYear();
-    var month = d.getMonth();
-    var date = d.getDate();
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = d.getMonth();
+    const date = d.getDate();
     return 'RecordRTC-' + year + month + date + '-' + Math.random() + '.' + fileExtension;
 }
 
 function postFiles() {
-    let blob = recorder.getBlob();
-
-    // getting unique identifier for the file name
-    let fileName = (Math.random() * new Date().getTime()).toString(36).replace( /\./g , '') + '.webm';
-
-    let file = new File(blob, fileName, {
-        type: 'video/webm'
-    });
+    // let blob = recorder.getBlob();
+    //
+    // // getting unique identifier for the file name
+    // let fileName = (Math.random() * new Date().getTime()).toString(36).replace( /\./g , '') + '.webm';
+    //
+    // let file = new File(blob, fileName, {
+    //     type: 'video/webm'
+    // });
 }
 
 /**

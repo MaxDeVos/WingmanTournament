@@ -620,8 +620,8 @@ function handleNewFeed(newVid, socket_id, type){
         }
     }
     if(type === "broadcaster"){
-        newVid.className = "zeroVid";
-        videosDiv.appendChild(newVid)
+        // newVid.className = "zeroVid";
+        // videosDiv.appendChild(newVid)
         broadcasterVideo = newVid;
     }
 }

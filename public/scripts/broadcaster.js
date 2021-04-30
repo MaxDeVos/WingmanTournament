@@ -106,8 +106,8 @@ function configUser(socket){
 
     socket.on('new-observed-player', playerSocket => {
         console.log("New Observed Player!")
-        try{
-            for(let i in peers){
+        for(let i in peers){
+            try{
                 document.getElementById(i).style.position = "relative";
                 if(i === playerSocket){
                     document.getElementById(i).style.border = "solid red 5px";
@@ -115,10 +115,11 @@ function configUser(socket){
                 else{
                     document.getElementById(i).style.border = "solid black 1px";
                 }
+            }catch (e){
+                console.log("Error Handling Player Camera Switch: ", playerSocket);
             }
-        }catch (e){
-            console.log("Error Handling Player Camera Switch: ", playerSocket);
         }
+
     })
 
     socket.on('obs-con', data => {
