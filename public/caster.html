@@ -9,29 +9,37 @@
     <link rel="stylesheet" href="styles/mapSelection.css">
 </head>
 <body>
-<h1 style="text-align:center">Caster</h1>
-<h3 style="text-align:center">Caster Stream Status: <span id="status" style="color:red">Loading Camera Before Connecting To Peers</span></h3>
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-<script src="js/main.js" async></script>
-<div id="statusContainer">
-    <h3 style="text-align: center">UUID: <span id="UUID"></span></h3>
-    <h4 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h4>
-    <h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
-    <h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
-    <h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
-</div>
-<div class="controls">
-    <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
-    <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
-</div>
-<div id="videos">
-    <video id="localVideo" class="vid" style="outline: solid red 5px" autoplay muted></video>
-</div>
-<div id="countDownTimerContainer">
-    <h5 id="countDownTimer"></h5>
-</div>
-<div id="mapSelectionContainer"></div>
-<br />
+    <div class="container">
+        <div class="general-container">
+            <h1 style="text-align:center">Caster</h1>
+            <h3 style="text-align:center">Caster Stream Status: <span id="status" style="color:red">Loading Camera Before Connecting To Peers</span></h3>
+            <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+            <script src="js/main.js" async></script>
+            <div id="statusContainer">
+                <h3 style="text-align: center">UUID: <span id="UUID"></span></h3>
+                <h4 style="text-align: center;color:black">Broadcaster Status: <span id="broadcaster-status" style="color:red">Disconnected</span></h4>
+                <h4 style="text-align: center;color:black">Observer Status: <span id="observer-status" style="color:red">Disconnected</span></h4>
+                <h4 style="text-align: center;color:black">Caster #1 Status: <span id="caster1-status" style="color:red">Disconnected</span></h4>
+                <h4 style="text-align: center;color:black">Caster #2 Status: <span id="caster2-status" style="color:red">Disconnected</span></h4>
+            </div>
+            <div class="controls">
+                <button id="muteButton" class="settings" onclick="toggleMute()">Unmuted</button>
+                <button id="vidButton" class="settings" onclick="toggleVid()">Video Enabled</button>
+            </div>
+            <div id="videos">
+                <video id="localVideo" class="vid" style="outline: solid red 5px" autoplay muted></video>
+            </div>
+            <div id="countDownTimerContainer">
+                <h5 id="countDownTimer"></h5>
+            </div>
+            <div id="mapSelectionContainer"></div>
+            <br />
+
+        </div>
+        <div class="chat-container">
+            <iframe class="chat" src="https://www.youtube.com/live_chat?is_popout=1&v=fLEkx8kvwW0&embed_domain=dangerousmen.plumbing"></iframe>
+        </div>
+    </div>
 
 </body>
 <script>

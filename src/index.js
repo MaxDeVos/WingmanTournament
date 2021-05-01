@@ -13,7 +13,7 @@ const http = require("http");
 const localEnvironment = require('../localEnviroment.json');
 
 let state = "init";
-const stage = "D";
+const stage = "B";
 let port = 443;
 peers = {};
 

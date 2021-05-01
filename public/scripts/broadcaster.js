@@ -261,7 +261,7 @@ function processCameraChange(scene){
     console.log("PROCESSING CAMERA CHANGE FOR", scene.name);
     for(let source in scene.sources){
         if(scene.sources[source].name.startsWith("CameraChange-")){
-            transmitCameraSwitch(scene.sources[source].name.replace("CameraChange-",""));
+            transmitCameraSwitch(scene.sources[source].name.replace("CameraChange-",""),undefined, 1000);
             return;
         }
     }
@@ -274,7 +274,7 @@ function createTeamCamButton(team){
     button.id = `${team}_button`;
     button.innerText = `${team} Cam`;
     button.addEventListener("click", ()=>{
-        transmitCameraSwitch("team-cam", team);
+        transmitCameraSwitch("team-cam", team, 0);
     })
     scenes.appendChild(button);
 }
@@ -415,8 +415,8 @@ function getFromOBS(request, response, payload){
     localSocket.emit("obs-get", {event: request, response: response, payload: payload});
 }
 
-function transmitCameraSwitch(type, payload){
-    localSocket.emit("to-obs", {type: type, payload: payload});
+function transmitCameraSwitch(type, payload, delay){
+    localSocket.emit("to-obs", {type: type, payload: payload, delay: delay});
 }
 
 function updateStatus(message){

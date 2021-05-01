@@ -126,14 +126,14 @@ function handleNewFeed(newVid, socket_id, type){
             videosDiv.appendChild(newVid)
         }
         else if(type === "broadcaster"){
-            newVid.className = "zeroVid"
-            videosDiv.appendChild(newVid)
+            // newVid.className = "zeroVid"
+            // videosDiv.appendChild(newVid)
             newVid.muted = true;
             broadcasterVideo = newVid;
         }
         else if(type === "player"){
-            newVid.className = "zeroVid"
-            videosDiv.appendChild(newVid)
+            // newVid.className = "zeroVid"
+            // videosDiv.appendChild(newVid)
             newVid.muted = true;
             playerVideos[socket_id] = newVid;
         }

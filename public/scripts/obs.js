@@ -111,6 +111,10 @@ function configUser(socket){
     })
 
     socket.on('to-obs', async (data) =>{
+        if(data.delay === undefined){
+            data.delay = 0;
+        }
+        await delay(data.delay);
         if(data.type === "active-player-cam"){
             console.log("Switching to Active Player Cam");
             await disableCurrentCam();
@@ -195,6 +199,7 @@ function configUser(socket){
     socket.on('timeout_t', async (timeoutTeam)=>{
         console.log("T-side Timeout called from: " + timeoutTeam);
         console.log(`Switching to ${timeoutTeam} Cam`);
+        await delay(1000);
         await disableCurrentCam();
         enableTeamCam(timeoutTeam, true);
         createTimeoutTimer(timeoutTeam);
@@ -203,6 +208,7 @@ function configUser(socket){
     socket.on('timeout_ct', async (timeoutTeam)=>{
         console.log("CT-side Timeout called from: " + timeoutTeam);
         console.log(`Switching to ${timeoutTeam} Cam`);
+        await delay(1000);
         await disableCurrentCam();
         enableTeamCam(timeoutTeam, true);
         createTimeoutTimer(timeoutTeam);
@@ -216,6 +222,7 @@ function configUser(socket){
     socket.on('timeout-over',async ()=>{
         console.log("Timeout Over!");
         console.log("Switching to Active Player Cam");
+        await delay(1000);
         await destroyTimeoutTimer();
         await disableCurrentCam();
         enableActivePlayerCamera();
