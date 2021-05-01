@@ -261,7 +261,8 @@ function processCameraChange(scene){
     console.log("PROCESSING CAMERA CHANGE FOR", scene.name);
     for(let source in scene.sources){
         if(scene.sources[source].name.startsWith("CameraChange-")){
-            transmitCameraSwitch(scene.sources[source].name.replace("CameraChange-",""),undefined, 1000);
+            // Use the width of the color source as the delay.  Allows for flexibility.
+            transmitCameraSwitch(scene.sources[source].name.replace("CameraChange-",""),undefined, scene.sources[source].cx, scene.sources[source].cy);
             return;
         }
     }
@@ -415,8 +416,8 @@ function getFromOBS(request, response, payload){
     localSocket.emit("obs-get", {event: request, response: response, payload: payload});
 }
 
-function transmitCameraSwitch(type, payload, delay){
-    localSocket.emit("to-obs", {type: type, payload: payload, delay: delay});
+function transmitCameraSwitch(type, payload, delay, transition){
+    localSocket.emit("to-obs", {type: type, payload: payload, delay: delay, transition: transition});
 }
 
 function updateStatus(message){

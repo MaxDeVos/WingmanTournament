@@ -37,7 +37,7 @@ video{
     width:100%;
     height:560px;
     left:0px;
-    top:50px;
+    top:150px;
     transition: all 0.25s linear;
 }
 
@@ -52,11 +52,18 @@ video{
 }
 
 .casterVideo{
+    position: absolute;
     width:900px;
     height:675px;
-    margin:30px;
+    top:30px;
+    left:40px;
     transition: all 0.25s linear;
     animation: fadein .5s;
+    background-color: red;
+}
+
+.casterTwo{
+    left:980px;
 }
 
 /*All Players Cameras*/

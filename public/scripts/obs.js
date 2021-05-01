@@ -115,6 +115,7 @@ function configUser(socket){
             data.delay = 0;
         }
         await delay(data.delay);
+
         if(data.type === "active-player-cam"){
             console.log("Switching to Active Player Cam");
             await disableCurrentCam();
@@ -138,6 +139,21 @@ function configUser(socket){
         else if(data.type === "no-cam"){
             console.log("Switching to No Cam");
             await disableCurrentCam();
+        }
+        else if(data.type === "caster-side"){
+            if(cameraState === "caster"){
+                let caster1 = document.getElementById("caster1Cam");
+                let caster2 = document.getElementById("caster2Cam");
+                caster1.style.width="666px";
+                caster1.style.height="500px";
+                caster1.style.top="-120px";
+                caster1.style.left="20px";
+
+                caster2.style.width="666px";
+                caster2.style.height="500px";
+                caster2.style.top="410px";
+                caster2.style.left="20px";
+            }
         }
     })
 
@@ -168,7 +184,7 @@ function configUser(socket){
                 if(!(activeScene === localJSON.obsDesiredScene)) {
                     obs.send("SetCurrentScene", {
                         "scene-name": localJSON.obsDesiredScene
-                    });
+                    })
                 }
             });
 
@@ -177,7 +193,7 @@ function configUser(socket){
 
     socket.on("start-map-selection", async ()=>{
         createMapSelectionObject();
-        await delay(100);
+        await delay(500);
         deployMaps();
     })
 
@@ -339,9 +355,12 @@ function enableCasterCamera(){
     casterCamContainer.id = "casterCamContainer";
 
     let caster1Cam = createVideoObject("casterVideo", true);
+    caster1Cam.id = "caster1Cam";
     casterCamContainer.appendChild(caster1Cam);
 
     let caster2Cam = createVideoObject("casterVideo", true);
+    caster2Cam.classList.add("casterTwo")
+    caster2Cam.id = "caster2Cam";
     casterCamContainer.appendChild(caster2Cam);
 
     let i = 0;
@@ -507,6 +526,9 @@ function createVideoObject(className, muted){
 }
 
 function createMapSelectionObject(){
+
+    document.getElementById("casterCamContainer").style.top = "25px";
+
     let container = document.createElement('div');
     container.id = "mapSelectionContainer";
 
@@ -526,7 +548,9 @@ function createMapSelectionObject(){
 async function hideMapSelection(){
     console.log("Hiding Map Selection");
     retractMaps();
-    await delay(1000);
+    await delay(500);
+    document.getElementById("casterCamContainer").style.top = "150px";
+    await delay(500);
     document.getElementById("mapSelectionContainer").style.visibility = "hidden";
 }
 
