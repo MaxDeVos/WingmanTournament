@@ -59,7 +59,7 @@ video{
     left:40px;
     transition: all 0.25s linear;
     animation: fadein .5s;
-    background-color: red;
+    background-color: darkgrey;
 }
 
 .casterTwo{
