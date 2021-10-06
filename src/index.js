@@ -14,7 +14,7 @@ const localEnvironment = require('../localEnviroment.json');
 
 let state = "init";
 const stage = "B";
-let port = 443;
+let port = 80;
 peers = {};
 
 // Max's PC
@@ -43,8 +43,8 @@ const options = {
     cert: fs.readFileSync('certificate.pem'),
 }
 
-const server = https.createServer(options, app);
-// const server = http.createServer(app)
+// const server = https.createServer(options, app);
+const server = http.createServer(app)
 const io = socket(server);
 
 app.use(express.static(path.join(__dirname, "../public")));
