@@ -8,7 +8,7 @@
 
 // ======================== RTC Bullshit Starts Here ============================
 
-let map_list = ['de_cbble', 'de_ravine', 'de_lake', 'de_shortnuke', 'de_extraction', 'de_overpass', 'de_vertigo'];
+let map_list = [];
 let queuePositions = [];
 let playerVideos = {};
 let casterVideos = {};
@@ -51,11 +51,16 @@ function configUser(socket){
     socket.on('connect', () => {
         console.log("NodeJS Connected!");
         socket.emit("obs-con", function(data) {
-            console.log(data);
+            console.log("obs-con data : " + data);
             castersMuted = data.muted;
             handleCasterMute(castersMuted);
         });
     });
+
+    socket.on("map-names", function(data) {
+        map_list = data.mapNames;
+        console.log("Received Maps: " + map_list);
+    })
 
     // Handle if disconnects while OBS is connected
     socket.on('broadcaster-dc', () =>{

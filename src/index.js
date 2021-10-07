@@ -29,8 +29,20 @@ let casterMuted = true;
  * in it. (this is for light data storage only (nothing big please)
  * - Isaac
  */
-let sharedJSON = {};
-sharedJSON = resetJSON(sharedJSON);
+let countdownJSON = {};
+countdownJSON = resetCountdownJSON(countdownJSON);
+
+function resetCountdownJSON(json){
+    json.queueCountdown = false;
+    json.obsCountdownStart = 30;
+    json.obsCountdownActive = false;
+    json.obsCountdown = 0;
+    json.obsDesiredScene = "WAITING";
+    json.RMQ = [];
+    json.castersMuted = true;
+    json.live = false;
+    return json
+}
 
 const options = {
     key: fs.readFileSync('private.pem'),
@@ -280,19 +292,6 @@ app.get('/broadcaster', (req, res) => {
     res.redirect('broadcaster.html');
 })
 
-function resetJSON(json){
-    json.queueCountdown = false;
-    json.obsCountdownStart = 30;
-    json.obsCountdownActive = false;
-    json.obsCountdown = 0;
-    json.obsDesiredScene = "WAITING";
-    json.RMQ = [];
-    json.castersMuted = true;
-    json.live = false;
-    return json
-}
-
-
 function handleBroadcasterRoutes(socket){
     socket.on('broadcaster-con', async () => {
         if(broadcasterSocket !== undefined){
@@ -436,6 +435,7 @@ function handleOBSRoutes(socket){
             socket.type = 'obs';
             obsSocket = socket.id;
             informAboutElders(socket);
+            socket.emit("map-names", {mapNames:MapSelection.mapNames})
             socket.emit('broadcaster-status', broadcasterSocket);
             socket.broadcast.emit('obs-con', {socket: socket.id});
             socket.emit("handle-mute", casterMuted);
@@ -524,47 +524,47 @@ function addRTCListeners(socket){
     })
 }
 function sharedJSONListeners(socket){
-    socket.emit("json-update", sharedJSON);
+    socket.emit("json-update", countdownJSON);
 
     socket.on("push-to-json", async (json) =>{
-        sharedJSON = json;
-        socket.broadcast.emit("json-update", sharedJSON);
-        socket.emit("json-update", sharedJSON);
+        countdownJSON = json;
+        socket.broadcast.emit("json-update", countdownJSON);
+        socket.emit("json-update", countdownJSON);
 
         //functions? sort of
         //This is for the countdown
-        if(sharedJSON.queueCountdown === true){
-            sharedJSON.queueCountdown = false;
-            sharedJSON.obsCountdown = sharedJSON.obsCountdownStart;
-            sharedJSON.obsCountdownActive = true;
-            socket.broadcast.emit("json-update", sharedJSON);
-            socket.emit("json-update", sharedJSON);
-            while(sharedJSON.obsCountdownActive === true){
+        if(countdownJSON.queueCountdown === true){
+            countdownJSON.queueCountdown = false;
+            countdownJSON.obsCountdown = countdownJSON.obsCountdownStart;
+            countdownJSON.obsCountdownActive = true;
+            socket.broadcast.emit("json-update", countdownJSON);
+            socket.emit("json-update", countdownJSON);
+            while(countdownJSON.obsCountdownActive === true){
                 await new Promise(r => setTimeout(r, 1000));
-                if(sharedJSON.obsCountdownActive){
-                    sharedJSON.obsCountdown -= 1;
-                    if(sharedJSON.obsCountdown <= 25){
-                        sharedJSON.obsDesiredScene = "Casters";
+                if(countdownJSON.obsCountdownActive){
+                    countdownJSON.obsCountdown -= 1;
+                    if(countdownJSON.obsCountdown <= 25){
+                        countdownJSON.obsDesiredScene = "Casters";
                     }
-                    socket.broadcast.emit("json-update", sharedJSON);
-                    socket.emit("json-update", sharedJSON);
-                    if(sharedJSON.obsCountdown === 0){
-                        sharedJSON.castersMuted = false;
-                        sharedJSON.obsCountdownActive = false;
-                        sharedJSON.live = true;
-                        socket.broadcast.emit("json-update", sharedJSON);
-                        socket.emit("json-update", sharedJSON);
+                    socket.broadcast.emit("json-update", countdownJSON);
+                    socket.emit("json-update", countdownJSON);
+                    if(countdownJSON.obsCountdown === 0){
+                        countdownJSON.castersMuted = false;
+                        countdownJSON.obsCountdownActive = false;
+                        countdownJSON.live = true;
+                        socket.broadcast.emit("json-update", countdownJSON);
+                        socket.emit("json-update", countdownJSON);
                     }
                 }
                 else{
-                    sharedJSON = resetJSON(sharedJSON);
-                    socket.broadcast.emit("json-update", sharedJSON);
-                    socket.emit("json-update", sharedJSON);
+                    countdownJSON = resetCountdownJSON(countdownJSON);
+                    socket.broadcast.emit("json-update", countdownJSON);
+                    socket.emit("json-update", countdownJSON);
                 }
 
             }
-            socket.broadcast.emit("json-update", sharedJSON);
-            socket.emit("json-update", sharedJSON);
+            socket.broadcast.emit("json-update", countdownJSON);
+            socket.emit("json-update", countdownJSON);
         }
 
 

@@ -1,5 +1,6 @@
 let GSIManager = require("./GSIManager");
 const APIManager = require("./APIManager");
+let mapNames = ['de_cbble', 'de_ravine', 'de_lake', 'de_shortnuke', 'de_extraction', 'de_overpass', 'de_vertigo'];
 let maps = {};
 let mapSelectionActive = false;
 let activePlayers = {};
@@ -238,13 +239,9 @@ function endMapSelection(){
 function getEmptyMapList(){
     console.log("Generating Map List!")
     let mapList = {};
-    mapList["de_cbble"] = generateMap("de_cbble");
-    mapList["de_ravine"] = generateMap("de_ravine");
-    mapList["de_lake"] = generateMap('de_lake');
-    mapList["de_shortnuke"] = generateMap('de_shortnuke');
-    mapList["de_extraction"] = generateMap('de_extraction');
-    mapList["de_overpass"] = generateMap('de_overpass');
-    mapList["de_vertigo"] = generateMap('de_vertigo');
+    for(let i in mapNames){
+        mapList[mapNames[i]] = generateMap(mapNames[i]);
+    }
     return mapList;
 }
 
@@ -345,4 +342,5 @@ function getSelectionExport(){
 }
 
 module.exports = {handlePlayerMapSelection, handleSpectatorMapSelection, onBroadcasterConnect, onPlayerUpdate,
-    handleBroadcasterMapSelection, updatePeers, getCurrentMap, getNextMap, getSelectionExport, outputTestData};
+    handleBroadcasterMapSelection, updatePeers, getCurrentMap, getNextMap, getSelectionExport, outputTestData,
+    mapNames};
