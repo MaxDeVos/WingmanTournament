@@ -8,7 +8,7 @@
 
 // ======================== RTC Bullshit Starts Here ============================
 
-let map_list = ['de_cbble', 'de_elysion', 'de_lake', 'de_shortnuke', 'de_guard', 'de_overpass', 'de_vertigo'];
+let map_list = ['de_cbble', 'de_ravine', 'de_lake', 'de_shortnuke', 'de_extraction', 'de_overpass', 'de_vertigo'];
 let queuePositions = [];
 let playerVideos = {};
 let casterVideos = {};
@@ -174,6 +174,11 @@ function configUser(socket){
 
     socket.on("json-update", (data)=>{
         localJSON = data;
+
+        if(localJSON.live === true){
+            obs.send("StartStreaming")
+        }
+
         if(castersMuted ===! localJSON.castersMuted) {
             castersMuted = localJSON.castersMuted;
             handleCasterMute(localJSON.castersMuted);

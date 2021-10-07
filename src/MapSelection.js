@@ -239,10 +239,10 @@ function getEmptyMapList(){
     console.log("Generating Map List!")
     let mapList = {};
     mapList["de_cbble"] = generateMap("de_cbble");
-    mapList["de_elysion"] = generateMap("de_elysion");
+    mapList["de_ravine"] = generateMap("de_ravine");
     mapList["de_lake"] = generateMap('de_lake');
     mapList["de_shortnuke"] = generateMap('de_shortnuke');
-    mapList["de_guard"] = generateMap('de_guard');
+    mapList["de_extraction"] = generateMap('de_extraction');
     mapList["de_overpass"] = generateMap('de_overpass');
     mapList["de_vertigo"] = generateMap('de_vertigo');
     return mapList;

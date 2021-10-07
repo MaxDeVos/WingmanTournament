@@ -14,7 +14,7 @@ const localEnvironment = require('../localEnviroment.json');
 
 let state = "init";
 const stage = "B";
-let port = 80;
+let port = 443;
 peers = {};
 
 // Max's PC
@@ -30,21 +30,15 @@ let casterMuted = true;
  * - Isaac
  */
 let sharedJSON = {};
-sharedJSON.queueCountdown = false;
-sharedJSON.obsCountdownStart = 30;
-sharedJSON.obsCountdownActive = false;
-sharedJSON.obsCountdown = 0;
-sharedJSON.RMQ = [];
-sharedJSON.obsDesiredScene = "WAITING";
-sharedJSON.castersMuted = true;
+sharedJSON = resetJSON(sharedJSON);
 
 const options = {
     key: fs.readFileSync('private.pem'),
     cert: fs.readFileSync('certificate.pem'),
 }
 
-// const server = https.createServer(options, app);
-const server = http.createServer(app)
+const server = https.createServer(options, app);
+// const server = http.createServer(app)
 const io = socket(server);
 
 app.use(express.static(path.join(__dirname, "../public")));
@@ -285,6 +279,19 @@ let broadcasterSocket = undefined;
 app.get('/broadcaster', (req, res) => {
     res.redirect('broadcaster.html');
 })
+
+function resetJSON(json){
+    json.queueCountdown = false;
+    json.obsCountdownStart = 30;
+    json.obsCountdownActive = false;
+    json.obsCountdown = 0;
+    json.obsDesiredScene = "WAITING";
+    json.RMQ = [];
+    json.castersMuted = true;
+    json.live = false;
+    return json
+}
+
 
 function handleBroadcasterRoutes(socket){
     socket.on('broadcaster-con', async () => {
@@ -534,19 +541,28 @@ function sharedJSONListeners(socket){
             socket.emit("json-update", sharedJSON);
             while(sharedJSON.obsCountdownActive === true){
                 await new Promise(r => setTimeout(r, 1000));
-                sharedJSON.obsCountdown -= 1;
-                if(sharedJSON.obsCountdown <= 25){
-                    sharedJSON.obsDesiredScene = "INTRO_NO_CS";
+                if(sharedJSON.obsCountdownActive){
+                    sharedJSON.obsCountdown -= 1;
+                    if(sharedJSON.obsCountdown <= 25){
+                        sharedJSON.obsDesiredScene = "Casters";
+                    }
+                    socket.broadcast.emit("json-update", sharedJSON);
+                    socket.emit("json-update", sharedJSON);
+                    if(sharedJSON.obsCountdown === 0){
+                        sharedJSON.castersMuted = false;
+                        sharedJSON.obsCountdownActive = false;
+                        sharedJSON.live = true;
+                        socket.broadcast.emit("json-update", sharedJSON);
+                        socket.emit("json-update", sharedJSON);
+                    }
                 }
-                socket.broadcast.emit("json-update", sharedJSON);
-                socket.emit("json-update", sharedJSON);
-                if(sharedJSON.obsCountdown === 0){
-                    sharedJSON.obsCountdownActive = false;
+                else{
+                    sharedJSON = resetJSON(sharedJSON);
                     socket.broadcast.emit("json-update", sharedJSON);
                     socket.emit("json-update", sharedJSON);
                 }
+
             }
-            sharedJSON.castersMuted = false;
             socket.broadcast.emit("json-update", sharedJSON);
             socket.emit("json-update", sharedJSON);
         }

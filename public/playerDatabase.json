@@ -17,7 +17,7 @@
   "Sam": {
     "name": "Sam",
     "steamID64": "76561198161667713",
-    "team": "Knife Fight Up Top"
+    "team": "Nazari's Little Gamers"
   },
   "Eli": {
     "name": "Eli",
@@ -32,12 +32,12 @@
   "Liam": {
     "name": "Liam",
     "steamID64": "76561198295367309",
-    "team": "The Amazing James"
+    "team": "Nazari's Little Gamers"
   },
-  "Thomas": {
-    "name": "Thomas",
-    "steamID64": "76561198049549411",
-    "team": "The Amazing James"
+  "Jazzy": {
+    "name": "Jazzy",
+    "steamID64": "76561198867173464",
+    "team": "Nazari's Little Gamers"
   },
   "Tim": {
     "name": "Tim",
@@ -113,5 +113,10 @@
     "name": "Nolen",
     "steamID64": "76561198048493703",
     "team": "No Team"
+  },
+  "Thomas": {
+    "name": "Thomas",
+    "steamID64": "76561198049549411",
+    "team": "The Amazing James"
   }
 }

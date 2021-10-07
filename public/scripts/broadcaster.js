@@ -175,8 +175,7 @@ function configUser(socket){
         document.getElementById("countdown").innerHTML = "COUNTDOWN TO END OF INTRO SEQUENCE: " + localJSON.obsCountdown;
         document.getElementById("activeScene").innerHTML = "Active OBS Scene: " + localJSON.obsDesiredScene;
         document.getElementById("casterAudioLive").innerHTML = "Caster audio: " + ((localJSON.castersMuted) ? "NOT LIVE" : "ON AIR");
-        document.getElementById("countdown").style.visibility = ((localJSON.obsCountdownActive) ? "visible" : "hidden");
-        document.getElementById("initiateCountdown").style.visibility = ((localJSON.obsCountdownActive || localJSON.obsDesiredScene !== "WAITING") ? "hidden" : "visible");
+        document.getElementById("countdown").innerText = ((localJSON.obsCountdownActive) ? "Start Countdown" : "Stop Countdown");
     })
 
     socket.on('timeout_t', async ()=>{
@@ -216,14 +215,23 @@ function populatePlayerNames(data){
             }
         }
     }
-
 }
 
-function countdownStart(){
-    tempJSON = localJSON;
-    tempJSON.queueCountdown = true;
-    document.getElementById("initiateCountdown").style.visibility = "hidden";
-    localSocket.emit("push-to-json", tempJSON);
+function handleCountdownClick(){
+
+    if(localJSON.obsCountdownActive){
+        localJSON.queueCountdown = false;
+        localJSON.obsCountdownActive = false;
+        document.getElementById("initiateCountdown").innerText = "Start Countdown";
+        localSocket.emit("push-to-json", localJSON);
+    }
+    else {
+        localJSON.obsCountdownActive = true
+        localJSON.queueCountdown = true;
+        document.getElementById("initiateCountdown").innerText = "Cancel Countdown";
+        localSocket.emit("push-to-json", localJSON);
+    }
+
 }
 
 function updatePlayers(callback){
