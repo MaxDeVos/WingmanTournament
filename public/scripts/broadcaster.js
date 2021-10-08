@@ -63,6 +63,20 @@ function hideMapSelection(){
     relayToOBS("hide-map-selection");
 }
 
+function resetMapSelection(){
+    let button = document.getElementById("start-map-selection");
+    button.style.backgroundColor = "lightgray";
+    button.innerText = "Start Map Selection";
+    mapSelectionStarted = false;
+    button.onclick = startMapSelection;
+    socket.emit("reset-map-selection");
+
+    let mapObjects = document.getElementById("mapSelectionContainer");
+    while (mapObjects.firstChild) {
+        mapObjects.removeChild(mapObjects.firstChild);
+    }
+}
+
 function pauseGame(){
     rconCommand("pause");
 }

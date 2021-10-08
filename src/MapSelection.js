@@ -27,10 +27,16 @@ function initMapSelection(){
 }
 
 function resetMapSelection(){
-    activePlayers = {};
+    mapSelectionActive = false;
     teams = undefined;
     tossWinner = undefined;
     tossLoser = undefined;
+    currentMap = 0;
+    selectionComplete = false;
+    pickOrder = [];
+    inversePickOrder = [];
+    mapOrder = [];
+    pickRound = 0;
 }
 
 function banMap(map, team, round){
@@ -343,4 +349,4 @@ function getSelectionExport(){
 
 module.exports = {handlePlayerMapSelection, handleSpectatorMapSelection, onBroadcasterConnect, onPlayerUpdate,
     handleBroadcasterMapSelection, updatePeers, getCurrentMap, getNextMap, getSelectionExport, outputTestData,
-    mapNames};
+    mapNames, resetMapSelection};

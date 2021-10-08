@@ -367,6 +367,12 @@ function handleBroadcasterRoutes(socket){
         await GSIManager.changeMap(MapSelection.getCurrentMap());
         state = "gameStart";
     })
+    socket.on("reset-map-selection", () =>{
+        console.log("Resetting Map Selection")
+        MapSelection.resetMapSelection();
+        socket.emit("reset-map-selection");
+        socket.broadcast.emit("reset-map-selection");
+    })
     socket.on('map-over', async () => {
         let nextMap = MapSelection.getNextMap();
         if(nextMap !== "none"){

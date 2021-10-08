@@ -17,6 +17,14 @@ function configSockets(socket){
 
     socket.on('map-selection-complete', (maps) => {
     });
+
+    socket.on("reset-map-selection", () => {
+        console.log("Resetting map selection")
+        let mapObjects = document.getElementById("mapSelectionContainer");
+        while (mapObjects.firstChild) {
+            mapObjects.removeChild(mapObjects.firstChild);
+        }
+    })
 }
 
 let mapSelectionRunning = false;

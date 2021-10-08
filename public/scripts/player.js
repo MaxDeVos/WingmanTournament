@@ -238,6 +238,23 @@ function configUser(socket){
         // updateInfo(`Waiting for your opponent to ${data.next} a map!`);
     })
 
+    socket.on("reset-map-selection", () => {
+        console.log("Resetting map selection")
+        let mapObjects = document.getElementById("playerMapSelectionContainer");
+        while (mapObjects.firstChild) {
+            mapObjects.removeChild(mapObjects.firstChild);
+        }
+        mapObjects = document.getElementById("side-picker");
+        while (mapObjects.firstChild) {
+            mapObjects.removeChild(mapObjects.firstChild);
+        }
+        mapObjects = document.getElementById("startPickContainer");
+        while (mapObjects.firstChild) {
+            mapObjects.removeChild(mapObjects.firstChild);
+        }
+        mapSelectionRunning = false;
+    })
+
     socket.on('join-map-selection', maps => {
         playerStartMapSelection(maps);
         updateMapList(maps);
