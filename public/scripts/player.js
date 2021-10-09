@@ -616,12 +616,11 @@ function handlePeer(socketId, type, initiator){
         console.log("ADDING OTHER PLAYER");
         addPeer(socketId, initiator, false, type);
     }
-    else{
+    else {
         addPeer(socketId, initiator, true, type);
-        if(type === "broadcaster"){
+        if (type === "broadcaster") {
             broadcasterPeer = socketId;
-        }
-        else if(type === "obs"){
+        } else if (type === "obs") {
             obsPeer = socketId;
         }
     }
@@ -644,8 +643,10 @@ function handleNewFeed(newVid, socket_id, type){
 }
 
 function handleBroadcasterMute(mute){
-    console.log("Setting Broadcaster Mute Status To: ", mute);
+    console.log("Setting Broadcaster Mute Status To: ", mute, "broadcasterpeer = ", broadcasterPeer);
     if(broadcasterVideo !== undefined){
+        document.getElementById("peerlist" + broadcasterPeer).innerText = broadcasterPeer + " : " + "broadcaster" +
+            " | muted = " + mute + "\n";
         broadcasterVideo.muted = mute;
     }
 }

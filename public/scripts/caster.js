@@ -111,7 +111,7 @@ function handleMute(muted){
         document.getElementById("status").innerText = "LIVE";
         document.getElementById("status").style.color = "green";
     }
-}tim
+}
 
 function handlePeer(socketId, type, initiator){
     addPeer(socketId, initiator, false, type);

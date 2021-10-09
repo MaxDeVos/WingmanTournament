@@ -98,7 +98,7 @@ function init() {
  * @param {String} socket_id
  */
 function removePeer(socket_id) {
-
+    document.getElementById("peerlist" + socket_id).remove();
     let videoEl = videos[socket_id];
     if (videoEl) {
 
@@ -168,6 +168,12 @@ function unmutePeer(socket_id) {
  */
 
 function addPeer(socket_id, am_initiator, muted, type) {
+    let list = document.getElementById("peersList");
+    let listing = document.createElement("p");
+    listing.id = "peerlist" + socket_id;
+    listing.innerText =  socket_id + " : " + type + "\n";
+
+    list.appendChild(listing);
 
     console.log("Adding Peer ", socket_id);
 
